@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="main-app">
+<head>
+    <meta charset="UTF-8">
+    <title>The Primes Rhyme | Lab</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #c0392b; --bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; color: #333; }
+        
+        /* الهيدر الأنيق */
+        header { background: white; border-bottom: 2px solid #eee; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: bold; font-size: 1.2rem; color: var(--primary); }
+        
+        /* أزرار اللغات */
+        .lang-switcher { display: flex; gap: 10px; }
+        .lang-btn { background: none; border: 1px solid #ddd; padding: 5px 12px; cursor: pointer; border-radius: 4px; font-size: 0.8rem; transition: 0.2s; }
+        .lang-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 4px solid var(--primary); }
+        
+        h1, h2 { margin-top: 0; }
+        .description { color: #666; line-height: 1.6; }
+        
+        /* مكان عرض المطوية (قيد التطوير) */
+        .visual-area { background: #fdfdfd; border: 1px dashed #ccc; height: 200px; display: flex; align-items: center; justify-content: center; margin-top: 20px; color: #999; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo" id="site-logo">تناغم الأعداد الأولية</div>
+    <div class="lang-switcher">
+        <button class="lang-btn" onclick="setLang('ar')">العربية</button>
+        <button class="lang-btn" onclick="setLang('en')">English</button>
+        <button class="lang-btn" onclick="setLang('fr')">Français</button>
+    </div>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h1 id="title">مختبر نمط الأعداد الأولية</h1>
+        <p class="description" id="desc">هذه الصفحة التفاعلية مخصصة لاستكشاف خصائص طي الجداول العددية وفق بحثنا المنشور.</p>
+    </div>
+
+    <!-- قسم المطوية السداسية -->
+    <div class="card">
+        <h2 id="m1-title">نموذج المطوية السداسية (15)</h2>
+        <p id="m1-info">5 شرائح و 4 طويات للعدد السداسي.</p>
+        <div class="visual-area">قريباً: محاكاة المطوية السداسية</div>
+    </div>
+</div>
+
+<script>
+    const translations = {
+        ar: { logo: "تناغم الأولية", title: "مختبر نمط الأعداد الأولية", desc: "هذه الصفحة التفاعلية مخصصة لاستكشاف خصائص طي الجداول العددية وفق بحثنا المنشور.", m1_title: "نموذج المطوية السداسية (15)", m1_info: "5 شرائح و 4 طويات للعدد السداسي.", dir: "rtl" },
+        en: { logo: "Primes Rhyme", title: "Prime Pattern Lab", desc: "This interactive page is dedicated to exploring numeric grid folding properties based on our research.", m1_title: "Hexagonal Folding Model (15)", m1_info: "5 Strips and 4 Folds for Hexagonal numbers.", dir: "ltr" },
+        fr: { logo: "Rime des Primes", title: "Labo des Nombres Premiers", desc: "Cette page interactive est dédiée à l'exploration des propriétés de pliage des grilles numériques selon notre recherche.", m1_title: "Modèle Hexagonal (15)", m1_info: "5 Bandes et 4 Plis pour les nombres hexagonaux.", dir: "ltr" }
+    };
+
+    function setLang(lang) {
+        const t = translations[lang];
+        document.getElementById('main-app').dir = t.dir;
+        document.getElementById('site-logo').innerText = t.logo;
+        document.getElementById('title').innerText = t.title;
+        document.getElementById('desc').innerText = t.desc;
+        document.getElementById('m1-title').innerText = t.m1_title;
+        document.getElementById('m1-info').innerText = t.m1_info;
+    }
+</script>
+
+</body>
+</html>
