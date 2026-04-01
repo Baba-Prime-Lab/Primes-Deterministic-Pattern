@@ -4,33 +4,59 @@
     <meta charset="UTF-8">
     <title>Deterministic Pattern in Prime Distribution</title>
     <style>
-        :root { --primary: #2c3e50; --accent: #c0392b; --bg: #f8f9fa; --text: #333; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; color: var(--text); line-height: 1.6; }
+        :root { --primary: #2c3e50; --accent: #c0392b; --bg: #f4f7f6; --gold: #b8860b; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; color: #333; }
         
-        header { background: white; border-bottom: 2px solid #eee; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        header { background: white; border-bottom: 2px solid #eee; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 9999; }
         .logo { font-weight: bold; color: var(--primary); font-size: 1.1rem; }
         
         .lang-switcher { display: flex; gap: 8px; }
-        .lang-btn { background: white; border: 1px solid #ccc; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-size: 0.85rem; transition: 0.3s; }
-        .lang-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .lang-btn { background: white; border: 1px solid #ccc; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-size: 0.8rem; }
         .active-lang { background: var(--primary); color: white; border-color: var(--primary); }
 
-        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
-        .hero-card { background: white; border-radius: 12px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 30px; text-align: center; border-top: 5px solid var(--accent); }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .hero-card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px; text-align: center; border-top: 5px solid var(--accent); }
+        h1 { font-size: 1.6rem; color: var(--primary); margin: 0; }
+        .subtitle { font-size: 0.9rem; color: #666; margin-top: 10px; }
+
+        .model-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 30px; overflow: hidden; border: 1px solid #e0e0e0; }
+        h2 { border-bottom: 2px solid var(--bg); padding-bottom: 10px; color: var(--primary); font-size: 1.3rem; }
+
+        /* تسيق عام للمطويات */
+        .lab-viewport { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 20px; position: relative; display: flex; flex-direction: column; align-items: center; overflow: auto; min-height: 450px; }
+        .controls { margin-bottom: 15px; display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+        .controls button { padding: 6px 12px; cursor: pointer; background: var(--primary); color: white; border: none; border-radius: 4px; font-size: 0.8rem; transition: 0.3s; }
+        .controls button:hover { background: var(--gold); }
+
+        /* مطوية الـ 15 */
+        #hex-stage { position: relative; width: 100%; height: 420px; perspective: 3000px; transform: scale(0.9); }
+        .row-hex { position: absolute; width: 100%; display: flex; transform-style: preserve-3d; justify-content: center; transition: 1.5s; }
+        .cell-hex { width: 40px; height: 40px; background: white; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
         
-        h1 { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
-        .subtitle { font-size: 1.1rem; color: #555; max-width: 800px; margin: auto; }
+        /* مطوية الـ 105 */
+        #thirty-stage { position: relative; width: 100%; height: 550px; perspective: 5000px; transform: scale(0.85); margin-top: -30px; }
+        .row-thirty { position: absolute; display: flex; transform-style: preserve-3d; transition: 3s; left: 0; width: 100%; justify-content: center; }
+        .cell-thirty { width: 12px; height: 35px; background: white; border: 0.1px solid #eee; display: flex; align-items: center; justify-content: center; font-size: 7px; font-weight: bold; flex-shrink: 0; }
+        
+        /* العناصر المشتركة للمطويات */
+        .f-unit { display: flex; transform-style: preserve-3d; transition: transform 2.5s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: left center; }
+        .prime-col { background: #00bcd4 !important; color: white !important; }
+        .hinge-half { background: #ffcc00 !important; width: 50%; height: 100%; border: 0.5px solid #856404; box-sizing: border-box; }
+        .hinge-wrap { width: 20px; display: flex; flex-shrink: 0; }
+        .hinge-wrap-thirty { width: 6px; display: flex; flex-shrink: 0; }
 
-        .model-card { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 25px; }
-        .visual-placeholder { background: #fdfdfd; border: 2px dashed #ddd; border-radius: 8px; height: 250px; display: flex; align-items: center; justify-content: center; margin-top: 20px; color: #aaa; font-style: italic; }
+        /* منطق الطي */
+        .s1 .f-15 { transform: rotateY(-180deg); } .s2 .f-30 { transform: rotateY(180deg); } 
+        .s3 .f-45 { transform: rotateY(-180deg); } .s4 .f-60 { transform: rotateY(180deg); }
+        .s5 .f-75 { transform: rotateY(-180deg); } .s6 .f-90 { transform: rotateY(180deg); }
+        .glow .prime-col { box-shadow: 0 0 10px #00bcd4; background: #fff !important; color: #00bcd4 !important; border: 1px solid #00bcd4; }
 
-        footer { background: #2c3e50; color: white; padding: 40px 5%; margin-top: 60px; text-align: center; font-size: 0.9rem; }
-        .author-box { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; margin-top: 20px; }
-        .author { flex: 1; min-width: 280px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; }
-        .email { color: #f1c40f; text-decoration: none; font-size: 0.85rem; }
+        footer { background: #2c3e50; color: white; padding: 30px 5%; margin-top: 50px; text-align: center; font-size: 0.85rem; }
+        .author-box { display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; margin-top: 15px; }
+        .email { color: #f1c40f; text-decoration: none; }
     </style>
 </head>
-<body>
+<body id="body-ctx">
 
 <header>
     <div class="logo" id="nav-logo">The Primes Rhyme Lab</div>
@@ -47,61 +73,118 @@
         <p class="subtitle" id="sub-title">Primorial Probability Tables, ZeRo BlAdEs, ColumN HeaDs, and BaBa-X</p>
     </div>
 
-    <!-- Hexagonal Section -->
+    <!-- المطوية السداسية 15 -->
     <div class="model-card">
-        <h2 id="m1-title">Hexagonal Folding Model (1-15)</h2>
-        <p id="m1-desc">Interactive representation of 5 strips and 4 folds.</p>
-        <div class="visual-placeholder" id="p1">Simulation Environment Loading...</div>
+        <h2 id="m1-t">Hexagonal Folding Model (1-15)</h2>
+        <div class="lab-viewport">
+            <div class="controls">
+                <button onclick="toggleS(1)" id="btn-f15-1">Fold (3)</button>
+                <button onclick="toggleS(2)" id="btn-f15-2">Fold (6)</button>
+                <button onclick="toggleS(3)" id="btn-f15-3">Fold (9)</button>
+                <button onclick="toggleS(4)" id="btn-f15-4">Fold (12)</button>
+            </div>
+            <div id="hex-stage"></div>
+        </div>
     </div>
 
-    <!-- Primorial 5# Section -->
+    <!-- مطوية الثلاثيني 105 -->
     <div class="model-card">
-        <h2 id="m2-title">Primorial 5# Grid (1-105)</h2>
-        <p id="m2-desc">Visualization of 7 strips and 6 folds patterns.</p>
-        <div class="visual-placeholder" id="p2">Simulation Environment Loading...</div>
+        <h2 id="m2-t">Primorial 5# Grid (1-105)</h2>
+        <div class="lab-viewport">
+            <div class="controls" id="ctrl-105">
+                <!-- الأزرار تولد برمجيا -->
+            </div>
+            <div id="thirty-stage"></div>
+        </div>
     </div>
 </div>
 
 <footer>
     <div id="footer-head">Supervising Authors:</div>
     <div class="author-box">
-        <div class="author">
-            <strong>Mohammed K. A. Albaba<sup>1</sup></strong><br>
-            Independent Researcher, Gaza, Palestine<br>
-            <a href="mailto:mm2121121112@yahoo.com" class="email">mm2121121112@yahoo.com</a>
-        </div>
-        <div class="author">
-            <strong>Nossaiba Baba<sup>2</sup></strong><br>
-            Laboratory of Analysis, Modeling and Simulation<br>
-            Hassan II University of Casablanca, Morocco<br>
-            <a href="mailto:noussaibababa1@gmail.com" class="email">noussaibababa1@gmail.com</a>
-        </div>
+        <div><strong>Mohammed K. A. Albaba<sup>1</sup></strong><br><a href="mailto:mm2121121112@yahoo.com" class="email">mm2121121112@yahoo.com</a></div>
+        <div><strong>Nossaiba Baba<sup>2</sup></strong><br><a href="mailto:noussaibababa1@gmail.com" class="email">noussaibababa1@gmail.com</a></div>
     </div>
 </footer>
 
 <script>
+    const body = document.getElementById('body-ctx');
+    
+    // 1. توليد مطوية الـ 15
+    const hexStage = document.getElementById('hex-stage');
+    for (let r = 0; r < 8; r++) {
+        const row = document.createElement('div');
+        row.className = 'row-hex'; row.style.top = (r * 45) + 'px';
+        let b = r * 15;
+        let html = `<div class="f-unit base">`;
+        for (let s = 0; s < 5; s++) {
+            if (s > 0) html += `<div class="f-unit f-${s*3}">`;
+            html += `<div class="hinge-wrap"><div class="hinge-half"></div><div class="hinge-half"></div></div>`;
+            for (let i = 1; i < 3; i++) {
+                let n = b + (s*3) + i;
+                let isP = [1, 5, 7, 11, 13].includes(n % 15);
+                html += `<div class="cell-hex ${isP?'prime-col':''}">${n}</div>`;
+            }
+        }
+        html += `</div>`.repeat(5);
+        row.innerHTML = html; hexStage.appendChild(row);
+    }
+
+    // 2. توليد مطوية الـ 105
+    const thirtyStage = document.getElementById('thirty-stage');
+    const isP105 = (n) => [1, 7, 11, 13, 17, 19, 23, 29].includes(n % 30);
+    for (let r = 0; r < 10; r++) {
+        const row = document.createElement('div');
+        row.className = 'row-thirty'; row.style.top = (r * 40) + 'px';
+        let rowNums = [];
+        for (let i = r*105; i <= (r+1)*105; i++) rowNums.push(i);
+        if (r % 2 !== 0) rowNums.reverse();
+
+        let html = `<div class="f-unit base">`;
+        for (let s = 0; s < 7; s++) {
+            if (s > 0) html += `<div class="f-unit f-${s*15}">`;
+            html += `<div class="hinge-wrap-thirty"><div class="hinge-half"></div><div class="hinge-half"></div></div>`;
+            for (let i = 1; i < 15; i++) {
+                let n = rowNums[s*15 + i];
+                html += `<div class="cell-thirty ${isP105(n)?'prime-col':''}">${n}</div>`;
+            }
+        }
+        html += `</div>`.repeat(7);
+        row.innerHTML = html; thirtyStage.appendChild(row);
+    }
+
+    // أزرار الـ 105
+    const ctrl105 = document.getElementById('ctrl-105');
+    [15, 30, 45, 60, 75, 90].forEach(v => {
+        const btn = document.createElement('button');
+        btn.id = `btn-f105-${v}`; btn.onclick = () => toggleS(v/15);
+        btn.innerText = `Fold (${v})`; ctrl105.appendChild(btn);
+    });
+    const glowBtn = document.createElement('button');
+    glowBtn.id = "btn-glow"; glowBtn.onclick = () => body.classList.toggle('glow');
+    glowBtn.innerText = "Glow Pattern"; ctrl105.appendChild(glowBtn);
+
+    function toggleS(n) { body.classList.toggle('s' + n); }
+
     const trans = {
-        en: { logo: "The Primes Rhyme Lab", m1t: "Hexagonal Folding Model (1-15)", m1d: "Interactive representation of 5 strips and 4 folds.", m2t: "Primorial 5# Grid (1-105)", m2d: "Visualization of 7 strips and 6 folds patterns.", footer: "Supervising Authors:", p: "Simulation Environment Loading...", dir: "ltr" },
-        ar: { logo: "مختبر تناغم الأولية", m1t: "نموذج المطوية السداسية (1-15)", m1d: "تمثيل تفاعلي لـ 5 شرائح و 4 طويات.", m2t: "جدول الثلاثيني 5# (1-105)", m2d: "معاينة أنماط 7 شرائح و 6 طويات.", footer: "المؤلفون المشرفون:", p: "جاري تحميل بيئة المحاكاة...", dir: "rtl" },
-        fr: { logo: "Labo Rime des Primes", m1t: "Modèle Hexagonal (1-15)", m1d: "Représentation interactive de 5 bandes et 4 plis.", m2t: "Grille Primoriale 5# (1-105)", m2d: "Visualisation des motifs de 7 bandes et 6 plis.", footer: "Auteurs Superviseurs:", p: "Chargement de l'environnement de simulation...", dir: "ltr" }
+        en: { logo: "The Primes Rhyme Lab", m1t: "Hexagonal Folding Model (1-15)", m2t: "Primorial 5# Grid (1-105)", fold: "Fold", glow: "Glow Pattern", dir: "ltr" },
+        ar: { logo: "مختبر تناغم الأولية", m1t: "نموذج المطوية السداسية (1-15)", m2t: "جدول الثلاثيني 5# (1-105)", fold: "طي", glow: "توهج النمط", dir: "rtl" },
+        fr: { logo: "Labo Rime des Primes", m1t: "Modèle Hexagonal (1-15)", m2t: "Grille Primoriale 5# (1-105)", fold: "Plier", glow: "Effet Brillance", dir: "ltr" }
     };
 
     function setLang(lang) {
         const t = trans[lang];
         document.getElementById('main-app').dir = t.dir;
         document.getElementById('nav-logo').innerText = t.logo;
-        document.getElementById('m1-title').innerText = t.m1t;
-        document.getElementById('m1-desc').innerText = t.m1d;
-        document.getElementById('m2-title').innerText = t.m2t;
-        document.getElementById('m2-desc').innerText = t.m2d;
-        document.getElementById('footer-head').innerText = t.footer;
-        document.querySelectorAll('.visual-placeholder').forEach(el => el.innerText = t.p);
-
-        // Update active button state
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active-lang'));
+        document.getElementById('m1-t').innerText = t.m1t;
+        document.getElementById('m2-t').innerText = t.m2t;
+        document.getElementById('btn-glow').innerText = t.glow;
+        // تحديث أزرار الطي
+        for(let i=1; i<=4; i++) document.getElementById('btn-f15-'+i).innerText = `${t.fold} (${i*3})`;
+        [15,30,45,60,75,90].forEach(v => document.getElementById('btn-f105-'+v).innerText = `${t.fold} (${v})`);
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active-lang'));
         document.getElementById('btn-' + lang).classList.add('active-lang');
     }
 </script>
-
 </body>
 </html>
