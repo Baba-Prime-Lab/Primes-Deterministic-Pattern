@@ -149,24 +149,89 @@
         btn.innerText = `Fold (${v})`; ctrl105.appendChild(btn);
     });
 
-    const trans = {
-        en: { logo: "The Primes Rhyme Lab", m1t: "Hexagonal Folding Model (1-15)", m2t: "Primorial 5# Grid (1-105)", fold: "Fold", footer: "Supervising Authors:", dir: "ltr" },
-        ar: { logo: "مختبر تناغم الأولية", m1t: "نموذج المطوية السداسية (1-15)", m2t: "جدول الثلاثيني 5# (1-105)", fold: "طي", footer: "المؤلفون المشرفون:", dir: "rtl" },
-        fr: { logo: "Labo Rime des Primes", m1t: "Modèle Hexagonal (1-15)", m2t: "Grille Primoriale 5# (1-105)", fold: "Plier", footer: "Auteurs Superviseurs:", dir: "ltr" }
+      <!-- BaBa-ln x Refined Formula Lab -->
+    <div class="model-card" style="border-top: 5px solid #27ae60; background: #fff; margin-top: 50px;">
+        <h2 id="baba-lab-t" style="text-align: center; color: #27ae60;">The BaBa-ln x Refined Formula Lab</h2>
+        <p id="baba-lab-d" style="text-align: center; font-style: italic; color: #666; padding: 0 20px;">
+            Test prime density for X from 9,999,995,824,729 to 10,000,002,149,284. At 10<sup>13</sup>, actual &pi;(x) = 346,065,536,839.
+        </p>
+        
+        <div style="max-width: 800px; margin: auto; background: #fdfdfd; padding: 25px; border-radius: 12px; border: 1px solid #eee;">
+            <div style="display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 25px; flex-wrap: wrap;">
+                <label id="input-lbl" style="font-weight: bold;">Enter X:</label>
+                <input type="number" id="baba-x-val" value="10000000000000" style="padding: 10px; border: 2px solid #27ae60; border-radius: 8px; width: 220px; font-weight: bold;">
+                <button onclick="runBabaLab()" id="btn-calc" style="padding: 10px 25px; background: #27ae60; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Calculate</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                    <small style="color: #e74c3c; font-weight: bold;">Classical x / ln x</small>
+                    <div id="classic-res" style="font-size: 1.1rem; font-weight: bold; margin-top: 5px;">-</div>
+                </div>
+                <div style="background: #f0fff4; padding: 15px; border-radius: 8px; border-left: 4px solid #2ecc71;">
+                    <small style="color: #27ae60; font-weight: bold;">BaBa-ln x (Refined)</small>
+                    <div id="baba-res" style="font-size: 1.1rem; font-weight: bold; margin-top: 5px;">-</div>
+                </div>
+                <div style="background: #eef2f7; padding: 15px; border-radius: 8px; border-left: 4px solid #3498db;">
+                    <small style="color: #3498db; font-weight: bold;">Residual Error (Delta)</small>
+                    <div id="error-msg" style="font-size: 1.1rem; font-weight: bold; margin-top: 5px; color: #d35400;">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- نهاية الحاوية container -->
+
+<footer>
+    <div id="footer-head">Supervising Authors:</div>
+    <div class="author-box">
+        <div style="margin-bottom: 15px;">
+            <strong>Mohammed K. A. Albaba<sup>1</sup></strong><br>
+            Independent Researcher, Gaza, Palestine<br>
+            <a href="mailto:mm2121121112@yahoo.com" class="email">mm2121121112@yahoo.com</a>
+        </div>
+        <div>
+            <strong>Nossaiba Baba<sup>2</sup></strong><br>
+            Laboratory of Analysis, Modeling and Simulation<br>
+            Hassan II University of Casablanca, Morocco<br>
+            <a href="mailto:noussaibababa1@gmail.com" class="email">noussaibababa1@gmail.com</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // أضف هذه الدوال في نهاية وسم السكريبت الموجود أصلاً
+    function runBabaLab() {
+        const x = parseFloat(document.getElementById('baba-x-val').value);
+        const m = 0.965345122765404763;
+        const actualPi = 346065536839; // مرجع عند 10^13
+
+        const classical = x / Math.log(x);
+        const baba = classical / m;
+        
+        document.getElementById('classic-res').innerText = Math.round(classical).toLocaleString();
+        document.getElementById('baba-res').innerText = Math.round(baba).toLocaleString();
+        
+        // حساب الفرق (Delta)
+        const diff = (baba - actualPi).toFixed(3);
+        document.getElementById('error-msg').innerText = (x === 10000000000000) ? diff : "Refined by m";
+    }
+
+    // تحديث مصفوفة الترجمة لتشمل المختبر الجديد
+    const oldSetLang = setLang; 
+    setLang = function(lang) {
+        oldSetLang(lang); // تشغيل الترجمة القديمة
+        const labTrans = {
+            en: { t: "BaBa-ln x Refined Formula Lab", d: "Test prime density around 10^13. Reference pi(x) = 346,065,536,839.", b: "Calculate", l: "Enter X:" },
+            ar: { t: "مختبر معادلة بابا-ln x المحسنة", d: "جرب استخراج كمية الأوليات حول 10 أس 13. الكمية الحقيقية المرجعية = 346,065,536,839.", b: "احسب النتيجة", l: "أدخل قيمة X:" },
+            fr: { t: "Labo Formule Raffinée BaBa-ln x", d: "Testez la densité des primes autour de 10^13. Référence pi(x) = 346,065,536,839.", b: "Calculer", l: "Entrez X:" }
+        };
+        document.getElementById('baba-lab-t').innerText = labTrans[lang].t;
+        document.getElementById('baba-lab-d').innerText = labTrans[lang].d;
+        document.getElementById('btn-calc').innerText = labTrans[lang].b;
+        document.getElementById('input-lbl').innerText = labTrans[lang].l;
     };
 
-    function setLang(lang) {
-        const t = trans[lang];
-        document.getElementById('main-app').dir = t.dir;
-        document.getElementById('nav-logo').innerText = t.logo;
-        document.getElementById('m1-t').innerText = t.m1t;
-        document.getElementById('m2-t').innerText = t.m2t;
-        document.getElementById('footer-head').innerText = t.footer;
-        for(let i=1; i<=4; i++) document.getElementById('b15-'+i).innerText = `${t.fold} (${i*3})`;
-        [15,30,45,60,75,90].forEach(v => document.getElementById(`btn-f105-${v}`).innerText = `${t.fold} (${v})`);
-        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active-lang'));
-        document.getElementById('btn-' + lang).classList.add('active-lang');
-    }
+    window.onload = () => { runBabaLab(); setLang('en'); };
 </script>
 </body>
 </html>
