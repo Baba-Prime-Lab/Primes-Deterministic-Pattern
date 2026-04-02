@@ -15,7 +15,6 @@
         .container { max-width: 1450px; margin: 20px auto; padding: 0 20px; }
         .hero-card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px; text-align: center; border-top: 5px solid var(--accent); }
         
-        /* Tabs Styling */
         .tabs-nav { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px; justify-content: center; }
         .tab-btn { padding: 10px 15px; cursor: pointer; border: none; background: #eee; border-radius: 5px 5px 0 0; font-weight: bold; transition: 0.3s; color: #555; font-size: 0.85rem; }
         .tab-btn.active { background: #2c3e50; color: gold; border-bottom: 3px solid var(--accent); }
@@ -27,10 +26,13 @@
         .btn-group { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
         .btn-group button { padding: 8px 16px; cursor: pointer; background: #2c3e50; color: white; border: none; border-radius: 20px; font-weight: bold; font-size: 0.8rem; }
 
-        /* Stages & Grid Logic */
-        .stage-15 { position: relative; width: 1000px; height: 500px; perspective: 4000px; transform: scale(0.85); margin: auto; }
+        /* قفل الاتجاه للمطويات لضمان سلامة الحركة ثلاثية الأبعاد */
+        .stage-wrapper { direction: ltr !important; text-align: left !important; overflow: auto; width: 100%; display: flex; justify-content: center; background: #fff; padding: 20px 0; border-radius: 8px; }
+        
+        .stage-15 { position: relative; width: 1000px; height: 500px; perspective: 4000px; transform: scale(0.85); }
         .stage-105 { position: relative; width: 1400px; height: 600px; perspective: 6000px; transform: scale(0.85); margin-left: -50px; }
-        .row-container { position: absolute; display: flex; transform-style: preserve-3d; transition: 2.5s; justify-content: center; }
+        
+        .row-container { position: absolute; display: flex; transform-style: preserve-3d; transition: 2.5s; }
         .f-unit { display: flex; transform-style: preserve-3d; transition: transform 2.2s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: left center; }
         .cell { width: 55px; height: 55px; background: white; color: black; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 1px solid #000; font-size: 16px; box-sizing: border-box; }
         .cell-105 { width: 10px; height: 35px; font-size: 6px; border: 0.1px solid #333; }
@@ -38,7 +40,7 @@
         .hinge { background: #ffcc00 !important; width: 27.5px; border: 1px solid #856404; }
         .hinge-half { background: #ffcc00 !important; width: 5px; border: 0.5px solid #856404; }
 
-        /* Fold Classes */
+        /* Fold Animations */
         .fold-15-1 .f15-3 { transform: rotateY(-180deg); } .fold-15-2 .f15-6 { transform: rotateY(180deg); }
         .fold-15-3 .f15-9 { transform: rotateY(-180deg); } .fold-15-4 .f15-12 { transform: rotateY(180deg); }
         .s1 .f-15 { transform: rotateY(-180deg); } .s2 .f-30 { transform: rotateY(180deg); }  
@@ -47,6 +49,7 @@
 
         footer { background: #2c3e50; color: white; padding: 40px 5%; text-align: center; font-size: 0.85rem; margin-top: 50px; }
         .author-box { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; margin-top: 20px; }
+        .email { color: #f1c40f; text-decoration: none; }
     </style>
 </head>
 <body id="body-ctx">
@@ -66,31 +69,30 @@
         <p class="subtitle" id="sub-title">Primorial Probability Tables, ZeRo BlAdEs, ColumN HeaDs, and BaBa-X</p>
     </div>
 
-    <!-- Tab Navigation -->
     <div class="tabs-nav" id="tabs-list">
-        <button class="tab-btn active" onclick="openTab(event, 't1')" id="tab-t1">أعمدة الإحتمالات</button>
-        <button class="tab-btn" onclick="openTab(event, 't2')" id="tab-t2">خاصية التكرار التفاعلية</button>
-        <button class="tab-btn" onclick="openTab(event, 't3')" id="tab-t3">خاصية الطوي التفاعلية</button>
-        <button class="tab-btn" onclick="openTab(event, 't4')" id="tab-t4">مطوية النموذج السداسي</button>
-        <button class="tab-btn" onclick="openTab(event, 't5')" id="tab-t5">مطوية النموذج الثلاثيني</button>
-        <button class="tab-btn" onclick="openTab(event, 't6')" id="tab-t6">نماذج الطوية (نصف حقيقي)</button>
-        <button class="tab-btn" onclick="openTab(event, 't7')" id="tab-t7">نماذج الطوية (نصف تمثيلي)</button>
-        <button class="tab-btn" onclick="openTab(event, 't8')" id="tab-t8">بابا لن إكس التحسينية</button>
+        <button class="tab-btn active" onclick="openTab(event, 't1')" id="tab-t1">Probability Columns</button>
+        <button class="tab-btn" onclick="openTab(event, 't2')" id="tab-t2">Recurrence Property</button>
+        <button class="tab-btn" onclick="openTab(event, 't3')" id="tab-t3">Folding Property</button>
+        <button class="tab-btn" onclick="openTab(event, 't4')" id="tab-t4">Hexagonal Folder</button>
+        <button class="tab-btn" onclick="openTab(event, 't5')" id="tab-t5">Primorial 5# Folder</button>
+        <button class="tab-btn" onclick="openTab(event, 't6')" id="tab-t6">Mid-Real Folds</button>
+        <button class="tab-btn" onclick="openTab(event, 't7')" id="tab-t7">Mid-Grid Folds</button>
+        <button class="tab-btn" onclick="openTab(event, 't8')" id="tab-t8">BaBa-ln x Refined</button>
     </div>
 
-    <!-- Tab Content 1 (Intro) -->
+    <!-- T1 -->
     <div id="t1" class="tab-content active">
-        <div class="model-card" style="direction: rtl; text-align: right;">
-            <h2 id="title-t1">أعمدة الإحتمالات</h2>
-            <p id="desc-t1">أعمدة الإحتمالات في جداول أعمدة الإحتمالات هي كيان منتظم سواء في الجداول الترتيبية التي تمثل مضروب العدد الأولي p#...</p>
+        <div class="model-card">
+            <h2 id="title-t1">Probability Columns</h2>
+            <p id="desc-t1">Probability columns in our tables represent a deterministic entity in prime distribution, showing absolute certainty rather than randomness...</p>
         </div>
     </div>
 
-    <!-- Tab Content 2 & 3 (Placeholders) -->
-    <div id="t2" class="tab-content"><div class="model-card"><h2>خاصية التكرار التفاعلية</h2><p>قيد التحضير...</p></div></div>
-    <div id="t3" class="tab-content"><div class="model-card"><h2>خاصية الطوي التفاعلية</h2><p>قيد التحضير...</p></div></div>
+    <!-- T2 & T3 placeholders -->
+    <div id="t2" class="tab-content"><div class="model-card"><h2 id="title-t2">Interactive Recurrence</h2><p id="desc-t2">Coming soon...</p></div></div>
+    <div id="t3" class="tab-content"><div class="model-card"><h2 id="title-t3">Folding Property</h2><p id="desc-t3">Coming soon...</p></div></div>
 
-    <!-- Tab Content 4 (Hex 15) -->
+    <!-- T4 Hex 15 -->
     <div id="t4" class="tab-content">
         <div class="model-card">
             <h2 id="m1-t">Hexagonal Folding Model (1-15)</h2>
@@ -100,28 +102,28 @@
                 <button onclick="document.body.classList.toggle('fold-15-3')" id="b15-3">Fold (9)</button>
                 <button onclick="document.body.classList.toggle('fold-15-4')" id="b15-4">Fold (12)</button>
             </div>
-            <div style="overflow:auto;"><div class="stage-15" id="stage15"></div></div>
+            <div class="stage-wrapper"><div class="stage-15" id="stage15"></div></div>
         </div>
     </div>
 
-    <!-- Tab Content 5 (Thirty 105) -->
+    <!-- T5 Thirty 105 -->
     <div id="t5" class="tab-content">
         <div class="model-card">
             <h2 id="m2-t">Primorial 5# Grid (1-105)</h2>
             <div class="btn-group" id="ctrl-105"></div>
-            <div style="overflow-x:auto; width:100%;"><div class="stage-105" id="stage105"></div></div>
+            <div class="stage-wrapper"><div class="stage-105" id="stage105"></div></div>
         </div>
     </div>
 
-    <div id="t6" class="tab-content"><div class="model-card"><h2>نماذج الطوية بين واحد و سالب واحد</h2><p>قيد التطوير...</p></div></div>
-    <div id="t7" class="tab-content"><div class="model-card"><h2>نماذج الطوية بين منتصفات الجداول</h2><p>قيد التطوير...</p></div></div>
+    <div id="t6" class="tab-content"><div class="model-card"><h2>Mid-Real Models</h2><p>Development in progress...</p></div></div>
+    <div id="t7" class="tab-content"><div class="model-card"><h2>Mid-Grid Models</h2><p>Development in progress...</p></div></div>
 
-    <!-- Tab Content 8 (Lab) -->
+    <!-- T8 Lab -->
     <div id="t8" class="tab-content">
         <div class="model-card" style="border-top: 5px solid var(--green);">
             <h2 id="lab-t">BaBa-ln x Refined Formula Lab</h2>
-            <div id="lab-note" style="background:#eef2f7; padding:15px; border-radius:8px; margin-bottom:20px; direction:rtl; text-align:right;">
-                عند النطاق 10<sup>13</sup>، القيمة الحقيقية 346,065,536,839. دالة بابا تقلص الخطأ لـ 251.09 فقط.
+            <div id="lab-note" style="background:#eef2f7; padding:15px; border-radius:8px; margin-bottom:20px;">
+                At 10<sup>13</sup>, actual pi(x) = 346,065,536,839. BaBa-ln x reduces residual to only 251.09.
             </div>
             <div style="text-align:center;">
                 <label id="lbl-x">Enter X:</label>
@@ -129,8 +131,8 @@
                 <button onclick="runBabaLab()" id="btn-calc" style="padding:8px 20px; background:var(--green); color:white; border:none; border-radius:5px; cursor:pointer;">Calculate</button>
             </div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px;">
-                <div style="padding:10px; border-left:4px solid #e74c3c; background:#f9f9f9;"><b>Classical x/ln x:</b><div id="classic-res">-</div></div>
-                <div style="padding:10px; border-left:4px solid var(--green); background:#f0fff4;"><b>BaBa-ln x:</b><div id="baba-res">-</div></div>
+                <div style="padding:10px; border-left:4px solid #e74c3c; background:#f9f9f9;"><b id="c-res-t">Classical x/ln x:</b><div id="classic-res">-</div></div>
+                <div style="padding:10px; border-left:4px solid var(--green); background:#f0fff4;"><b id="b-res-t">BaBa-ln x:</b><div id="baba-res">-</div></div>
             </div>
         </div>
     </div>
@@ -139,13 +141,12 @@
 <footer>
     <div id="footer-head">Supervising Authors:</div>
     <div class="author-box">
-        <div><strong>Mohammed K. A. Albaba<sup>1</sup></strong><br>Independent Researcher, Gaza</div>
-        <div><strong>Nossaiba Baba<sup>2</sup></strong><br>Hassan II University, Morocco</div>
+        <div><strong>Mohammed K. A. Albaba<sup>1</sup></strong><br>Independent Researcher, Gaza<br><a href="mailto:mm2121121112@yahoo.com" class="email">mm2121121112@yahoo.com</a></div>
+        <div><strong>Nossaiba Baba<sup>2</sup></strong><br>Hassan II University, Morocco<br><a href="mailto:noussaibababa1@gmail.com" class="email">noussaibababa1@gmail.com</a></div>
     </div>
 </footer>
 
 <script>
-    // Tab Logic
     function openTab(evt, tabId) {
         let i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tab-content");
@@ -156,7 +157,6 @@
         evt.currentTarget.classList.add("active");
     }
 
-    // Hex 15 Logic
     const st15 = document.getElementById('stage15');
     for (let r = 0; r < 7; r++) {
         const row = document.createElement('div');
@@ -166,10 +166,9 @@
         st15.appendChild(row);
     }
 
-    // Thirty 105 Logic
     const st105 = document.getElementById('stage105');
     const isP105 = (n) => [1, 7, 11, 13, 17, 19, 23, 29].includes(n % 30);
-    for (let r = 0; r < 11; r++) {
+    for (let r = 0; r < 12; r++) {
         const row = document.createElement('div');
         row.className = 'row-container'; row.style.top = (r * 45) + 'px';
         let rowNums = [];
@@ -186,9 +185,11 @@
         html += `</div>`.repeat(7);
         row.innerHTML = html; st105.appendChild(row);
     }
+
     const ctrl105 = document.getElementById('ctrl-105');
     [15,30,45,60,75,90].forEach(v => {
-        const btn = document.createElement('button'); btn.onclick = () => document.body.classList.toggle('s'+(v/15));
+        const btn = document.createElement('button'); btn.id = `btn-f105-${v/15}`;
+        btn.onclick = () => document.body.classList.toggle('s'+(v/15));
         btn.innerText = `Fold (${v})`; ctrl105.appendChild(btn);
     });
 
@@ -200,12 +201,30 @@
         document.getElementById('baba-res').innerText = Math.round(baba).toLocaleString();
     }
 
+    const trans = {
+        en: { logo: "The Primes Rhyme Lab", fld: "Fold", foot: "Supervising Authors:", t1:"Probability Columns", t2:"Recurrence Property", t3:"Folding Property", t4:"Hexagonal Folder", t5:"Primorial 5# Folder", t6:"Mid-Real Folds", t7:"Mid-Grid Folds", t8:"BaBa-ln x Refined", title1:"Probability Columns", desc1:"Probability columns in our tables represent a deterministic entity in prime distribution, showing absolute certainty rather than randomness...", labT:"BaBa-ln x Refined Formula Lab", labD:"At 10^13, actual pi(x) = 346,065,536,839. BaBa-ln x reduces residual to only 251.09.", calc:"Calculate", lbl:"Enter X:", cres:"Classical x/ln x:", bres:"BaBa-ln x:" },
+        ar: { logo: "مختبر تناغم الأولية", fld: "طي", foot: "المؤلفون المشرفون:", t1:"أعمدة الإحتمالات", t2:"خاصية التكرار", t3:"خاصية الطوي", t4:"المطوية السداسية", t5:"مطوية الـ 105", t6:"طويات النصف الحقيقي", t7:"طويات النصف التمثيلي", t8:"تحسين بابا لن إكس", title1:"أعمدة الإحتمالات", desc1:"أعمدة الإحتمالات هي كيان منتظم يكشف عن نمط الأعداد الأولية بشكل يقيني لا عشوائية فيه، حيث تصطف رؤوس الأعمدة لتكشف عن التناغم الرياضي الثابت.", labT:"مختبر معادلة بابا المحسنة", labD:"عند 10 أس 13، القيمة الحقيقية 346,065,536,839. دالة بابا تقلص الخطأ لـ 251.09 فقط.", calc:"احسب", lbl:"أدخل X:", cres:"القيمة الكلاسيكية:", bres:"قيمة بابا المحسنة:" },
+        fr: { logo: "Labo Rime des Primes", fld: "Plier", foot: "Auteurs Superviseurs:", t1:"Colonnes Probables", t2:"Propriété Récurrence", t3:"Propriété Pliage", t4:"Modèle Hexagonal", t5:"Modèle Primorial 5#", t6:"Plis Mi-Réels", t7:"Plis Mi-Grille", t8:"BaBa-ln x Raffiné", title1:"Colonnes de Probabilité", desc1:"Les colonnes de probabilité représentent une entité déterministe dans la distribution des nombres premiers, montrant une certitude absolue...", labT:"Labo Formule BaBa-ln x", labD:"À 10^13, pi(x) réel = 346,065,536,839. BaBa-ln x réduit le résidu à 251.09.", calc:"Calculer", lbl:"Entrez X:", cres:"Classique x/ln x:", bres:"BaBa-ln x Raffiné:" }
+    };
+
     function setLang(lang) {
-        const t = { en: "Fold", ar: "طي", fr: "Plier" }[lang];
+        const t = trans[lang];
+        document.getElementById('main-app').dir = (lang==='ar'?'rtl':'ltr');
+        document.getElementById('nav-logo').innerText = t.logo;
+        document.getElementById('footer-head').innerText = t.foot;
+        for(let i=1; i<=8; i++) document.getElementById('tab-t'+i).innerText = t['t'+i];
+        document.getElementById('title-t1').innerText = t.title1;
+        document.getElementById('desc-t1').innerText = t.desc1;
+        document.getElementById('lab-t').innerText = t.labT;
+        document.getElementById('lab-d').innerText = t.labD;
+        document.getElementById('btn-calc').innerText = t.calc;
+        document.getElementById('input-lbl').innerText = t.lbl;
+        document.getElementById('c-res-t').innerText = t.cres;
+        document.getElementById('b-res-t').innerText = t.bres;
+        for(let i=1; i<=4; i++) document.getElementById('b15-'+i).innerText = `${t.fld} (${i*3})`;
+        for(let i=1; i<=6; i++) document.getElementById('btn-f105-'+i).innerText = `${t.fld} (${i*15})`;
         document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active-lang'));
         document.getElementById('btn-'+lang).classList.add('active-lang');
-        document.getElementById('main-app').dir = (lang==='ar'?'rtl':'ltr');
-        // يمكن إضافة باقي الترجمات هنا لاحقاً
     }
     window.onload = () => { runBabaLab(); setLang('en'); };
 </script>
