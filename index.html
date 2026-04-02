@@ -203,7 +203,21 @@
 
     const trans = {
         en: { logo: "The Primes Rhyme Lab", fld: "Fold", foot: "Supervising Authors:", t1:"Probability Columns", t2:"Recurrence Property", t3:"Folding Property", t4:"Hexagonal Folder", t5:"Primorial 5# Folder", t6:"Mid-Real Folds", t7:"Mid-Grid Folds", t8:"BaBa-ln x Refined", title1:"Probability Columns", desc1:"Probability columns in our tables represent a deterministic entity in prime distribution, showing absolute certainty rather than randomness...", labT:"BaBa-ln x Refined Formula Lab", labD:"At 10^13, actual pi(x) = 346,065,536,839. BaBa-ln x reduces residual to only 251.09.", calc:"Calculate", lbl:"Enter X:", cres:"Classical x/ln x:", bres:"BaBa-ln x:" },
-        ar: { logo: "مختبر تناغم الأولية", fld: "طي", foot: "المؤلفون المشرفون:", t1:"أعمدة الإحتمالات", t2:"خاصية التكرار", t3:"خاصية الطوي", t4:"المطوية السداسية", t5:"مطوية الـ 105", t6:"طويات النصف الحقيقي", t7:"طويات النصف التمثيلي", t8:"تحسين بابا لن إكس", title1:"أعمدة الإحتمالات", desc1:"أعمدة الإحتمالات هي كيان منتظم يكشف عن نمط الأعداد الأولية بشكل يقيني لا عشوائية فيه، حيث تصطف رؤوس الأعمدة لتكشف عن التناغم الرياضي الثابت.", labT:"مختبر معادلة بابا المحسنة", labD:"عند 10 أس 13، القيمة الحقيقية 346,065,536,839. دالة بابا تقلص الخطأ لـ 251.09 فقط.", calc:"احسب", lbl:"أدخل X:", cres:"القيمة الكلاسيكية:", bres:"قيمة بابا المحسنة:" },
+        ar: { logo: "مختبر تناغم الأولية", fld: "طي", foot: "المؤلفون المشرفون:", t1:"أعمدة الإحتمالات", t2:"خاصية التكرار", t3:"خاصية الطوي", t4:"المطوية السداسية", t5:"مطوية الـ 105", t6:"طويات النصف الحقيقي", t7:"طويات النصف التمثيلي", t8:"تحسين بابا لن إكس", title1:"أعمدة الإحتمالات",// داخل قسم الـ ar في مصفوفة trans
+desc1: `
+    <div style="direction: rtl; text-align: right;">
+        <p>هذه الصفحة تفاعلية قابلة للتطوير لبحثنا المنشور على الرابط: 
+        <a href="https://zenodo.org/records/18049425" target="_blank">Zenodo</a></p>
+        
+        <p>كما نشجع الصفحة التفاعلية للمبرمج زيبرا: 
+        <a href="https://creaayi.github.io/_stringDiagramsReason_public/components/HTML_proto_Explorables/the-primes-rhyme.html" target="_blank">Zebra Interactive</a></p>
+        
+        <hr>
+        <p><b>أعمدة الاحتمالات:</b> هي كيان منتظم سواء في الجداول الترتيبية التي تمثل مضروب العدد الأولي p# أو في الجداول الانتقائية مثل 6 (2*3) و 5 (2*5).</p>
+        <p>هذا الكيان يكشف عن نمط منتظم للأوليات في الجداول الترتيبية p# حيث تصطف رؤوس الأعمدة من 1 إلى (p<sub>n+1</sub>)² جدولاً بعد الآخر، مما يعبر عن نمط الأعداد الأولية بشكل يقيني لا عشوائية فيه.</p>
+    </div>
+`
+.", labT:"مختبر معادلة بابا المحسنة", labD:"عند 10 أس 13، القيمة الحقيقية 346,065,536,839. دالة بابا تقلص الخطأ لـ 251.09 فقط.", calc:"احسب", lbl:"أدخل X:", cres:"القيمة الكلاسيكية:", bres:"قيمة بابا المحسنة:" },
         fr: { logo: "Labo Rime des Primes", fld: "Plier", foot: "Auteurs Superviseurs:", t1:"Colonnes Probables", t2:"Propriété Récurrence", t3:"Propriété Pliage", t4:"Modèle Hexagonal", t5:"Modèle Primorial 5#", t6:"Plis Mi-Réels", t7:"Plis Mi-Grille", t8:"BaBa-ln x Raffiné", title1:"Colonnes de Probabilité", desc1:"Les colonnes de probabilité représentent une entité déterministe dans la distribution des nombres premiers, montrant une certitude absolue...", labT:"Labo Formule BaBa-ln x", labD:"À 10^13, pi(x) réel = 346,065,536,839. BaBa-ln x réduit le résidu à 251.09.", calc:"Calculer", lbl:"Entrez X:", cres:"Classique x/ln x:", bres:"BaBa-ln x Raffiné:" }
     };
 
@@ -214,7 +228,7 @@
         document.getElementById('footer-head').innerText = t.foot;
         for(let i=1; i<=8; i++) document.getElementById('tab-t'+i).innerText = t['t'+i];
         document.getElementById('title-t1').innerText = t.title1;
-        document.getElementById('desc-t1').innerText = t.desc1;
+        document.getElementById('desc-t1').innerHTML = t.desc1;
         document.getElementById('lab-t').innerText = t.labT;
         document.getElementById('lab-d').innerText = t.labD;
         document.getElementById('btn-calc').innerText = t.calc;
