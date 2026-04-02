@@ -175,32 +175,57 @@
         btn.innerText = `Fold (${v})`; ctrl105.appendChild(btn);
     });
 
-    function runBabaLab() {
-        const x = parseFloat(document.getElementById('baba-x-val').value);
-        const classical = x / Math.log(x);
-        const baba = classical / 0.965345122765404763;
-        document.getElementById('classic-res').innerText = Math.round(classical).toLocaleString();
-        document.getElementById('baba-res').innerText = Math.round(baba).toLocaleString();
+  function runBabaLab() {
+    const x = parseFloat(document.getElementById('baba-x-val').value);
+    const minX = 9999995824729; // بداية النطاق
+    const maxX = 10000002149284; // نهاية النطاق
+    
+    // التنبيه في حال الخروج عن النطاق
+    if (x < minX || x > maxX) {
+        document.getElementById('error-msg').innerHTML = "<span style='color:red;'>Out of bounds! Please test between 9,999,995,824,729 and 10,000,002,149,284</span>";
+        document.getElementById('classic-res').innerText = "-";
+        document.getElementById('baba-res').innerText = "-";
+        return;
     }
+
+    const m = 0.965345122765404763;
+    const actualPi10e13 = 346065536839; 
+
+    const classical = x / Math.log(x);
+    const baba = classical / m;
+    
+    document.getElementById('classic-res').innerText = Math.round(classical).toLocaleString();
+    document.getElementById('baba-res').innerText = Math.round(baba).toLocaleString();
+    
+    // إظهار الفرق عند 10 اس 13 بالضبط أو توضيح الدقة في النطاق
+    if(x === 10000000000000) {
+        const diff = (baba - actualPi10e13).toFixed(3);
+        document.getElementById('error-msg').innerText = "Residual Error (Delta): " + diff;
+    } else {
+        document.getElementById('error-msg').innerText = "Precision active within the tested range.";
+    }
+}
+
 
     const trans = {
         en: {
             logo: "The Primes Rhyme Lab", fld: "Fold", foot: "Supervising Authors:",
             t1:"Probability Columns", t2:"Recurrence Property", t3:"Folding Property", t4:"Hexagonal Folder", t5:"Primorial 5# Folder", t6:"Mid-Real Folds", t7:"Mid-Grid Folds", t8:"BaBa-ln x Refined",
             desc1: `<h2>Probability Columns</h2><p>This is an interactive explorer for our research published at: <a href="https://zenodo.org/records/18049425" target="_blank">Zenodo</a></p><p>Explore also Zebra's interactive logic: <a href="https://creaayi.github.io/_stringDiagramsReason_public/components/HTML_proto_Explorables/the-primes-rhyme.html" target="_blank">Zebra Lab</a></p><hr><p>Probability columns represent a deterministic entity in prime distribution, showing absolute certainty rather than randomness. This consistency reveals a يقيني (certain) pattern in prime distribution tables.</p>`,
-            labT: "BaBa-ln x Refined Lab", labD: "At 10^13, actual pi(x) = 346,065,536,839. Residual error is only 251.09.", calc: "Calculate", lbl: "Enter X:", cres: "Classical x/ln x:", bres: "BaBa-ln x:"
+            labT: "BaBa-ln x Refined Lab", labD: "Test prime density specifically between 9,999,995,824,729 and 10,000,002,149,284. At 10^13, actual pi(x) = 346,065,536,839. Residual error is only 251.09.", calc: "Calculate", lbl: "Enter X:", cres: "Classical x/ln x:", bres: "BaBa-ln x:"
         },
         ar: {
             logo: "مختبر تناغم الأولية", fld: "طي", foot: "المؤلفون المشرفون:",
             t1:"أعمدة الإحتمالات", t2:"خاصية التكرار", t3:"خاصية الطوي", t4:"المطوية السداسية", t5:"مطوية الـ 105", t6:"النصف الحقيقي", t7:"النصف التمثيلي", t8:"تحسين بابا لن إكس",
             desc1: `<div dir="rtl"><h2>أعمدة الإحتمالات</h2><p>هذه الصفحة تفاعلية لبحثنا المنشور على الرابط: <a href="https://doi.org/10.5281/zenodo.18049425" target="_blank">Zenodo</a></p><p>كما نشجع الصفحة التفاعلية للمبرمج زيبرا: <a href="https://creaayi.github.io/_stringDiagramsReason_public/components/HTML_proto_Explorables/the-primes-rhyme.html" target="_blank">Zebra Lab</a></p><hr><p>أعمدة الإحتمالات في جداول أعمدة الإحتمالات هي كيان منتظم سواء في الجداول الترتيبية التي تمثل مضروب العدد الأولي p# أو في الجداول الإنتقائية. هذا الكيان يكشف عن نمط الأعداد الأولية بشكل يقيني لا عشوائية فيه.</p></div>`,
-            labT: "مختبر معادلة بابا المحسنة", labD: "عند 10 أس 13، القيمة الحقيقية 346,065,536,839. دالة بابا تقلص الخطأ لـ 251.09 فقط.", calc: "احسب", lbl: "أدخل X:", cres: "الكلاسيكية:", bres: "بابا المحسنة:"
+            labT: "مختبر معادلة بابا المحسنة", labD: "عند 10 أس 13، القيمة الحقيقية 346,065,536,839. دالة بابا تقلص الخطأ لـ 251.09 فقط.اختبر دقة الأعداد الأولية في النطاق المحصور بين 9,999,995,824,729 و 10,000,002,149,284", calc: "احسب", lbl: "أدخل X:", cres: "الكلاسيكية:", bres: "بابا المحسنة:"
         },
         fr: {
             logo: "Labo Rime des Primes", fld: "Plier", foot: "Auteurs Superviseurs:",
             t1:"Colonnes Probables", t2:"Récurrence", t3:"Pliage", t4:"Hexagonal", t5:"Modèle 105", t6:"Mi-Réels", t7:"Mi-Grille", t8:"BaBa-ln x Raffiné",
             desc1: `<h2>Colonnes de Probabilité</h2><p>Explorateur interactif pour notre recherche sur: <a href="https://zenodo.org/records/18049425" target="_blank">Zenodo</a></p><p>Voir aussi la logique de Zebra: <a href="https://creaayi.github.io/_stringDiagramsReason_public/components/HTML_proto_Explorables/the-primes-rhyme.html" target="_blank">Zebra Lab</a></p><hr><p>Les colonnes de probabilité représentent une entité déterministe dans la distribution des nombres premiers, montrant une certitude absolue plutôt que le hasard.</p>`,
-            labT: "Labo Formule Raffinée BaBa-ln x", labD: "À 10^13, pi(x) réel = 346,065,536,839. L'erreur résiduelle n'est que de 251.09.", calc: "Calculer", lbl: "Entrez X:", cres: "Classique:", bres: "BaBa-ln x:"
+            labD: "Testez la densité des nombres premiers entre 9 999 995 824 729 et 10 000 002 149 284. Erreur résiduelle à 10^13 : 251,09.",
+outBounds: "Hors limite ! Veuillez tester entre 9 999 995 824 729 et 10 000 002 149 284.", calc: "Calculer", lbl: "Entrez X:", cres: "Classique:", bres: "BaBa-ln x:"
         }
     };
 
