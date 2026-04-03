@@ -185,7 +185,7 @@
 </footer>
 
 <script>
-    // openTab و showSubTab (نفس السابق)
+    // ==================== دوال التبويبات ====================
     function openTab(evt, tabId) {
         document.querySelectorAll(".tab-content").forEach(tc => tc.style.display = "none");
         document.querySelectorAll(".tab-btn").forEach(tb => tb.classList.remove("active"));
@@ -204,18 +204,17 @@
         document.getElementById('btn-sub-7').style.background = (tabId === 'sub-7') ? 'var(--accent)' : 'var(--primary)';
     }
 
-    // بناء المطوية السداسية (15)
+    // ==================== بناء المطويات ====================
     const st15 = document.getElementById('stage15');
     for (let r = 0; r < 7; r++) {
         const row = document.createElement('div');
-        row.className = 'row-container';
+        row.className = 'row-container'; 
         row.style.top = (r * 65) + 'px';
         let b = r * 15;
         row.innerHTML = `<div class="f-unit"><div class="cell hinge">${b+0}</div><div class="cell prime-col">${b+1}</div><div class="cell">${b+2}</div><div class="cell hinge">${b+3}</div><div class="f-unit f15-3"><div class="cell hinge">${b+3}</div><div class="cell">${b+4}</div><div class="cell prime-col">${b+5}</div><div class="cell hinge">${b+6}</div><div class="f-unit f15-6"><div class="cell hinge">${b+6}</div><div class="cell prime-col">${b+7}</div><div class="cell">${b+8}</div><div class="cell hinge">${b+9}</div><div class="f-unit f15-9"><div class="cell hinge">${b+9}</div><div class="cell">${b+10}</div><div class="cell prime-col">${b+11}</div><div class="cell hinge">${b+12}</div><div class="f-unit f15-12"><div class="cell hinge">${b+12}</div><div class="cell prime-col">${b+13}</div><div class="cell">${b+14}</div><div class="cell hinge">${b+15}</div></div></div></div></div></div>`;
         st15.appendChild(row);
     }
 
-    // بناء المطوية 105
     const st105 = document.getElementById('stage105');
     for (let r = 0; r < 12; r++) {
         const row = document.createElement('div');
@@ -241,7 +240,6 @@
         st105.appendChild(row);
     }
 
-    // أزرار الطي للـ105
     const ctrl105 = document.getElementById('ctrl-105');
     [15, 30, 45, 60, 75, 90].forEach(v => {
         const btn = document.createElement('button');
@@ -251,7 +249,7 @@
         ctrl105.appendChild(btn);
     });
 
-    function runBabaLab() { /* نفس الكود السابق */ 
+    function runBabaLab() {
         const x = parseFloat(document.getElementById('baba-x-val').value);
         const minX = 9999995824729;
         const maxX = 10000002149284;
@@ -266,8 +264,8 @@
         document.getElementById('baba-res').innerText = Math.round(baba).toLocaleString();
     }
 
-    // الترجمات (كاملة)
-    const trans = { const trans = {
+    // ==================== الترجمات (مُصححة ومنظفة) ====================
+    const trans = {
         en: {
             logo: "The Primes Rhyme Lab",
             foot: "Supervising Authors:",
@@ -290,11 +288,14 @@
             btn2sub5: "Activate Code (5)",
             btn1sub7: "Unify 210",
             btn2sub7: "Activate Code (7)",
-            // ... باقي الترجمات السابقة (desc1, labT, ... )
-            desc1: `...`, // ضع هنا الوصف السابق لـ t1
+            desc1: `<h2>Probability Columns</h2><p>Interactive explorer for our research on Zenodo.</p>`,
             labT: "BaBa-ln x Refined Formula Lab",
             labD: "Test prime density between 9,999,995,824,729 and 10,000,002,149,284...",
-            calc: "Calculate", lbl: "Enter X:", cres: "Classical:", bres: "BaBa-ln x:", fld: "Fold"
+            calc: "Calculate",
+            lbl: "Enter X:",
+            cres: "Classical:",
+            bres: "BaBa-ln x:",
+            fld: "Fold"
         },
         ar: {
             logo: "مختبر تناغم الأولية",
@@ -318,25 +319,23 @@
             btn2sub5: "تفعيل شفرة (5)",
             btn1sub7: "تجميع الـ 210",
             btn2sub7: "تفعيل شفرة (7)",
-            desc1: `...`, // وصف t1 بالعربي
+            desc1: `<div dir="rtl"><h2>أعمدة الإحتمالات</h2><p>مستكشف تفاعلي لبحثنا المنشور على Zenodo.</p></div>`,
             labT: "مختبر معادلة بابا-لن إكس المحسنة",
-            labD: "اختبر كثافة الأعداد الأولية في النطاق ...",
-            calc: "احسب", lbl: "أدخل X:", cres: "الكلاسيكية:", bres: "بابا-لن إكس:", fld: "طي"
+            labD: "اختبر كثافة الأعداد الأولية في النطاق بين 9,999,995,824,729 و 10,000,002,149,284...",
+            calc: "احسب",
+            lbl: "أدخل X:",
+            cres: "الكلاسيكية:",
+            bres: "بابا-لن إكس:",
+            fld: "طي"
         },
         fr: {
-            // يمكنك ملؤه لاحقاً، أو اتركه مؤقتاً مثل الإنجليزي
             logo: "Labo Rime des Primes",
             foot: "Auteurs Superviseurs :",
             t1: "Colonnes de Probabilité", t2: "Propriété de Récurrence", t3: "Propriété de Pliage",
             t4: "Dossier Hexagonal", t5: "Dossier Primorial 5#", t6: "Pliages Mi-Réels",
             t7: "Pliages Mi-Grille", t8: "BaBa-ln x Raffiné",
             recurrenceTitle: "Propriété de Récurrence Interactive",
-            recurrenceDesc: `<p>Cette propriété révèle la génération des nombres premiers et des écarts selon les tables p#. Nous voyons les positions fixes des nombres premiers dans chaque formule :</p>
-                <ul style="color: var(--accent); font-weight: bold;">
-                    <li>Système hexagonal : 6k ± 1</li>
-                    <li>Système 30 : 30k ± (1, 7, 11, 13)</li>
-                </ul>
-                <p>Dans ce laboratoire, nous observons le rôle des <b>ZeRo BlAdEs</b> et révélons les <b>ColumN HeaDs</b> avec certitude absolue.</p>`,
+            recurrenceDesc: `<p>Cette propriété révèle la génération des nombres premiers et des écarts selon les tables p#...</p>`,
             sub3Title: "Labo de Naissance Hexagonale (2# → 3#)",
             sub5Title: "Labo de Transformation Trente (3# → 5#)",
             sub7Title: "Labo Unifié 210 (5# → 7#)",
@@ -350,6 +349,7 @@
         }
     };
 
+    // ==================== دالة تغيير اللغة ====================
     function setLang(lang) {
         const t = trans[lang] || trans.en;
         document.getElementById('main-app').dir = (lang === 'ar' ? 'rtl' : 'ltr');
@@ -376,6 +376,7 @@
         document.getElementById('btn1-sub7').innerHTML = t.btn1sub7 || '';
         document.getElementById('btn2-sub7').innerHTML = t.btn2sub7 || '';
 
+        // باقي العناصر
         document.getElementById('desc-t1').innerHTML = t.desc1 || '';
         document.getElementById('lab-t').innerText = t.labT || '';
         document.getElementById('lab-note').innerText = t.labD || '';
@@ -388,6 +389,7 @@
         document.getElementById('btn-' + lang).classList.add('active-lang');
     }
 
+    // ==================== تشغيل الصفحة ====================
     window.onload = () => {
         runBabaLab();
         setLang('en');
