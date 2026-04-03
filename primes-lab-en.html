@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probability Columns | Deterministic Prime Pattern Lab</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #c0392b;
+            --bg: #f4f7f6;
+            --text: #333;
+            --green: #27ae60;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            color: var(--text);
+        }
+        header {
+            background: white;
+            border-bottom: 2px solid #eee;
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+        }
+        .logo {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+        .container {
+            max-width: 1480px;
+            margin: 25px auto;
+            padding: 0 20px;
+        }
+        .hero-card {
+            background: white;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            margin-bottom: 25px;
+            text-align: center;
+            border-top: 6px solid var(--accent);
+        }
+        .tabs-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 12px;
+            justify-content: center;
+        }
+        .tab-btn {
+            padding: 12px 20px;
+            cursor: pointer;
+            border: none;
+            background: #eee;
+            border-radius: 6px 6px 0 0;
+            font-weight: bold;
+            transition: 0.3s;
+            color: #555;
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: gold;
+            border-bottom: 4px solid var(--accent);
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .model-card {
+            background: white;
+            border-radius: 10px;
+            padding: 28px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            border: 1px solid #e0e0e0;
+        }
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn-group button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+        .stage-wrapper {
+            direction: ltr;
+            overflow: auto;
+            width: 100%;
+            background: #fff;
+            padding: 20px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+        }
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 40px 5%;
+            text-align: center;
+            margin-top: 60px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Albaba & Baba Research Lab</div>
+    <div>
+        <a href="../index.html" style="color: var(--accent); text-decoration: none; font-weight: bold;">← Back to Main Page</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="hero-card">
+        <h1>Probability Columns</h1>
+        <p style="font-size: 1.25rem; color: #555;">
+            Deterministic Pattern in Prime Distribution<br>
+            ZeRo BlAdEs • ColumN HeaDs • Primorial Tables
+        </p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="openTab(event, 't1')" id="tab-t1">Probability Columns</button>
+        <button class="tab-btn" onclick="openTab(event, 't2')" id="tab-t2">Recurrence Property</button>
+        <button class="tab-btn" onclick="openTab(event, 't3')" id="tab-t3">Folding Property</button>
+        <button class="tab-btn" onclick="openTab(event, 't4')" id="tab-t4">Hexagonal Folder</button>
+        <button class="tab-btn" onclick="openTab(event, 't5')" id="tab-t5">Primorial 5# Folder</button>
+        <button class="tab-btn" onclick="openTab(event, 't6')" id="tab-t6">Mid-Real Folds</button>
+        <button class="tab-btn" onclick="openTab(event, 't7')" id="tab-t7">Mid-Grid Folds</button>
+        <button class="tab-btn" onclick="openTab(event, 't8')" id="tab-t8">BaBa-ln x Refined</button>
+    </div>
+
+    <!-- Tab 1: Probability Columns -->
+    <div id="t1" class="tab-content active">
+        <div class="model-card">
+            <h2>Probability Columns</h2>
+            <p>This is the main interactive explorer for our research on deterministic patterns in prime distribution.</p>
+            <p>Published on: <a href="https://zenodo.org/records/18049425" target="_blank">Zenodo</a></p>
+        </div>
+    </div>
+
+    <!-- Tab 2: Recurrence Property -->
+    <div id="t2" class="tab-content">
+        <div class="model-card">
+            <h2>Recurrence Property</h2>
+            <p>This property reveals the generation of primes and gaps according to primorial (p#) tables with absolute certainty.</p>
+            
+            <div class="btn-group">
+                <button onclick="showSubTab('sub-3')" id="btn-sub-3" style="background: var(--accent);">3# Hexagonal</button>
+                <button onclick="showSubTab('sub-5')" id="btn-sub-5">5# Thirty</button>
+                <button onclick="showSubTab('sub-7')" id="btn-sub-7">7# Two Hundred Ten</button>
+            </div>
+
+            <!-- Sub tabs content will be added later -->
+            <div id="sub-3" class="sub-tab-content active-sub">Hexagonal System Content (to be added)</div>
+            <div id="sub-5" class="sub-tab-content" style="display:none;">Thirty System Content (to be added)</div>
+            <div id="sub-7" class="sub-tab-content" style="display:none;">210 System Content (to be added)</div>
+        </div>
+    </div>
+
+    <!-- Other tabs (placeholders) -->
+    <div id="t3" class="tab-content"><div class="model-card"><h2>Folding Property</h2><p>Development in progress...</p></div></div>
+    <div id="t4" class="tab-content"><div class="model-card"><h2>Hexagonal Folder (1-15)</h2><p>Development in progress...</p></div></div>
+    <div id="t5" class="tab-content"><div class="model-card"><h2>Primorial 5# Folder (1-105)</h2><p>Development in progress...</p></div></div>
+    <div id="t6" class="tab-content"><div class="model-card"><h2>Mid-Real Models</h2><p>Development in progress...</p></div></div>
+    <div id="t7" class="tab-content"><div class="model-card"><h2>Mid-Grid Models</h2><p>Development in progress...</p></div></div>
+    <div id="t8" class="tab-content">
+        <div class="model-card">
+            <h2>BaBa-ln x Refined Formula Lab</h2>
+            <p>Advanced approximation formula for π(x) with significantly reduced error.</p>
+            <!-- Calculator will be added later -->
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p><strong>Albaba &amp; Baba Research Lab</strong></p>
+    <p>Mohammed K. A. Albaba <sup>1</sup> • Nossaiba Baba <sup>2</sup></p>
+    <p>Gaza • Morocco • 2026</p>
+</footer>
+
+<script>
+    function openTab(evt, tabId) {
+        document.querySelectorAll(".tab-content").forEach(tc => tc.style.display = "none");
+        document.querySelectorAll(".tab-btn").forEach(tb => tb.classList.remove("active"));
+        document.getElementById(tabId).style.display = "block";
+        evt.currentTarget.classList.add("active");
+    }
+
+    function showSubTab(tabId) {
+        document.getElementById('sub-3').style.display = 'none';
+        document.getElementById('sub-5').style.display = 'none';
+        document.getElementById('sub-7').style.display = 'none';
+        document.getElementById(tabId).style.display = 'block';
+
+        document.getElementById('btn-sub-3').style.background = (tabId === 'sub-3') ? 'var(--accent)' : 'var(--primary)';
+        document.getElementById('btn-sub-5').style.background = (tabId === 'sub-5') ? 'var(--accent)' : 'var(--primary)';
+        document.getElementById('btn-sub-7').style.background = (tabId === 'sub-7') ? 'var(--accent)' : 'var(--primary)';
+    }
+
+    // Initialize first sub-tab
+    window.onload = () => {
+        showSubTab('sub-3');
+    };
+</script>
+</body>
+</html>
