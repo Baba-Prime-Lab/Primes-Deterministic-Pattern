@@ -51,50 +51,62 @@
     <div id="t1" class="tab-content active"> <!-- محتوى التبويب الأول --> </div>
     <div id="t2" class="tab-content"> <!-- محتوى التبويب الثاني --> </div>
     <div id="t3" class="tab-content"> <!-- محتوى التبويب الثالث --> </div>
-    <div id="t4" class="tab-content"> <div class="model-card" style="background: #050505; color: gold; border-radius: 12px; padding: 20px; text-align: center; min-height: 800px; overflow: hidden;">
-    <h2 style="color: gold; border-bottom: 1px solid #333;">The Ultimate 15-Unit Folder: [0] to [15]</h2>
-    <p style="color: #ccc;">Deterministic folding property across the 15-unit hexagonal grid.</p>
+    <div id="t4" class="tab-content"> <div class="model-card" style="background: white; border-radius: 12px; padding: 25px; text-align: center; min-height: 800px; overflow: hidden; border: 1px solid #ddd;">
+    <h2 style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px;">The Ultimate 15-Unit Folder</h2>
+    <p style="color: #666; margin-bottom: 30px;">Deterministic folding property across the 15-unit hexagonal grid.</p>
 
-    <!-- أزرار التحكم في الطي -->
-    <div class="btn-group" style="margin-top: 20px;">
+    <!-- أزرار التحكم -->
+    <div class="btn-group" style="margin-bottom: 40px;">
         <button class="fold-btn" onclick="toggleFold('is-folded-1')">Fold (3)</button>
         <button class="fold-btn" onclick="toggleFold('is-folded-2')">Fold (6)</button>
         <button class="fold-btn" onclick="toggleFold('is-folded-3')">Fold (9)</button>
         <button class="fold-btn" onclick="toggleFold('is-folded-4')">Fold (12)</button>
-        <button class="fold-btn" onclick="resetFolds()" style="background: #c0392b;">Reset</button>
+        <button class="fold-btn" onclick="resetFolds()" style="background: #e74c3c; color: white;">Reset All</button>
     </div>
     
-    <!-- مسرح العرض ثلاثي الأبعاد -->
-    <div class="stage-3d" id="folder-stage" style="position: relative; width: 100%; height: 650px; perspective: 4000px; margin-top: 40px;">
-        <!-- سيتم توليد الصفوف هنا بواسطة JavaScript -->
+    <!-- مسرح العرض الفاتح -->
+    <div id="folder-stage" style="position: relative; width: 100%; height: 600px; perspective: 4000px; margin-top: 20px;">
+        <!-- يتم توليده عبر JavaScript -->
     </div>
 </div>
 
 <style>
-    /* تنسيقات خاصة بالمطوية السداسية */
-    .row-container { position: absolute; width: 100%; display: flex; transform-style: preserve-3d; justify-content: center; left: 0; }
-    .fold-layer-3-6, .fold-layer-6-9, .fold-layer-9-12, .fold-layer-12-15 {
-        display: flex; transform-style: preserve-3d;
-        transition: transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
-        transform-origin: left center;
-    }
+    /* تنسيقات المطوية بالنمط الفاتح */
+    .row-container { position: absolute; width: 100%; display: flex; transform-style: preserve-3d; justify-content: center; }
+    
     .cell-hex {
-        width: 45px; height: 45px; background: white; color: black;
+        width: 45px; height: 45px; background: #fff; color: #333;
         display: flex; align-items: center; justify-content: center;
-        font-weight: bold; border: 1px solid #000; font-size: 14px;
+        font-weight: bold; border: 1px solid #ccc; font-size: 14px;
+        box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
     }
-    .p-col { background: #00bcd4 !important; color: white !important; }
-    .hng { background: #ffcc00 !important; width: 22px; border: 1px solid #856404; }
+    
+    /* لون الأعداد الأولية - أزرق مريح */
+    .p-col { background: #3498db !important; color: white !important; border-color: #2980b9 !important; }
+    
+    /* لون المفاصل - أصفر ذهبي */
+    .hng { background: #f1c40f !important; width: 22px; border: 1px solid #d4ac0d !important; color: #856404 !important; }
 
-    /* حركات الطي */
+    .fold-btn { 
+        padding: 10px 20px; cursor: pointer; background: #ecf0f1; 
+        color: #2c3e50; border-radius: 6px; border: 1px solid #bdc3c7; 
+        font-weight: bold; transition: 0.3s;
+    }
+    .fold-btn:hover { background: #dfe6e9; }
+
+    /* حركات الطي (ثابتة) */
     .is-folded-1 .fold-layer-3-6 { transform: rotateY(-180deg); } 
     .is-folded-2 .fold-layer-6-9 { transform: rotateY(180deg); }  
     .is-folded-3 .fold-layer-9-12 { transform: rotateY(-180deg); } 
     .is-folded-4 .fold-layer-12-15 { transform: rotateY(180deg); }
     
-    .fold-btn { padding: 8px 18px; cursor: pointer; background: gold; color: black; border-radius: 20px; border: none; font-weight: bold; }
+    .fold-layer-3-6, .fold-layer-6-9, .fold-layer-9-12, .fold-layer-12-15 {
+        display: flex; transform-style: preserve-3d;
+        transition: transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-origin: left center;
+    }
 </style>
- </div>
+
     <div id="t5" class="tab-content"> <!-- محتوى التبويب الخامس --> </div>
     <div id="t6" class="tab-content"> <!-- محتوى التبويب السادس --> </div>
     <div id="t7" class="tab-content"> <!-- محتوى التبويب السابع --> </div>
