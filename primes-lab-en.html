@@ -35,13 +35,29 @@
 </header>
 
 <div class="container">
-    <!-- Main Tabs -->
+    <!-- Main Tabs: شريط التنقل بين الأقسام الثمانية -->
     <div class="tabs-nav">
         <button class="tab-btn active" onclick="openTab(event, 't1')">1. Probability Columns</button>
-        <button class="tab-btn" onclick="openTab(event, 't2')">2. Recurrence (3#, 5#, 7#)</button>
+        <button class="tab-btn" onclick="openTab(event, 't2')">2. Recurrence Property</button>
         <button class="tab-btn" onclick="openTab(event, 't3')">3. Folding Property</button>
         <button class="tab-btn" onclick="openTab(event, 't4')">4. Hexagonal Folder</button>
+        <button class="tab-btn" onclick="openTab(event, 't5')">5. Primorial 5# Folder</button>
+        <button class="tab-btn" onclick="openTab(event, 't6')">6. Mid-Real Folds</button>
+        <button class="tab-btn" onclick="openTab(event, 't7')">7. Mid-Grid Folds</button>
+        <button class="tab-btn" onclick="openTab(event, 't8')">8. BaBa-ln x Refined</button>
     </div>
+
+    <!-- هنا تبدأ صناديق المحتوى (حيث سنلصق النماذج لاحقاً) -->
+    <div id="t1" class="tab-content active"> <!-- محتوى التبويب الأول --> </div>
+    <div id="t2" class="tab-content"> <!-- محتوى التبويب الثاني --> </div>
+    <div id="t3" class="tab-content"> <!-- محتوى التبويب الثالث --> </div>
+    <div id="t4" class="tab-content"> <!-- محتوى التبويب الرابع --> </div>
+    <div id="t5" class="tab-content"> <!-- محتوى التبويب الخامس --> </div>
+    <div id="t6" class="tab-content"> <!-- محتوى التبويب السادس --> </div>
+    <div id="t7" class="tab-content"> <!-- محتوى التبويب السابع --> </div>
+    <div id="t8" class="tab-content"> <!-- محتوى التبويب الثامن (معادلة بابا) --> </div>
+</div>
+
 
     <!-- Tab 1: Probability -->
     <div id="t1" class="tab-content active">
