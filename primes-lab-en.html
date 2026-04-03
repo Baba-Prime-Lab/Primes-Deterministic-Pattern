@@ -3,331 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Probability Columns | Deterministic Prime Pattern Lab</title>
+    <title>Deterministic Prime Pattern Lab</title>
     <style>
-        :root {
-            --primary: #2c3e50;
-            --accent: #c0392b;
-            --bg: #f4f7f6;
-            --text: #333;
-            --green: #27ae60;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: var(--bg);
-            margin: 0;
-            color: var(--text);
-        }
-        header {
-            background: white;
-            border-bottom: 2px solid #eee;
-            padding: 12px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 9999;
-        }
-        .logo {
-            font-weight: bold;
-            color: var(--primary);
-            font-size: 1.25rem;
-        }
-        .container {
-            max-width: 1480px;
-            margin: 25px auto;
-            padding: 0 20px;
-        }
-        .hero-card {
-            background: white;
-            border-radius: 12px;
-            padding: 35px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-            margin-bottom: 25px;
-            text-align: center;
-            border-top: 6px solid var(--accent);
-        }
-        .tabs-nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 12px;
-            justify-content: center;
-        }
-        .tab-btn {
-            padding: 12px 20px;
-            cursor: pointer;
-            border: none;
-            background: #eee;
-            border-radius: 6px 6px 0 0;
-            font-weight: bold;
-            transition: 0.3s;
-            color: #555;
-        }
-        .tab-btn.active {
-            background: var(--primary);
-            color: gold;
-            border-bottom: 4px solid var(--accent);
-        }
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.4s;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .model-card {
-            background: white;
-            border-radius: 10px;
-            padding: 28px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
-            border: 1px solid #e0e0e0;
-        }
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .btn-group button {
-            padding: 10px 20px;
-            cursor: pointer;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-weight: bold;
-        }
-        .stage-wrapper {
-            direction: ltr;
-            overflow: auto;
-            width: 100%;
-            background: #fff;
-            padding: 20px 0;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-        }
-        footer {
-            background: var(--primary);
-            color: white;
-            padding: 40px 5%;
-            text-align: center;
-            margin-top: 60px;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        :root { --primary: #2c3e50; --accent: #c0392b; --bg: #f4f7f6; --text: #333; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; }
+        header { background: white; padding: 15px 5%; border-bottom: 2px solid #eee; display: flex; justify-content: space-between; }
+        .container { max-width: 1400px; margin: 20px auto; padding: 0 20px; }
+        
+        /* تسيير التبويبات */
+        .tabs-nav { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #ddd; }
+        .tab-btn { padding: 10px 15px; cursor: pointer; border: none; background: #eee; font-weight: bold; border-radius: 5px 5px 0 0; }
+        .tab-btn.active { background: var(--primary); color: gold; border-bottom: 3px solid var(--accent); }
+        .tab-content { display: none; background: white; padding: 20px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .tab-content.active { display: block; }
+
+        /* تنسيق الشبكة (Grid) المشترك لجميع النماذج */
+        .grid-matrix { display: grid; gap: 2px; margin-top: 20px; overflow: auto; background: #eee; padding: 10px; border-radius: 8px; }
+        .cell { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: white; font-size: 0.8rem; border-radius: 3px; }
+        .prime { background: #27ae60; color: white; font-weight: bold; }
+        .composite { color: #ccc; }
+        
+        .btn-group { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        button.action-btn { padding: 8px 16px; cursor: pointer; background: var(--primary); color: white; border: none; border-radius: 4px; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">Albaba & Baba Research Lab</div>
-    <div>
-        <a href="../index.html" style="color: var(--accent); text-decoration: none; font-weight: bold;">← Back to Main Page</a>
-    </div>
+    <div style="font-weight:bold; font-size:1.2rem;">Albaba & Baba Research Lab</div>
+    <a href="../index.html" style="color:var(--accent); text-decoration:none;">← Back</a>
 </header>
 
 <div class="container">
-    <div class="hero-card">
-        <h1>Probability Columns</h1>
-        <p style="font-size: 1.25rem; color: #555;">
-            Deterministic Pattern in Prime Distribution<br>
-            ZeRo BlAdEs • ColumN HeaDs • Primorial Tables
-        </p>
-    </div>
-
-    <!-- Tabs -->
+    <!-- Main Tabs -->
     <div class="tabs-nav">
-        <button class="tab-btn active" onclick="openTab(event, 't1')" id="tab-t1">Probability Columns</button>
-        <button class="tab-btn" onclick="openTab(event, 't2')" id="tab-t2">Recurrence Property</button>
-        <button class="tab-btn" onclick="openTab(event, 't3')" id="tab-t3">Folding Property</button>
-        <button class="tab-btn" onclick="openTab(event, 't4')" id="tab-t4">Hexagonal Folder</button>
-        <button class="tab-btn" onclick="openTab(event, 't5')" id="tab-t5">Primorial 5# Folder</button>
-        <button class="tab-btn" onclick="openTab(event, 't6')" id="tab-t6">Mid-Real Folds</button>
-        <button class="tab-btn" onclick="openTab(event, 't7')" id="tab-t7">Mid-Grid Folds</button>
-        <button class="tab-btn" onclick="openTab(event, 't8')" id="tab-t8">BaBa-ln x Refined</button>
+        <button class="tab-btn active" onclick="openTab(event, 't1')">1. Probability Columns</button>
+        <button class="tab-btn" onclick="openTab(event, 't2')">2. Recurrence (3#, 5#, 7#)</button>
+        <button class="tab-btn" onclick="openTab(event, 't3')">3. Folding Property</button>
+        <button class="tab-btn" onclick="openTab(event, 't4')">4. Hexagonal Folder</button>
     </div>
 
-    <!-- Tab 1: Probability Columns -->
+    <!-- Tab 1: Probability -->
     <div id="t1" class="tab-content active">
-        <div class="model-card">
-            <h2>Probability Columns</h2>
-            <p>This is the main interactive explorer for our research on deterministic patterns in prime distribution.</p>
-            <p>Published on: <a href="https://zenodo.org/records/18049425" target="_blank">Zenodo</a></p>
-        </div>
+        <h2>Probability Columns</h2>
+        <p>Main explorer for deterministic prime distribution.</p>
+        <!-- الصق كود نموذج الأعمدة هنا -->
     </div>
 
-    <!-- Tab 2: Recurrence Property -->
-        <!-- Tab 2: Recurrence Property -->
+    <!-- Tab 2: Recurrence Systems (The 3 Models) -->
     <div id="t2" class="tab-content">
-        <div class="model-card">
-            <h2>Recurrence Property</h2>
-            <p>This property reveals the generation of primes and gaps and their recurrence according to primorial (p#) tables with absolute certainty.</p>
-            
-            <div class="btn-group">
-                <button onclick="showSubTab('sub-3')" id="btn-sub-3">3# Hexagonal System</button>
-                <button onclick="showSubTab('sub-5')" id="btn-sub-5">5# Thirty System</button>
-                <button onclick="showSubTab('sub-7')" id="btn-sub-7" style="background: var(--accent);">7# 210 System</button>
-            </div>
-
-            <!-- Sub-3 -->
-            <div id="sub-3" class="sub-tab-content" style="display: none;">
-                <h4>Hexagonal System (3#)</h4>
-                <p>Content will be added soon...</p>
-            </div>
-
-            <!-- Sub-5 -->
-            <div id="sub-5" class="sub-tab-content" style="display: none;">
-                <h4>Thirty System (5#)</h4>
-                <p>Content will be added soon...</p>
-            </div>
-
-            <!-- Sub-7: 210 Model (النموذج الذي تريده) -->
-            <div id="sub-7" class="sub-tab-content">
-                <h4>210 Unified Lab (7#) - Deterministic Overlap</h4>
-                
-                <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0; border: 1px solid #ddd;">
-                    <div class="btn-group" style="margin-bottom: 20px;">
-                        <button onclick="unifyTo210()">1. Unify to 210</button>
-                        <button onclick="activate7Code()">2. Activate Code (7) - Mark [7-47]</button>
-                        <button onclick="reset210Grid()">Reset Grid</button>
-                    </div>
-                    
-                    <div style="overflow-x: auto; background: #fff; padding: 15px; border: 1px solid #eee; border-radius: 8px;">
-                        <div id="grid-210" style="display: flex; flex-direction: column; gap: 3px; width: fit-content; margin: 0 auto;"></div>
-                    </div>
-                </div>
-            </div>
+        <h2>Recurrence Property</h2>
+        <div class="btn-group">
+            <button class="action-btn" onclick="showSub('sub3')">3# (Base 6)</button>
+            <button class="action-btn" onclick="showSub('sub5')">5# (Base 30)</button>
+            <button class="action-btn" onclick="showSub('sub7')">7# (Base 210)</button>
         </div>
-    </div>
-        <div class="model-card">
-            <h2>Recurrence Property</h2>
-            <p>This property reveals the generation of primes and gaps according to primorial (p#) tables with absolute certainty.</p>
-            
-            <div class="btn-group">
-                <button onclick="showSubTab('sub-3')" id="btn-sub-3" style="background: var(--accent);">3# Hexagonal</button>
-                <button onclick="showSubTab('sub-5')" id="btn-sub-5">5# Thirty</button>
-                <button onclick="showSubTab('sub-7')" id="btn-sub-7">7# Two Hundred Ten</button>
-            </div>
-
-            <!-- Sub tabs content will be added later -->
-            <div id="sub-3" class="sub-tab-content active-sub">Hexagonal System Content (to be added)</div>
-            <div id="sub-5" class="sub-tab-content" style="display:none;">Thirty System Content (to be added)</div>
-            <div id="sub-7" class="sub-tab-content" style="display:none;">210 System Content (to be added)</div>
+        
+        <div id="sub3" class="sub-section">
+            <h3>Hexagonal Recurrence (3#)</h3>
+            <!-- الصق كود الـ 6n هنا -->
+        </div>
+        <div id="sub5" class="sub-section" style="display:none">
+            <h3>Thirty System (5#)</h3>
+            <!-- الصق كود الـ 30 هنا -->
+        </div>
+        <div id="sub7" class="sub-section" style="display:none">
+            <h3>210 Unified Lab (7#)</h3>
+            <!-- الصق كود الـ 210 هنا -->
         </div>
     </div>
 
-    <!-- Other tabs (placeholders) -->
-    <div id="t3" class="tab-content"><div class="model-card"><h2>Folding Property</h2><p>Development in progress...</p></div></div>
-    <div id="t4" class="tab-content"><div class="model-card"><h2>Hexagonal Folder (1-15)</h2><p>Development in progress...</p></div></div>
-    <div id="t5" class="tab-content"><div class="model-card"><h2>Primorial 5# Folder (1-105)</h2><p>Development in progress...</p></div></div>
-    <div id="t6" class="tab-content"><div class="model-card"><h2>Mid-Real Models</h2><p>Development in progress...</p></div></div>
-    <div id="t7" class="tab-content"><div class="model-card"><h2>Mid-Grid Models</h2><p>Development in progress...</p></div></div>
-    <div id="t8" class="tab-content">
-        <div class="model-card">
-            <h2>BaBa-ln x Refined Formula Lab</h2>
-            <p>Advanced approximation formula for π(x) with significantly reduced error.</p>
-            <!-- Calculator will be added later -->
-        </div>
+    <!-- Tab 3: Folding Property -->
+    <div id="t3" class="tab-content">
+        <h2>Folding Property Model</h2>
+        <!-- الصق كود المطوية الأولى هنا -->
+    </div>
+
+    <!-- Tab 4: Hexagonal Folder -->
+    <div id="t4" class="tab-content">
+        <h2>Hexagonal Folding Model</h2>
+        <!-- الصق كود المطوية الثانية هنا -->
     </div>
 </div>
 
-<footer>
-    <p><strong>Albaba &amp; Baba Research Lab</strong></p>
-    <p>Mohammed K. A. Albaba <sup>1</sup> • Nossaiba Baba <sup>2</sup></p>
-    <p>Gaza • Morocco • 2026</p>
-</footer>
-
 <script>
     function openTab(evt, tabId) {
-        document.querySelectorAll(".tab-content").forEach(tc => tc.style.display = "none");
-        document.querySelectorAll(".tab-btn").forEach(tb => tb.classList.remove("active"));
-        document.getElementById(tabId).style.display = "block";
+        let contents = document.getElementsByClassName("tab-content");
+        for (let c of contents) c.classList.remove("active");
+        let buttons = document.getElementsByClassName("tab-btn");
+        for (let b of buttons) b.classList.remove("active");
+        document.getElementById(tabId).classList.add("active");
         evt.currentTarget.classList.add("active");
     }
 
-    function showSubTab(tabId) {
-        document.getElementById('sub-3').style.display = 'none';
-        document.getElementById('sub-5').style.display = 'none';
-        document.getElementById('sub-7').style.display = 'none';
-        document.getElementById(tabId).style.display = 'block';
-
-        document.getElementById('btn-sub-3').style.background = (tabId === 'sub-3') ? 'var(--accent)' : 'var(--primary)';
-        document.getElementById('btn-sub-5').style.background = (tabId === 'sub-5') ? 'var(--accent)' : 'var(--primary)';
-        document.getElementById('btn-sub-7').style.background = (tabId === 'sub-7') ? 'var(--accent)' : 'var(--primary)';
+    function showSub(id) {
+        let subs = document.getElementsByClassName("sub-section");
+        for (let s of subs) s.style.display = "none";
+        document.getElementById(id).style.display = "block";
     }
 
-    // Initialize first sub-tab
-    window.onload = () => {
-        showSubTab('sub-3');
-    };
-        // ==================== 210 Grid Model (7#) ====================
-    function init210Grid() {
-        const container = document.getElementById('grid-210');
-        if (container.children.length > 0) return;
-
-        const rows = 15;
-        const isP30 = (n) => [1,7,11,13,17,19,23,29].includes(n % 30);
-
-        for (let r = 0; r < rows; r++) {
-            const row = document.createElement('div');
-            row.style.display = 'flex';
-            row.style.gap = '5px';
-            row.style.height = '20px';
-
-            for (let b = 0; b < 7; b++) {
-                const block = document.createElement('div');
-                block.style.display = 'flex';
-                block.style.gap = '1px';
-
-                for (let c = 1; c <= 30; c++) {
-                    const num = r * 210 + b * 30 + c;
-                    const cell = document.createElement('div');
-                    cell.style.width = '7px';
-                    cell.style.height = '20px';
-                    cell.style.background = '#f8f9fa';
-                    cell.style.border = '0.5px solid #ddd';
-                    cell.id = `cell210-${num}`;
-
-                    if ([2,3,5].includes(num)) cell.style.background = '#ff5722';
-                    if (isP30(num)) cell.style.background = '#00bcd4';
-
-                    block.appendChild(cell);
-                }
-                row.appendChild(block);
-            }
-            container.appendChild(row);
-        }
-    }
-
-    function unifyTo210() {
-        init210Grid();
-    }
-
-    function activate7Code() {
-        init210Grid();
-        for (let i = 1; i <= 15*210; i++) {
-            const cell = document.getElementById(`cell210-${i}`);
-            if (!cell) continue;
-            if (i % 7 === 0 && i !== 7) cell.style.opacity = '0.3';
-            if ([7,11,13,17,19,23,29,31,37,41,43,47].includes(i)) {
-                cell.style.background = '#1a237e';
-                cell.style.color = 'white';
-            }
-        }
-    }
-
-    function reset210Grid() {
-        if (confirm("Reset the 210 grid?")) location.reload();
-    }
+    // هنا تضع دوال الـ JavaScript الخاصة بكل نموذج (التي تولد المصفوفات)
 </script>
+
 </body>
 </html>
