@@ -55,7 +55,42 @@
     <div id="t5" class="tab-content"> <!-- محتوى التبويب الخامس --> </div>
     <div id="t6" class="tab-content"> <!-- محتوى التبويب السادس --> </div>
     <div id="t7" class="tab-content"> <!-- محتوى التبويب السابع --> </div>
-    <div id="t8" class="tab-content"> <!-- محتوى التبويب الثامن (معادلة بابا) --> </div>
+    <div id="t8" class="tab-content"> <div class="model-card">
+    <h2 style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px;">BaBa-ln x Refined Formula</h2>
+    
+    <!-- Explanation Box -->
+    <div style="background: #eef2f7; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #3498db; text-align: left;">
+        <p style="margin: 0; line-height: 1.8; color: #2c3e50;">
+            This calculator demonstrates the <b>BaBa Refined Formula</b>. At the range of <b>10<sup>13</sup></b>, 
+            while the classical <b>(x/ln x)</b> formula deviates by billions, this refined model uses the precision factor <b>m</b> 
+            to reduce the error to only <b>251.09</b>.
+        </p>
+    </div>
+
+    <!-- Calculator Interface -->
+    <div style="max-width: 600px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 15px; border: 1px solid #ddd; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        <div style="margin-bottom: 25px; text-align: center;">
+            <label style="display: block; font-weight: bold; margin-bottom: 10px; color: var(--primary);">Enter Value (X):</label>
+            <input type="number" id="baba-x-val" value="10000000000000" style="width: 80%; padding: 12px; font-size: 1.2rem; border: 2px solid #3498db; border-radius: 8px; text-align: center; font-weight: bold;">
+        </div>
+
+        <button onclick="runBabaLab()" style="width: 100%; padding: 15px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s;">
+            Calculate Precision
+        </button>
+
+        <div style="margin-top: 30px; display: grid; gap: 15px;">
+            <div style="padding: 15px; background: #fdf2f2; border-radius: 8px; border: 1px solid #fab1a0;">
+                <small style="color: #d63031; font-weight: bold;">Classical (x / ln x)</small>
+                <div id="classic-res" style="font-size: 1.4rem; font-weight: bold; color: #2d3436;">0</div>
+            </div>
+            <div style="padding: 15px; background: #f2fdf5; border-radius: 8px; border: 1px solid #55efc4;">
+                <small style="color: #00b894; font-weight: bold;">BaBa Refined (Result)</small>
+                <div id="baba-res" style="font-size: 1.4rem; font-weight: bold; color: #2d3436;">0</div>
+            </div>
+        </div>
+    </div>
+</div>
+ </div>
 </div>
 
 
@@ -117,6 +152,45 @@
         for (let s of subs) s.style.display = "none";
         document.getElementById(id).style.display = "block";
     }
+
+function runBabaLab() {
+    // جلب القيمة المدخلة من المستخدم
+    const x = parseFloat(document.getElementById('baba-x-val').value);
+    
+    if (!x || x <= 0) {
+        alert("Please enter a valid positive number.");
+        return;
+    }
+
+    // المعامل الدقيق الذي زودتني به
+    const m = 0.965345122765404763;
+    
+    // 1. حساب الدالة الكلاسيكية (x / ln x)
+    const classic = x / Math.log(x);
+    
+    // 2. حساب دالة بابا (القسمة على m لتقليص الفجوة)
+    const babaRefined = classic / m;
+
+    // عرض النتائج بتنسيق أرقام سهل القراءة (بفواصل)
+    document.getElementById('classic-res').innerText = Math.round(classic).toLocaleString();
+    document.getElementById('baba-res').innerText = Math.round(babaRefined).toLocaleString();
+}
+
+// دالة إضافية للتأكد من تبديل التبويبات بنجاح
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tab-btn");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
 
     // هنا تضع دوال الـ JavaScript الخاصة بكل نموذج (التي تولد المصفوفات)
 </script>
