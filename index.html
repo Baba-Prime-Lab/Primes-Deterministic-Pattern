@@ -73,7 +73,81 @@
         <div class="model-card" id="desc-t1"></div>
     </div>
 
-    <div id="t2" class="tab-content"><div class="model-card"><h2 id="title-t2">Recurrence</h2><p id="desc-t2"></p></div></div>
+    <div class="model-card">
+    <h2 id="t2-title" style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px;">خصائص نمط الأوليات: خاصية التكرار التفاعلية</h2>
+    
+    <div style="background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 25px; direction: rtl; text-align: right; line-height: 1.8;">
+        <p>تكشف هذه الخاصية توليد الأوليات والفجوات وتكرارها وفق صيغة الجداول p#. نرى المواقع الثابتة للأوليات في كل صيغة مثل:</p>
+        <ul style="color: var(--accent); font-weight: bold;">
+            <li>نظام السداسي: 6k &plusmn; 1</li>
+            <li>نظام الثلاثيني: 30k &plusmn; (1, 7, 11, 13)</li>
+        </ul>
+        <p>من خلال هذا المختبر، نراقب دور <b>ZeRo BlAdEs</b> (شفرات الزيرو) في كل جدول، ونكشف عن <b>ColumN HeaDs</b> (رؤوس أعمدة الاحتمالات) في كل مرحلة بيقين تام.</p>
+    </div>
+
+    <!-- أزرار اختيار الجداول -->
+    <div class="btn-group" style="background: #eee; padding: 15px; border-radius: 50px; margin-bottom: 30px;">
+        <button onclick="showSubTab('sub-3')" id="btn-sub-3" style="background: var(--primary);">نظام السداسي 3#</button>
+        <button onclick="showSubTab('sub-5')" id="btn-sub-5">نظام الثلاثيني 5#</button>
+        <button onclick="showSubTab('sub-7')" id="btn-sub-7">نظام السباعي 7#</button>
+    </div>
+
+    <!-- محتوى الجداول الفرعية -->
+    <div id="sub-3" class="sub-tab-content active-sub">
+        <!-- هنا نضع كود مختبر الـ 6 (السداسي) الذي أنجزناه -->
+        <h4 style="text-align:center;">مختبر ولادة السداسي (2# &rarr; 3#)</h4>
+        <div class="controls">
+            <button onclick="unifyToHex()">1. تجميع السداسي</button>
+            <button onclick="activate3Code()">2. تفعيل شفرة (3)</button>
+        </div>
+        <div class="stage-wrapper"><div id="grid-3" class="grid-sub-container"></div></div>
+    </div>
+
+    <div id="sub-5" class="sub-tab-content" style="display:none;">
+        <!-- هنا نضع كود مختبر الـ 30 (الثلاثيني) الذي أنجزناه -->
+        <h4 style="text-align:center;">مختبر التحول الثلاثيني (3# &rarr; 5#)</h4>
+        <div class="controls">
+            <button onclick="unifyTo30()">1. تجميع الثلاثيني</button>
+            <button onclick="activate5Code()">2. تفعيل شفرة (5)</button>
+        </div>
+        <div class="stage-wrapper"><div id="grid-5" class="grid-sub-container"></div></div>
+    </div>
+
+    <div id="sub-7" class="sub-tab-content" style="display:none;">
+        <!-- هنا نضع كود مختبر الـ 210 (السباعي) الذي أنجزناه -->
+        <h4 style="text-align:center;">مختبر الـ 210 الموحد (5# &rarr; 7#)</h4>
+        <div class="controls">
+            <button onclick="unifyTo210()">1. تجميع الـ 210</button>
+            <button onclick="activate7Code()">2. تفعيل شفرة (7)</button>
+        </div>
+        <div class="stage-wrapper"><div id="grid-7" class="grid-sub-container"></div></div>
+    </div>
+</div>
+
+<style>
+    /* تنسيقات إضافية للتبويبات الفرعية */
+    .sub-tab-content { animation: fadeIn 0.5s; width: 100%; }
+    .stage-wrapper { overflow-x: auto; background: #fff; padding: 20px 0; border-radius: 8px; display: flex; justify-content: center; }
+    .grid-sub-container { display: flex; flex-direction: column; gap: 1px; width: fit-content; direction: ltr !important; }
+    /* نستخدم نفس خصائص الخلايا المنضبطة التي اعتمدناها */
+</style>
+
+<script>
+    function showSubTab(tabId) {
+        // إخفاء الكل
+        document.getElementById('sub-3').style.display = 'none';
+        document.getElementById('sub-5').style.display = 'none';
+        document.getElementById('sub-7').style.display = 'none';
+        // إظهار المطلوب
+        document.getElementById(tabId).style.display = 'block';
+        // تحديث حالة الأزرار
+       .forEach(id => {
+            document.getElementById('btn-sub-'+id).style.background = (tabId === 'sub-'+id) ? 'var(--accent)' : 'var(--primary)';
+        });
+    }
+    // ملاحظة: سيتم دمج دوال (unify) و (activate) لكل جدول في ملف السكريبت العام
+</script>
+<div class="model-card"><h2 id="title-t2">Recurrence</h2><p id="desc-t2"></p></div></div>
     <div id="t3" class="tab-content"><div class="model-card"><h2 id="title-t3">Folding</h2><p id="desc-t3"></p></div></div>
 
     <div id="t4" class="tab-content">
