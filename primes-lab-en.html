@@ -168,132 +168,78 @@
 </div>
 
 <script>
-  // --- 1. وظيفة التنقل بين التبويبات الرئيسية ---
+const primeMod30 =;
+
 function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tab-content");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-        tabcontent[i].classList.remove("active");
-    }
-    tablinks = document.getElementsByClassName("tab-btn");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
+    let contents = document.getElementsByClassName("tab-content");
+    for (let c of contents) { c.style.display = "none"; c.classList.remove("active"); }
+    let buttons = document.getElementsByClassName("tab-btn");
+    for (let b of buttons) b.className = b.className.replace(" active", "");
     document.getElementById(tabName).style.display = "block";
     document.getElementById(tabName).classList.add("active");
     evt.currentTarget.className += " active";
-    
-    // إعادة تشغيل المولدات لضمان الظهور
     if(tabName === 't4') initHexFolder();
     if(tabName === 't5') init105Folder();
 }
 
-// --- 2. وظائف حاسبة بابا (t8) ---
 function updateBabaInterval() {
-    const xInput = document.getElementById('baba-x-val');
-    if(!xInput) return;
-    const x = parseFloat(xInput.value);
-    const low = document.getElementById('lower-limit');
-    const up = document.getElementById('upper-limit');
-    
-    if (x === 10000000000000) {
-        if(low) low.innerText = "9,999,995,824,729";
-        if(up) up.innerText = "10,000,002,149,284";
-    } else if (x > 0) {
-        if(low) low.innerText = Math.round(x - 4175271).toLocaleString();
-        if(up) up.innerText = Math.round(x + 2149284).toLocaleString();
-    }
+    const x = parseFloat(document.getElementById('baba-x-val').value);
+    const low = document.getElementById('lower-limit'), up = document.getElementById('upper-limit');
+    if(x === 10000000000000) { low.innerText = "9,999,995,824,729"; up.innerText = "10,000,002,149,284"; }
+    else if(x > 0) { low.innerText = Math.round(x - 4175271).toLocaleString(); up.innerText = Math.round(x + 2149284).toLocaleString(); }
 }
 
 function runBabaLab() {
-    const xVal = document.getElementById('baba-x-val');
-    if (!xVal) return;
-    const x = parseFloat(xVal.value);
+    const x = parseFloat(document.getElementById('baba-x-val').value);
     const m = 0.965345122765404763;
     const classic = x / Math.log(x);
-    const babaRefined = classic / m;
-    
-    const resC = document.getElementById('classic-res');
-    const resB = document.getElementById('baba-res');
-    if(resC) resC.innerText = Math.round(classic).toLocaleString();
-    if(resB) resB.innerText = Math.round(babaRefined).toLocaleString();
+    document.getElementById('classic-res').innerText = Math.round(classic).toLocaleString();
+    document.getElementById('baba-res').innerText = Math.round(classic / m).toLocaleString();
 }
 
-// --- 3. وظائف المطوية السداسية (t4) ---
 function initHexFolder() {
     const stage = document.getElementById('folder-stage');
-    if(!stage) return;
-    stage.innerHTML = '';
+    if(!stage) return; stage.innerHTML = '';
     for (let r = 0; r < 9; r++) {
         const row = document.createElement('div');
-        row.className = 'row-container';
-        row.style.top = (r * 55) + 'px';
+        row.className = 'row-container'; row.style.cssText = `position:absolute; top:${r*55}px; left:0; width:100%; display:flex; justify-content:center; transform-style:preserve-3d;`;
         let b = r * 15;
-        row.innerHTML = `<div style="display:flex;transform-style:preserve-3d;"><div class="cell-hex hng">${b}</div><div class="cell-hex p-col">${b+1}</div><div class="cell-hex">${b+2}</div><div class="cell-hex hng">${b+3}</div><div class="fold-layer-3-6"><div class="cell-hex hng">${b+3}</div><div class="cell-hex">${b+4}</div><div class="cell-hex p-col">${b+5}</div><div class="cell-hex hng">${b+6}</div><div class="fold-layer-6-9"><div class="cell-hex hng">${b+6}</div><div class="cell-hex p-col">${b+7}</div><div class="cell-hex">${b+8}</div><div class="cell-hex hng">${b+9}</div><div class="fold-layer-9-12"><div class="cell-hex hng">${b+9}</div><div class="cell-hex">${b+10}</div><div class="cell-hex p-col">${b+11}</div><div class="cell-hex hng">${b+12}</div><div class="fold-layer-12-15"><div class="cell-hex hng">${b+12}</div><div class="cell-hex p-col">${b+13}</div><div class="cell-hex">${b+14}</div><div class="cell-hex hng">${b+15}</div></div></div></div></div></div>`;
+        row.innerHTML = `<div style="display:flex; transform-style:preserve-3d;"><div class="cell-hex hng">${b}</div><div class="cell-hex p-col">${b+1}</div><div class="cell-hex">${b+2}</div><div class="cell-hex hng">${b+3}</div><div class="fold-layer-3-6" style="display:flex; transform-style:preserve-3d; transition:2s; transform-origin:left;"><div class="cell-hex hng">${b+3}</div><div class="cell-hex">${b+4}</div><div class="cell-hex p-col">${b+5}</div><div class="cell-hex hng">${b+6}</div><div class="fold-layer-6-9" style="display:flex; transform-style:preserve-3d; transition:2s; transform-origin:left;"><div class="cell-hex hng">${b+6}</div><div class="cell-hex p-col">${b+7}</div><div class="cell-hex">${b+8}</div><div class="cell-hex hng">${b+9}</div><div class="fold-layer-9-12" style="display:flex; transform-style:preserve-3d; transition:2s; transform-origin:left;"><div class="cell-hex hng">${b+9}</div><div class="cell-hex">${b+10}</div><div class="cell-hex p-col">${b+11}</div><div class="cell-hex hng">${b+12}</div><div class="fold-layer-12-15" style="display:flex; transform-style:preserve-3d; transition:2s; transform-origin:left;"><div class="cell-hex hng">${b+12}</div><div class="cell-hex p-col">${b+13}</div><div class="cell-hex">${b+14}</div><div class="cell-hex hng">${b+15}</div></div></div></div></div></div>`;
         stage.appendChild(row);
     }
 }
-function toggleFold(cls) { 
-    const stg = document.getElementById('folder-stage');
-    if(stg) stg.classList.toggle(cls); 
-}
-function resetFolds() { 
-    const stg = document.getElementById('folder-stage');
-    if(stg) stg.className = ''; 
-}
 
-// --- 4. وظائف المطوية 105 (t5) ---
 function init105Folder() {
     const stage = document.getElementById('stage-105');
-    if(!stage) return;
-    stage.innerHTML = '';
-    // الأرقام الاحتمالية في مود 30
-    const primeMod30 = [1, 7, 11, 13, 17, 19, 23, 29];
-    
+    if(!stage) return; stage.innerHTML = '';
     for (let r = 0; r < 12; r++) {
         const row = document.createElement('div');
-        row.className = 'row-105';
-        row.style.top = (r * 50) + 'px';
-        let nums = [];
-        for (let i = r*105; i <= (r*105)+105; i++) nums.push(i);
+        row.style.cssText = `position:absolute; top:${r*50}px; left:20px; display:flex; transform-style:preserve-3d; transition:3s;`;
+        let nums = []; for (let i = r*105; i <= (r*105)+105; i++) nums.push(i);
         if (r % 2 !== 0) nums.reverse();
-        
-        let html = `<div class="f-unit">`;
+        let html = `<div class="f-unit" style="display:flex; transform-style:preserve-3d;">`;
         for (let s = 0; s < 7; s++) {
             let seg = nums.slice(s*15, (s*15)+16);
-            if (s > 0) html += `<div class="f-unit f-${s*15}">`;
+            if (s > 0) html += `<div class="f-unit f-${s*15}" style="display:flex; transform-style:preserve-3d; transition:2.5s; transform-origin:left;">`;
             html += `<div class="h-half"></div>`;
             for (let i=1; i<15; i++) {
                 let n = seg[i];
-                let isP = primeMod30.includes(n % 30);
-                html += `<div class="cell-105 ${isP ? 'p-col-105' : ''}">${n}</div>`;
+                html += `<div class="cell-105 ${primeMod30.includes(n%30)?'p-col-105':''}">${n}</div>`;
             }
             html += `<div class="h-half"></div>`;
         }
         html += `</div>`.repeat(7);
-        row.innerHTML = html;
-        stage.appendChild(row);
+        row.innerHTML = html; stage.appendChild(row);
     }
 }
-function toggleS(n) { 
-    const t5 = document.getElementById('t5');
-    if(t5) t5.classList.toggle('s' + n); 
-}
-function resetS() { 
-    const t5 = document.getElementById('t5');
-    if(t5) for(let i=1; i<=6; i++) t5.classList.remove('s'+i); 
-}
 
-// --- تشغيل كل شيء عند التحميل ---
-window.onload = function() {
-    updateBabaInterval();
-    runBabaLab();
-    initHexFolder();
-    init105Folder();
-};
+function toggleFold(cls) { document.getElementById('t4').classList.toggle(cls); }
+function resetFolds() { document.getElementById('t4').className = 'tab-content active'; }
+function toggleS(n) { document.getElementById('t5').classList.toggle('s' + n); }
+function resetS() { let t=document.getElementById('t5'); for(let i=1; i<=6; i++) t.classList.remove('s'+i); }
 
-    // هنا تضع دوال الـ JavaScript الخاصة بكل نموذج (التي تولد المصفوفات)
+window.onload = () => { updateBabaInterval(); runBabaLab(); initHexFolder(); init105Folder(); };
+
 </script>
 
 </body>
