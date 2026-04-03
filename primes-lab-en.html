@@ -257,31 +257,40 @@ function openTab(evt, tabName) {
     document.getElementById(tabName).classList.add("active");
     evt.currentTarget.className += " active";
     
-    // إعادة تشغيل المولدات عند فتح التبويب الخاص بها لضمان الظهور
+    // إعادة تشغيل المولدات لضمان الظهور
     if(tabName === 't4') initHexFolder();
     if(tabName === 't5') init105Folder();
 }
 
 // --- 2. وظائف حاسبة بابا (t8) ---
 function updateBabaInterval() {
-    const x = parseFloat(document.getElementById('baba-x-val').value);
+    const xInput = document.getElementById('baba-x-val');
+    if(!xInput) return;
+    const x = parseFloat(xInput.value);
+    const low = document.getElementById('lower-limit');
+    const up = document.getElementById('upper-limit');
+    
     if (x === 10000000000000) {
-        document.getElementById('lower-limit').innerText = "9,999,995,824,729";
-        document.getElementById('upper-limit').innerText = "10,000,002,149,284";
+        if(low) low.innerText = "9,999,995,824,729";
+        if(up) up.innerText = "10,000,002,149,284";
     } else if (x > 0) {
-        document.getElementById('lower-limit').innerText = Math.round(x - 4175271).toLocaleString();
-        document.getElementById('upper-limit').innerText = Math.round(x + 2149284).toLocaleString();
+        if(low) low.innerText = Math.round(x - 4175271).toLocaleString();
+        if(up) up.innerText = Math.round(x + 2149284).toLocaleString();
     }
 }
 
 function runBabaLab() {
-    const x = parseFloat(document.getElementById('baba-x-val').value);
-    if (!x || x <= 0) return;
+    const xVal = document.getElementById('baba-x-val');
+    if (!xVal) return;
+    const x = parseFloat(xVal.value);
     const m = 0.965345122765404763;
     const classic = x / Math.log(x);
     const babaRefined = classic / m;
-    document.getElementById('classic-res').innerText = Math.round(classic).toLocaleString();
-    document.getElementById('baba-res').innerText = Math.round(babaRefined).toLocaleString();
+    
+    const resC = document.getElementById('classic-res');
+    const resB = document.getElementById('baba-res');
+    if(resC) resC.innerText = Math.round(classic).toLocaleString();
+    if(resB) resB.innerText = Math.round(babaRefined).toLocaleString();
 }
 
 // --- 3. وظائف المطوية السداسية (t4) ---
@@ -298,15 +307,23 @@ function initHexFolder() {
         stage.appendChild(row);
     }
 }
-function toggleFold(cls) { document.getElementById('folder-stage').classList.toggle(cls); }
-function resetFolds() { document.getElementById('folder-stage').className = ''; }
+function toggleFold(cls) { 
+    const stg = document.getElementById('folder-stage');
+    if(stg) stg.classList.toggle(cls); 
+}
+function resetFolds() { 
+    const stg = document.getElementById('folder-stage');
+    if(stg) stg.className = ''; 
+}
 
 // --- 4. وظائف المطوية 105 (t5) ---
 function init105Folder() {
     const stage = document.getElementById('stage-105');
     if(!stage) return;
     stage.innerHTML = '';
-    const isP30 = (n) => [1,7,11,13,17,19,23,29].includes(n % 30);
+    // الأرقام الاحتمالية في مود 30
+    const primeMod30 = [1, 7, 11, 13, 17, 19, 23, 29];
+    
     for (let r = 0; r < 12; r++) {
         const row = document.createElement('div');
         row.className = 'row-105';
@@ -314,6 +331,7 @@ function init105Folder() {
         let nums = [];
         for (let i = r*105; i <= (r*105)+105; i++) nums.push(i);
         if (r % 2 !== 0) nums.reverse();
+        
         let html = `<div class="f-unit">`;
         for (let s = 0; s < 7; s++) {
             let seg = nums.slice(s*15, (s*15)+16);
@@ -321,7 +339,8 @@ function init105Folder() {
             html += `<div class="h-half"></div>`;
             for (let i=1; i<15; i++) {
                 let n = seg[i];
-                html += `<div class="cell-105 ${isP30(n)?'p-col-105':''}">${n}</div>`;
+                let isP = primeMod30.includes(n % 30);
+                html += `<div class="cell-105 ${isP ? 'p-col-105' : ''}">${n}</div>`;
             }
             html += `<div class="h-half"></div>`;
         }
@@ -330,8 +349,14 @@ function init105Folder() {
         stage.appendChild(row);
     }
 }
-function toggleS(n) { document.getElementById('t5').classList.toggle('s' + n); }
-function resetS() { const t5=document.getElementById('t5'); for(let i=1; i<=6; i++) t5.classList.remove('s'+i); }
+function toggleS(n) { 
+    const t5 = document.getElementById('t5');
+    if(t5) t5.classList.toggle('s' + n); 
+}
+function resetS() { 
+    const t5 = document.getElementById('t5');
+    if(t5) for(let i=1; i<=6; i++) t5.classList.remove('s'+i); 
+}
 
 // --- تشغيل كل شيء عند التحميل ---
 window.onload = function() {
@@ -340,7 +365,6 @@ window.onload = function() {
     initHexFolder();
     init105Folder();
 };
-
 
     // هنا تضع دوال الـ JavaScript الخاصة بكل نموذج (التي تولد المصفوفات)
 </script>
