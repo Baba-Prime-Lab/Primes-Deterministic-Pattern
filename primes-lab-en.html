@@ -241,213 +241,106 @@
 </div>
 
 <script>
-    function openTab(evt, tabId) {
-        let contents = document.getElementsByClassName("tab-content");
-        for (let c of contents) c.classList.remove("active");
-        let buttons = document.getElementsByClassName("tab-btn");
-        for (let b of buttons) b.classList.remove("active");
-        document.getElementById(tabId).classList.add("active");
-        evt.currentTarget.classList.add("active");
-    }
-// دالة لتوليد شبكة المطوية
-function initHexFolder() {
-    const stage = document.getElementById('folder-stage');
-    stage.innerHTML = ''; // تنظيف المسرح
-
-    for (let r = 0; r < 9; r++) {
-        const rowWrapper = document.createElement('div');
-        rowWrapper.className = 'row-container';
-        rowWrapper.style.top = (r * 55) + 'px';
-        let b = r * 15;
-
-        rowWrapper.innerHTML = `
-            <div style="display: flex; transform-style: preserve-3d; position: relative;">
-                <div class="cell-hex hng">${b + 0}</div>
-                <div class="cell-hex p-col">${b + 1}</div>
-                <div class="cell-hex">${b + 2}</div>
-                <div class="cell-hex hng">${b + 3}</div>
-                <div class="fold-layer-3-6">
-                    <div class="cell-hex hng">${b + 3}</div>
-                    <div class="cell-hex">${b + 4}</div>
-                    <div class="cell-hex p-col">${b + 5}</div>
-                    <div class="cell-hex hng">${b + 6}</div>
-                    <div class="fold-layer-6-9">
-                        <div class="cell-hex hng">${b + 6}</div>
-                        <div class="cell-hex p-col">${b + 7}</div>
-                        <div class="cell-hex">${b + 8}</div>
-                        <div class="cell-hex hng">${b + 9}</div>
-                        <div class="fold-layer-9-12">
-                            <div class="cell-hex hng">${b + 9}</div>
-                            <div class="cell-hex">${b + 10}</div>
-                            <div class="cell-hex p-col">${b + 11}</div>
-                            <div class="cell-hex hng">${b + 12}</div>
-                            <div class="fold-layer-12-15">
-                                <div class="cell-hex hng">${b + 12}</div>
-                                <div class="cell-hex p-col">${b + 13}</div>
-                                <div class="cell-hex">${b + 14}</div>
-                                <div class="cell-hex hng">${b + 15}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
-        stage.appendChild(rowWrapper);
-    }
-}
-
-// دالة التحكم في الطي
-function toggleFold(className) {
-    document.getElementById('folder-stage').classList.toggle(className);
-}
-
-function resetFolds() {
-    const stage = document.getElementById('folder-stage');
-    stage.classList.remove('is-folded-1', 'is-folded-2', 'is-folded-3', 'is-folded-4');
-}
-function init105Folder() {
-    const stage = document.getElementById('stage-105');
-    if(!stage) return;
-    stage.innerHTML = '';
-
-    function isPrime30(n) {
-        let m = n % 30;
-        return [1, 7, 11, 13, 17, 19, 23, 29].includes(m);
-    }
-
-    for (let r = 0; r < 12; r++) {
-        const row = document.createElement('div');
-        row.className = 'row-105';
-        row.style.top = (r * 50) + 'px';
-        
-        let rowNums = [];
-        let startNum = r * 105;
-        for (let i = startNum; i <= startNum + 105; i++) rowNums.push(i);
-        
-        // تطبيق قانون الزقزاق (Zigzag)
-        if (r % 2 !== 0) rowNums.reverse();
-
-        let html = `<div class="f-unit">`;
-        for (let s = 0; s < 7; s++) {
-            let segment = rowNums.slice(s * 15, (s * 15) + 16);
-            if (s > 0) html += `<div class="f-unit f-${s * 15}">`;
-            
-            html += `<div class="h-half"></div>`; // مفصل أيسر
-            for (let i = 1; i < 15; i++) {
-                let n = segment[i];
-                let cls = isPrime30(n) ? "p-col-105" : "";
-                html += `<div class="cell-105 ${cls}">${n}</div>`;
-            }
-            html += `<div class="h-half"></div>`; // مفصل أيمن
-        }
-        html += `</div>`.repeat(7);
-        row.innerHTML = html;
-        stage.appendChild(row);
-    }
-}
-
-function toggleS(n) { document.getElementById('t5').classList.toggle('s' + n); }
-function resetS() { 
-    const t5 = document.getElementById('t5');
-    for(let i=1; i<=6; i++) t5.classList.remove('s'+i);
-}
-
-// تحديث الاستدعاء عند التحميل ليشمل النموذج الجديد
-window.addEventListener('load', () => {
-    if(typeof initHexFolder === 'function') initHexFolder();
-    init105Folder();
-});
-
-// تشغيل التوليد عند تحميل الصفحة
-window.addEventListener('load', initHexFolder);
-
-    function showSub(id) {
-        let subs = document.getElementsByClassName("sub-section");
-        for (let s of subs) s.style.display = "none";
-        document.getElementById(id).style.display = "block";
-    }
-
-function runBabaLab() {
-    // جلب القيمة المدخلة من المستخدم
-    const x = parseFloat(document.getElementById('baba-x-val').value);
-    
-    if (!x || x <= 0) {
-        alert("Please enter a valid positive number.");
-        return;
-    }
-
-    // المعامل الدقيق الذي زودتني به
-    const m = 0.965345122765404763;
-    
-    // 1. حساب الدالة الكلاسيكية (x / ln x)
-    const classic = x / Math.log(x);
-    
-    // 2. حساب دالة بابا (القسمة على m لتقليص الفجوة)
-    const babaRefined = classic / m;
-
-    // عرض النتائج بتنسيق أرقام سهل القراءة (بفواصل)
-    document.getElementById('classic-res').innerText = Math.round(classic).toLocaleString();
-    document.getElementById('baba-res').innerText = Math.round(babaRefined).toLocaleString();
-}
-
-// دالة إضافية للتأكد من تبديل التبويبات بنجاح
+  // --- 1. وظيفة التنقل بين التبويبات الرئيسية ---
 function openTab(evt, tabName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tab-content");
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
+        tabcontent[i].classList.remove("active");
     }
     tablinks = document.getElementsByClassName("tab-btn");
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
     document.getElementById(tabName).style.display = "block";
+    document.getElementById(tabName).classList.add("active");
     evt.currentTarget.className += " active";
-}
-function updateInterval() {
-    const x = parseFloat(document.getElementById('baba-x-val').value);
-    if (x > 0) {
-        document.getElementById('lower-bound').innerText = Math.sqrt(x).toLocaleString(undefined, {maximumFractionDigits: 2});
-        document.getElementById('upper-bound').innerText = x.toLocaleString();
-    }
+    
+    // إعادة تشغيل المولدات عند فتح التبويب الخاص بها لضمان الظهور
+    if(tabName === 't4') initHexFolder();
+    if(tabName === 't5') init105Folder();
 }
 
-// استدعاء الدالة عند تحميل الصفحة لأول مرة لتظهر الأرقام
-window.onload = updateInterval;
+// --- 2. وظائف حاسبة بابا (t8) ---
 function updateBabaInterval() {
     const x = parseFloat(document.getElementById('baba-x-val').value);
-    
-    // حساب الحدود بناءً على النسبة المئوية للانحراف عند 10^13 (كمثال حي)
-    // عند 10^13 الحدود هي التي ذكرتها أنت
     if (x === 10000000000000) {
         document.getElementById('lower-limit').innerText = "9,999,995,824,729";
         document.getElementById('upper-limit').innerText = "10,000,002,149,284";
-    } else {
-        // حساب تقديري للحدود لأي رقم آخر بنفس النسبة
-        const diffLower = x - 4175271;
-        const diffUpper = x + 2149284;
-        document.getElementById('lower-limit').innerText = Math.round(diffLower).toLocaleString();
-        document.getElementById('upper-limit').innerText = Math.round(diffUpper).toLocaleString();
+    } else if (x > 0) {
+        document.getElementById('lower-limit').innerText = Math.round(x - 4175271).toLocaleString();
+        document.getElementById('upper-limit').innerText = Math.round(x + 2149284).toLocaleString();
     }
 }
 
 function runBabaLab() {
     const x = parseFloat(document.getElementById('baba-x-val').value);
     if (!x || x <= 0) return;
-
     const m = 0.965345122765404763;
     const classic = x / Math.log(x);
     const babaRefined = classic / m;
-
     document.getElementById('classic-res').innerText = Math.round(classic).toLocaleString();
     document.getElementById('baba-res').innerText = Math.round(babaRefined).toLocaleString();
 }
 
-// تشغيل التحديث التلقائي عند التحميل
+// --- 3. وظائف المطوية السداسية (t4) ---
+function initHexFolder() {
+    const stage = document.getElementById('folder-stage');
+    if(!stage) return;
+    stage.innerHTML = '';
+    for (let r = 0; r < 9; r++) {
+        const row = document.createElement('div');
+        row.className = 'row-container';
+        row.style.top = (r * 55) + 'px';
+        let b = r * 15;
+        row.innerHTML = `<div style="display:flex;transform-style:preserve-3d;"><div class="cell-hex hng">${b}</div><div class="cell-hex p-col">${b+1}</div><div class="cell-hex">${b+2}</div><div class="cell-hex hng">${b+3}</div><div class="fold-layer-3-6"><div class="cell-hex hng">${b+3}</div><div class="cell-hex">${b+4}</div><div class="cell-hex p-col">${b+5}</div><div class="cell-hex hng">${b+6}</div><div class="fold-layer-6-9"><div class="cell-hex hng">${b+6}</div><div class="cell-hex p-col">${b+7}</div><div class="cell-hex">${b+8}</div><div class="cell-hex hng">${b+9}</div><div class="fold-layer-9-12"><div class="cell-hex hng">${b+9}</div><div class="cell-hex">${b+10}</div><div class="cell-hex p-col">${b+11}</div><div class="cell-hex hng">${b+12}</div><div class="fold-layer-12-15"><div class="cell-hex hng">${b+12}</div><div class="cell-hex p-col">${b+13}</div><div class="cell-hex">${b+14}</div><div class="cell-hex hng">${b+15}</div></div></div></div></div></div>`;
+        stage.appendChild(row);
+    }
+}
+function toggleFold(cls) { document.getElementById('folder-stage').classList.toggle(cls); }
+function resetFolds() { document.getElementById('folder-stage').className = ''; }
+
+// --- 4. وظائف المطوية 105 (t5) ---
+function init105Folder() {
+    const stage = document.getElementById('stage-105');
+    if(!stage) return;
+    stage.innerHTML = '';
+    const isP30 = (n) => [1,7,11,13,17,19,23,29].includes(n % 30);
+    for (let r = 0; r < 12; r++) {
+        const row = document.createElement('div');
+        row.className = 'row-105';
+        row.style.top = (r * 50) + 'px';
+        let nums = [];
+        for (let i = r*105; i <= (r*105)+105; i++) nums.push(i);
+        if (r % 2 !== 0) nums.reverse();
+        let html = `<div class="f-unit">`;
+        for (let s = 0; s < 7; s++) {
+            let seg = nums.slice(s*15, (s*15)+16);
+            if (s > 0) html += `<div class="f-unit f-${s*15}">`;
+            html += `<div class="h-half"></div>`;
+            for (let i=1; i<15; i++) {
+                let n = seg[i];
+                html += `<div class="cell-105 ${isP30(n)?'p-col-105':''}">${n}</div>`;
+            }
+            html += `<div class="h-half"></div>`;
+        }
+        html += `</div>`.repeat(7);
+        row.innerHTML = html;
+        stage.appendChild(row);
+    }
+}
+function toggleS(n) { document.getElementById('t5').classList.toggle('s' + n); }
+function resetS() { const t5=document.getElementById('t5'); for(let i=1; i<=6; i++) t5.classList.remove('s'+i); }
+
+// --- تشغيل كل شيء عند التحميل ---
 window.onload = function() {
     updateBabaInterval();
     runBabaLab();
+    initHexFolder();
+    init105Folder();
 };
-
+</script>
 
     // هنا تضع دوال الـ JavaScript الخاصة بكل نموذج (التي تولد المصفوفات)
 </script>
