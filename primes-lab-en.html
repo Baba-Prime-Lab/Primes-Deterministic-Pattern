@@ -269,6 +269,65 @@
     window.onload = () => {
         showSubTab('sub-3');
     };
+        // ==================== 210 Grid Model (7#) ====================
+    function init210Grid() {
+        const container = document.getElementById('grid-210');
+        if (container.children.length > 0) return;
+
+        const rows = 15;
+        const isP30 = (n) => [1,7,11,13,17,19,23,29].includes(n % 30);
+
+        for (let r = 0; r < rows; r++) {
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.gap = '5px';
+            row.style.height = '20px';
+
+            for (let b = 0; b < 7; b++) {
+                const block = document.createElement('div');
+                block.style.display = 'flex';
+                block.style.gap = '1px';
+
+                for (let c = 1; c <= 30; c++) {
+                    const num = r * 210 + b * 30 + c;
+                    const cell = document.createElement('div');
+                    cell.style.width = '7px';
+                    cell.style.height = '20px';
+                    cell.style.background = '#f8f9fa';
+                    cell.style.border = '0.5px solid #ddd';
+                    cell.id = `cell210-${num}`;
+
+                    if ([2,3,5].includes(num)) cell.style.background = '#ff5722';
+                    if (isP30(num)) cell.style.background = '#00bcd4';
+
+                    block.appendChild(cell);
+                }
+                row.appendChild(block);
+            }
+            container.appendChild(row);
+        }
+    }
+
+    function unifyTo210() {
+        init210Grid();
+    }
+
+    function activate7Code() {
+        init210Grid();
+        for (let i = 1; i <= 15*210; i++) {
+            const cell = document.getElementById(`cell210-${i}`);
+            if (!cell) continue;
+            if (i % 7 === 0 && i !== 7) cell.style.opacity = '0.3';
+            if ([7,11,13,17,19,23,29,31,37,41,43,47].includes(i)) {
+                cell.style.background = '#1a237e';
+                cell.style.color = 'white';
+            }
+        }
+    }
+
+    function reset210Grid() {
+        if (confirm("Reset the 210 grid?")) location.reload();
+    }
 </script>
 </body>
 </html>
