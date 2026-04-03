@@ -1,495 +1,137 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" id="main-app">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Deterministic Pattern Lab | BaBa & Nossaiba</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probability Columns | أعمدة الإحتمالات - Prime Pattern Lab</title>
     <style>
-        :root { --primary: #2c3e50; --accent: #c0392b; --bg: #f4f7f6; --text: #333; --green: #27ae60; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; color: var(--text); }
-        header { background: white; border-bottom: 2px solid #eee; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 9999; }
-        .logo { font-weight: bold; color: var(--primary); font-size: 1.1rem; }
-        .lang-switcher { display: flex; gap: 8px; }
-        .lang-btn { background: white; border: 1px solid #ccc; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-size: 0.8rem; }
-        .active-lang { background: var(--primary); color: white; border-color: var(--primary); }
-        .container { max-width: 1450px; margin: 20px auto; padding: 0 20px; }
-        .hero-card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px; text-align: center; border-top: 5px solid var(--accent); }
-        .tabs-nav { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px; justify-content: center; }
-        .tab-btn { padding: 10px 15px; cursor: pointer; border: none; background: #eee; border-radius: 5px 5px 0 0; font-weight: bold; transition: 0.3s; color: #555; font-size: 0.85rem; }
-        .tab-btn.active { background: #2c3e50; color: gold; border-bottom: 3px solid var(--accent); }
-        .tab-content { display: none; animation: fadeIn 0.4s; }
-        .tab-content.active { display: block; }
-        .model-card { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e0e0e0; }
-        .btn-group { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
-        .btn-group button { padding: 8px 16px; cursor: pointer; background: #2c3e50; color: white; border: none; border-radius: 20px; font-weight: bold; font-size: 0.8rem; }
-        .stage-wrapper { direction: ltr !important; text-align: left !important; overflow: auto; width: 100%; display: flex; justify-content: center; background: #fff; padding: 20px 0; border-radius: 8px; }
-        
-        /* === أنماط المطويات (تم إرجاعها كاملة) === */
-        .stage-15 { position: relative; width: 1000px; height: 500px; perspective: 4000px; transform: scale(0.85); }
-        .stage-105 { position: relative; width: 1400px; height: 600px; perspective: 6000px; transform: scale(0.85); margin-left: -50px; }
-        .row-container { position: absolute; display: flex; transform-style: preserve-3d; transition: 2.5s; }
-        .f-unit { display: flex; transform-style: preserve-3d; transition: transform 2.2s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: left center; }
-        .cell { width: 55px; height: 55px; background: white; color: black; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 1px solid #000; font-size: 16px; box-sizing: border-box; }
-        .cell-105 { width: 10px; height: 35px; font-size: 6px; border: 0.1px solid #333; }
-        .prime-col { background: #00bcd4 !important; color: white !important; }
-        .hinge { background: #ffcc00 !important; width: 27.5px; border: 1px solid #856404; }
-        .hinge-half { background: #ffcc00 !important; width: 5px; border: 0.5px solid #856404; }
-        .fold-15-1 .f15-3 { transform: rotateY(-180deg); } 
-        .fold-15-2 .f15-6 { transform: rotateY(180deg); }
-        .fold-15-3 .f15-9 { transform: rotateY(-180deg); } 
-        .fold-15-4 .f15-12 { transform: rotateY(180deg); }
-        .s1 .f-15 { transform: rotateY(-180deg); } 
-        .s2 .f-30 { transform: rotateY(180deg); }
-        .s3 .f-45 { transform: rotateY(-180deg); } 
-        .s4 .f-60 { transform: rotateY(180deg); }
-        .s5 .f-75 { transform: rotateY(-180deg); } 
-        .s6 .f-90 { transform: rotateY(180deg); }
+        :root {
+            --primary: #2c3e50;
+            --accent: #c0392b;
+            --light: #f8f9fa;
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: var(--light);
+            color: #333;
+            text-align: center;
+        }
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(rgba(44, 62, 80, 0.78), rgba(44, 62, 80, 0.85)),
+                        url('https://i.postimg.cc/g2XM5nvK/2310.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+        }
+        .hero-content {
+            max-width: 920px;
+            padding: 40px 20px;
+        }
+        .hero h1 {
+            font-size: 3.1rem;
+            margin-bottom: 8px;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.7);
+            font-weight: 700;
+        }
+        .hero .ar-title {
+            font-size: 2.1rem;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+        .hero .fr-title {
+            font-size: 1.4rem;
+            margin-bottom: 50px;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+        .subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 55px;
+            opacity: 0.9;
+        }
+        .lang-buttons {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .lang-btn {
+            padding: 18px 45px;
+            font-size: 1.32rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            min-width: 265px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .lang-btn:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+        .btn-en { background: #2c3e50; color: white; }
+        .btn-ar { background: #c0392b; color: white; }
+        .btn-fr { background: #27ae60; color: white; }
 
-        footer { background: #2c3e50; color: white; padding: 40px 5%; text-align: center; font-size: 0.85rem; margin-top: 50px; clear: both; }
-        .author-box { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 40px; margin-top: 20px; }
-        .sub-tab-content { animation: fadeIn 0.5s; width: 100%; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        footer {
+            padding: 35px 20px;
+            background: var(--primary);
+            color: white;
+            margin-top: 30px;
+        }
     </style>
 </head>
-<body id="body-ctx">
+<body>
 
-<header>
-    <div class="logo" id="nav-logo">The Primes Rhyme Lab</div>
-    <div class="lang-switcher">
-        <button id="btn-en" class="lang-btn active-lang" onclick="setLang('en')">EN</button>
-        <button id="btn-ar" class="lang-btn" onclick="setLang('ar')">AR</button>
-        <button id="btn-fr" class="lang-btn" onclick="setLang('fr')">FR</button>
-    </div>
-</header>
-
-<div class="container">
-    <div class="hero-card">
-        <h1 id="main-title">Deterministic Pattern in Prime Distribution</h1>
-        <p class="subtitle" id="sub-title">Primorial Probability Tables, ZeRo BlAdEs, ColumN HeaDs, and BaBa-X</p>
-    </div>
-
-    <div class="tabs-nav" id="tabs-list">
-        <button class="tab-btn active" onclick="openTab(event, 't1')" id="tab-t1">Probability Columns</button>
-        <button class="tab-btn" onclick="openTab(event, 't2')" id="tab-t2">Recurrence Property</button>
-        <button class="tab-btn" onclick="openTab(event, 't3')" id="tab-t3">Folding Property</button>
-        <button class="tab-btn" onclick="openTab(event, 't4')" id="tab-t4">Hexagonal Folder</button>
-        <button class="tab-btn" onclick="openTab(event, 't5')" id="tab-t5">Primorial 5# Folder</button>
-        <button class="tab-btn" onclick="openTab(event, 't6')" id="tab-t6">Mid-Real Folds</button>
-        <button class="tab-btn" onclick="openTab(event, 't7')" id="tab-t7">Mid-Grid Folds</button>
-        <button class="tab-btn" onclick="openTab(event, 't8')" id="tab-t8">BaBa-ln x Refined</button>
-    </div>
-
-    <!-- t1 -->
-    <div id="t1" class="tab-content active">
-        <div class="model-card" id="desc-t1"></div>
-    </div>
-
-      <!-- t2 - Recurrence Property -->
-    <div id="t2" class="tab-content">
-        <div class="model-card">
-            <h2 id="t2-main-title" style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px;"></h2>
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Probability Columns</h1>
+            <p class="ar-title">أعمدة الإحتمالات</p>
+            <p class="fr-title">Colonnes de Probabilité</p>
             
-            <div id="recurrence-desc" style="background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 25px; line-height: 1.8;"></div>
-
-            <!-- أزرار اختيار الأنظمة -->
-            <div class="btn-group" style="background: #eee; padding: 15px; border-radius: 50px; margin-bottom: 30px;">
-                <button onclick="showSubTab('sub-3')" id="btn-sub-3" style="background: var(--primary);">نظام السداسي 3#</button>
-                <button onclick="showSubTab('sub-5')" id="btn-sub-5">نظام الثلاثيني 5#</button>
-                <button onclick="showSubTab('sub-7')" id="btn-sub-7">نظام السباعي 7#</button>
-            </div>
-
-            <!-- sub-3: السداسي -->
-            <div id="sub-3" class="sub-tab-content active-sub">
-                <h4 id="sub3-title" style="text-align:center;"></h4>
-                <div class="controls">
-                    <button onclick="unifyToHex()">1. <span id="btn1-sub3"></span></button>
-                    <button onclick="activate3Code()">2. <span id="btn2-sub3"></span></button>
-                </div>
-                <div class="stage-wrapper"><div id="grid-3" class="grid-sub-container"></div></div>
-            </div>
-
-            <!-- sub-5: الثلاثيني -->
-            <div id="sub-5" class="sub-tab-content" style="display:none;">
-                <h4 id="sub5-title" style="text-align:center;"></h4>
-                <div class="controls">
-                    <button onclick="unifyTo30()">1. <span id="btn1-sub5"></span></button>
-                    <button onclick="activate5Code()">2. <span id="btn2-sub5"></span></button>
-                </div>
-                <div class="stage-wrapper"><div id="grid-5" class="grid-sub-container"></div></div>
-            </div>
-
-            <!-- sub-7: السباعي 210 (النموذج الجديد) -->
-            <div id="sub-7" class="sub-tab-content" style="display:none;">
-                <h4 id="sub7-title" style="text-align:center;"></h4>
+            <p class="subtitle">
+                دليل نمط الأعداد الأولية<br>
+                Deterministic Prime Pattern Lab
+            </p>
+            
+            <div class="lang-buttons">
+                <a href="primes-lab-en.html">
+                    <button class="lang-btn btn-en">English Version</button>
+                </a>
                 
-                <div style="background: white; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                    <div class="controls" style="margin-bottom: 15px;">
-                        <button onclick="unifyTo210()">1. تجميع الـ 210</button>
-                        <button onclick="activate7Code()">2. تفعيل شفرة (7) وحسم [7-47]</button>
-                        <button onclick="reset210Grid()">إعادة تعيين</button>
-                    </div>
-                    
-                    <div class="grid-wrapper" style="width: 100%; overflow-x: auto; background: white; padding: 10px 0; border: 1px solid #ddd; border-radius: 6px;">
-                        <div id="grid-210" style="display: flex; flex-direction: column; gap: 1px; width: fit-content; direction: ltr !important;"></div>
-                    </div>
-                </div>
+                <a href="primes-lab-ar.html">
+                    <button class="lang-btn btn-ar">النسخة العربية</button>
+                </a>
+                
+                <a href="primes-lab-fr.html">
+                    <button class="lang-btn btn-fr">Version Française</button>
+                </a>
             </div>
-        </div>
 
-        <!-- النسخة الإنجليزية -->
-        <div class="model-card">
-            <h2 id="title-t2">Recurrence</h2>
-            <p id="desc-t2"></p>
+            <p style="margin-top: 70px; font-size: 1.15rem; opacity: 0.9;">
+                BaBa &amp; Nossaiba Research Lab
+            </p>
         </div>
     </div>
 
-    <!-- t3 -->
-    <div id="t3" class="tab-content"><div class="model-card"><h2 id="title-t3">Folding</h2><p id="desc-t3"></p></div></div>
-
-    <!-- t4 - Hexagonal Folder (تم إرجاعها) -->
-    <div id="t4" class="tab-content">
-        <div class="model-card">
-            <h2 id="m1-t">Hexagonal Folding Model (1-15)</h2>
-            <div class="btn-group">
-                <button onclick="document.body.classList.toggle('fold-15-1')" id="b15-1">Fold (3)</button>
-                <button onclick="document.body.classList.toggle('fold-15-2')" id="b15-2">Fold (6)</button>
-                <button onclick="document.body.classList.toggle('fold-15-3')" id="b15-3">Fold (9)</button>
-                <button onclick="document.body.classList.toggle('fold-15-4')" id="b15-4">Fold (12)</button>
-            </div>
-            <div class="stage-wrapper"><div class="stage-15" id="stage15"></div></div>
+    <footer>
+        <div>
+            <strong>مشروع بحثي مستقل في نمط الأعداد الأولية</strong><br>
+            Mohammed K. A. Albaba &amp; Nossaiba Baba
         </div>
-    </div>
-
-    <!-- t5 - Primorial 5# Folder (تم إرجاعها) -->
-    <div id="t5" class="tab-content">
-        <div class="model-card">
-            <h2 id="m2-t">Primorial 5# Grid (1-105)</h2>
-            <div class="btn-group" id="ctrl-105"></div>
-            <div class="stage-wrapper"><div class="stage-105" id="stage105"></div></div>
+        <div style="margin-top: 12px; opacity: 0.85;">
+            Gaza • Morocco • 2026
         </div>
-    </div>
+    </footer>
 
-    <div id="t6" class="tab-content"><div class="model-card"><h2>Mid-Real Models</h2><p>Development in progress...</p></div></div>
-    <div id="t7" class="tab-content"><div class="model-card"><h2>Mid-Grid Models</h2><p>Development in progress...</p></div></div>
-
-    <div id="t8" class="tab-content">
-        <div class="model-card" style="border-top: 5px solid var(--green);">
-            <h2 id="lab-t">BaBa-ln x Refined Formula Lab</h2>
-            <div id="lab-note" style="background:#eef2f7; padding:15px; border-radius:8px; margin-bottom:20px;">-</div>
-            <div style="text-align:center;">
-                <label id="lbl-x">Enter X:</label>
-                <input type="number" id="baba-x-val" value="10000000000000" style="padding:8px; border:2px solid var(--green); border-radius:5px;">
-                <button onclick="runBabaLab()" id="btn-calc" style="padding:8px 20px; background:var(--green); color:white; border:none; border-radius:5px; cursor:pointer;">Calculate</button>
-            </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px;">
-                <div style="padding:10px; border-left:4px solid #e74c3c; background:#f9f9f9;"><b id="c-res-t">Classical:</b><div id="classic-res">-</div></div>
-                <div style="padding:10px; border-left:4px solid var(--green); background:#f0fff4;"><b id="b-res-t">BaBa-ln x:</b><div id="baba-res">-</div></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- الفوتر رجع للأسفل ومرتب -->
-<footer>
-    <div id="footer-head">Supervising Authors:</div>
-    <div class="author-box">
-        <div><strong>Mohammed K. A. Albaba<sup>1</sup></strong><br>Independent Researcher, Gaza<br>mm2121121112@yahoo.com</div>
-        <div><strong>Nossaiba Baba<sup>2</sup></strong><br>Hassan II University, Morocco<br>noussaibababa1@gmail.com</div>
-    </div>
-</footer>
-
-<script>
-    // ==================== دوال التبويبات ====================
-    function openTab(evt, tabId) {
-        document.querySelectorAll(".tab-content").forEach(tc => tc.style.display = "none");
-        document.querySelectorAll(".tab-btn").forEach(tb => tb.classList.remove("active"));
-        document.getElementById(tabId).style.display = "block";
-        evt.currentTarget.classList.add("active");
-    }
-
-    function showSubTab(tabId) {
-        document.getElementById('sub-3').style.display = 'none';
-        document.getElementById('sub-5').style.display = 'none';
-        document.getElementById('sub-7').style.display = 'none';
-        document.getElementById(tabId).style.display = 'block';
-
-        document.getElementById('btn-sub-3').style.background = (tabId === 'sub-3') ? 'var(--accent)' : 'var(--primary)';
-        document.getElementById('btn-sub-5').style.background = (tabId === 'sub-5') ? 'var(--accent)' : 'var(--primary)';
-        document.getElementById('btn-sub-7').style.background = (tabId === 'sub-7') ? 'var(--accent)' : 'var(--primary)';
-    }
-
-    // ==================== بناء المطويات ====================
-    const st15 = document.getElementById('stage15');
-    for (let r = 0; r < 7; r++) {
-        const row = document.createElement('div');
-        row.className = 'row-container'; 
-        row.style.top = (r * 65) + 'px';
-        let b = r * 15;
-        row.innerHTML = `<div class="f-unit"><div class="cell hinge">${b+0}</div><div class="cell prime-col">${b+1}</div><div class="cell">${b+2}</div><div class="cell hinge">${b+3}</div><div class="f-unit f15-3"><div class="cell hinge">${b+3}</div><div class="cell">${b+4}</div><div class="cell prime-col">${b+5}</div><div class="cell hinge">${b+6}</div><div class="f-unit f15-6"><div class="cell hinge">${b+6}</div><div class="cell prime-col">${b+7}</div><div class="cell">${b+8}</div><div class="cell hinge">${b+9}</div><div class="f-unit f15-9"><div class="cell hinge">${b+9}</div><div class="cell">${b+10}</div><div class="cell prime-col">${b+11}</div><div class="cell hinge">${b+12}</div><div class="f-unit f15-12"><div class="cell hinge">${b+12}</div><div class="cell prime-col">${b+13}</div><div class="cell">${b+14}</div><div class="cell hinge">${b+15}</div></div></div></div></div></div>`;
-        st15.appendChild(row);
-    }
-
-    const st105 = document.getElementById('stage105');
-    for (let r = 0; r < 12; r++) {
-        const row = document.createElement('div');
-        row.className = 'row-container'; 
-        row.style.top = (r * 45) + 'px';
-        let rowNums = [];
-        for (let i = r*105; i <= (r+1)*105; i++) rowNums.push(i);
-        if (r % 2 !== 0) rowNums.reverse();
-        let html = `<div class="f-unit base">`;
-        for (let s = 0; s < 7; s++) {
-            let seg = rowNums.slice(s * 15, (s * 15) + 16);
-            if (s > 0) html += `<div class="f-unit f-${s * 15}">`;
-            html += `<div class="hinge-half"></div>`;
-            for (let i = 1; i < 15; i++) {
-                let n = seg[i];
-                let isP = [1, 7, 11, 13, 17, 19, 23, 29].includes(n % 30);
-                html += `<div class="cell cell-105 ${isP?'prime-col':''}">${n}</div>`;
-            }
-            html += `<div class="hinge-half"></div>`;
-        }
-        html += `</div>`.repeat(7);
-        row.innerHTML = html; 
-        st105.appendChild(row);
-    }
-
-    const ctrl105 = document.getElementById('ctrl-105');
-    [15, 30, 45, 60, 75, 90].forEach(v => {
-        const btn = document.createElement('button');
-        btn.id = `btn-f105-${v/15}`;
-        btn.onclick = () => document.body.classList.toggle('s'+(v/15));
-        btn.innerText = `Fold (${v})`;
-        ctrl105.appendChild(btn);
-    });
-
-    function runBabaLab() {
-        const x = parseFloat(document.getElementById('baba-x-val').value);
-        const minX = 9999995824729;
-        const maxX = 10000002149284;
-        if (x < minX || x > maxX) {
-            alert("Out of bounds! Please test between 9,999,995,824,729 and 10,000,002,149,284");
-            return;
-        }
-        const m = 0.965345122765404763;
-        const classical = x / Math.log(x);
-        const baba = classical / m;
-        document.getElementById('classic-res').innerText = Math.round(classical).toLocaleString();
-        document.getElementById('baba-res').innerText = Math.round(baba).toLocaleString();
-    }
-
-    // ==================== الترجمات (مُصححة ومنظفة) ====================
-    const trans = {
-        en: {
-            logo: "The Primes Rhyme Lab",
-            foot: "Supervising Authors:",
-            t1: "Probability Columns", t2: "Recurrence Property", t3: "Folding Property",
-            t4: "Hexagonal Folder", t5: "Primorial 5# Folder", t6: "Mid-Real Folds",
-            t7: "Mid-Grid Folds", t8: "BaBa-ln x Refined",
-            recurrenceTitle: "Recurrence Property - Interactive",
-            recurrenceDesc: `<p>This property reveals the generation of primes and gaps and their recurrence according to p# tables. We see the fixed positions of primes in each formula such as:</p>
-                <ul style="color: var(--accent); font-weight: bold;">
-                    <li>Hexagonal system: 6k ± 1</li>
-                    <li>30-system: 30k ± (1, 7, 11, 13)</li>
-                </ul>
-                <p>Through this lab, we monitor the role of <b>ZeRo BlAdEs</b> in each table, and reveal <b>ColumN HeaDs</b> (probability column heads) in each stage with complete certainty.</p>`,
-            sub3Title: "Hexagonal Birth Lab (2# → 3#)",
-            sub5Title: "Thirty Transformation Lab (3# → 5#)",
-            sub7Title: "210 Unified Lab (5# → 7#)",
-            btn1sub3: "Unify Hexagonal",
-            btn2sub3: "Activate Code (3)",
-            btn1sub5: "Unify Thirty",
-            btn2sub5: "Activate Code (5)",
-            btn1sub7: "Unify 210",
-            btn2sub7: "Activate Code (7)",
-            desc1: `<h2>Probability Columns</h2><p>Interactive explorer for our research on Zenodo.</p>`,
-            labT: "BaBa-ln x Refined Formula Lab",
-            labD: "Test prime density between 9,999,995,824,729 and 10,000,002,149,284...",
-            calc: "Calculate",
-            lbl: "Enter X:",
-            cres: "Classical:",
-            bres: "BaBa-ln x:",
-            fld: "Fold"
-        },
-        ar: {
-            logo: "مختبر تناغم الأولية",
-            foot: "المؤلفون المشرفون:",
-            t1: "أعمدة الإحتمالات", t2: "خاصية التكرار", t3: "خاصية الطي",
-            t4: "المطوية السداسية", t5: "مطوية الـ 5#", t6: "النصف الحقيقي",
-            t7: "النصف التمثيلي", t8: "تحسين بابا-لن إكس",
-            recurrenceTitle: "خصائص نمط الأوليات: خاصية التكرار التفاعلية",
-            recurrenceDesc: `<p>تكشف هذه الخاصية توليد الأوليات والفجوات وتكرارها وفق صيغة الجداول p#. نرى المواقع الثابتة للأوليات في كل صيغة مثل:</p>
-                <ul style="color: var(--accent); font-weight: bold;">
-                    <li>نظام السداسي: 6k ± 1</li>
-                    <li>نظام الثلاثيني: 30k ± (1, 7, 11, 13)</li>
-                </ul>
-                <p>من خلال هذا المختبر، نراقب دور <b>ZeRo BlAdEs</b> (شفرات الزيرو) في كل جدول، ونكشف عن <b>ColumN HeaDs</b> (رؤوس أعمدة الاحتمالات) في كل مرحلة بيقين تام.</p>`,
-            sub3Title: "مختبر ولادة السداسي (2# → 3#)",
-            sub5Title: "مختبر التحول الثلاثيني (3# → 5#)",
-            sub7Title: "مختبر الـ 210 الموحد (5# → 7#)",
-            btn1sub3: "تجميع السداسي",
-            btn2sub3: "تفعيل شفرة (3)",
-            btn1sub5: "تجميع الثلاثيني",
-            btn2sub5: "تفعيل شفرة (5)",
-            btn1sub7: "تجميع الـ 210",
-            btn2sub7: "تفعيل شفرة (7)",
-            desc1: `<div dir="rtl"><h2>أعمدة الإحتمالات</h2><p>مستكشف تفاعلي لبحثنا المنشور على Zenodo.</p></div>`,
-            labT: "مختبر معادلة بابا-لن إكس المحسنة",
-            labD: "اختبر كثافة الأعداد الأولية في النطاق بين 9,999,995,824,729 و 10,000,002,149,284...",
-            calc: "احسب",
-            lbl: "أدخل X:",
-            cres: "الكلاسيكية:",
-            bres: "بابا-لن إكس:",
-            fld: "طي"
-        },
-        fr: {
-            logo: "Labo Rime des Primes",
-            foot: "Auteurs Superviseurs :",
-            t1: "Colonnes de Probabilité", t2: "Propriété de Récurrence", t3: "Propriété de Pliage",
-            t4: "Dossier Hexagonal", t5: "Dossier Primorial 5#", t6: "Pliages Mi-Réels",
-            t7: "Pliages Mi-Grille", t8: "BaBa-ln x Raffiné",
-            recurrenceTitle: "Propriété de Récurrence Interactive",
-            recurrenceDesc: `<p>Cette propriété révèle la génération des nombres premiers et des écarts selon les tables p#...</p>`,
-            sub3Title: "Labo de Naissance Hexagonale (2# → 3#)",
-            sub5Title: "Labo de Transformation Trente (3# → 5#)",
-            sub7Title: "Labo Unifié 210 (5# → 7#)",
-            btn1sub3: "Unifier Hexagonal",
-            btn2sub3: "Activer Code (3)",
-            btn1sub5: "Unifier Trente",
-            btn2sub5: "Activer Code (5)",
-            btn1sub7: "Unifier 210",
-            btn2sub7: "Activer Code (7)",
-            fld: "Plier"
-        }
-    };
-
-    // ==================== دالة تغيير اللغة ====================
-    function setLang(lang) {
-        const t = trans[lang] || trans.en;
-        document.getElementById('main-app').dir = (lang === 'ar' ? 'rtl' : 'ltr');
-        document.getElementById('nav-logo').innerText = t.logo;
-        document.getElementById('footer-head').innerText = t.foot;
-
-        for (let i = 1; i <= 8; i++) {
-            const tab = document.getElementById('tab-t' + i);
-            if (tab) tab.innerText = t['t' + i] || '';
-        }
-
-        // تبويب التكرار
-        document.getElementById('t2-main-title').innerHTML = t.recurrenceTitle || '';
-        document.getElementById('recurrence-desc').innerHTML = t.recurrenceDesc || '';
-
-        document.getElementById('sub3-title').innerHTML = t.sub3Title || '';
-        document.getElementById('sub5-title').innerHTML = t.sub5Title || '';
-        document.getElementById('sub7-title').innerHTML = t.sub7Title || '';
-
-        document.getElementById('btn1-sub3').innerHTML = t.btn1sub3 || '';
-        document.getElementById('btn2-sub3').innerHTML = t.btn2sub3 || '';
-        document.getElementById('btn1-sub5').innerHTML = t.btn1sub5 || '';
-        document.getElementById('btn2-sub5').innerHTML = t.btn2sub5 || '';
-        document.getElementById('btn1-sub7').innerHTML = t.btn1sub7 || '';
-        document.getElementById('btn2-sub7').innerHTML = t.btn2sub7 || '';
-
-        // باقي العناصر
-        document.getElementById('desc-t1').innerHTML = t.desc1 || '';
-        document.getElementById('lab-t').innerText = t.labT || '';
-        document.getElementById('lab-note').innerText = t.labD || '';
-        document.getElementById('btn-calc').innerText = t.calc || 'Calculate';
-        document.getElementById('lbl-x').innerText = t.lbl || 'Enter X:';
-        document.getElementById('c-res-t').innerText = t.cres || 'Classical:';
-        document.getElementById('b-res-t').innerText = t.bres || 'BaBa-ln x:';
-
-        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active-lang'));
-        document.getElementById('btn-' + lang).classList.add('active-lang');
-    }
-
-    // ==================== تشغيل الصفحة ====================
-    // ==================== نموذج الـ 210 (7#) ====================
-    let grid210Initialized = false;
-
-    function init210Grid() {
-        if (grid210Initialized) return;
-        grid210Initialized = true;
-
-        const container = document.getElementById('grid-210');
-        const rows = 15;
-        const isP30 = (n) => [1, 7, 11, 13, 17, 19, 23, 29].includes(n % 30);
-        const primesTo47 = [7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
-
-        for (let r = 0; r < rows; r++) {
-            const rowWrapper = document.createElement('div');
-            rowWrapper.className = 'row-wrapper';
-            rowWrapper.id = `row210-${r}`;
-            rowWrapper.style.display = 'flex';
-            rowWrapper.style.gap = '6px';
-            rowWrapper.style.height = '18px';
-            rowWrapper.style.transition = '0.8s';
-
-            for (let b = 0; b < 7; b++) {
-                const block = document.createElement('div');
-                block.className = 'thirty-block';
-                block.id = `block210-${r}-${b}`;
-                block.style.display = 'flex';
-                block.style.gap = '1px';
-                block.style.border = '0.5px dashed #ddd';
-
-                for (let c = 1; c <= 30; c++) {
-                    const num = (r * 210) + (b * 30) + c;
-                    const cell = document.createElement('div');
-                    cell.className = 'cell';
-                    cell.id = `cell210-${num}`;
-                    cell.style.width = '6.3px';
-                    cell.style.height = '17px';
-                    cell.style.background = '#fff';
-                    cell.style.border = 'none';
-                    cell.style.margin = '0';
-                    cell.style.padding = '0';
-                    cell.style.transition = '0.4s';
-                    cell.style.boxSizing = 'border-box';
-
-                    if ([2, 3, 5].includes(num)) cell.classList.add('zero-blade');
-                    if (isP30(num)) cell.classList.add('is-head');
-
-                    block.appendChild(cell);
-                }
-                rowWrapper.appendChild(block);
-            }
-            container.appendChild(rowWrapper);
-        }
-    }
-
-    function unifyTo210() {
-        init210Grid();
-        for (let r = 0; r < 15; r++) {
-            const row = document.getElementById(`row210-${r}`);
-            if (row) row.classList.add('unified-row');
-            const blocks = document.querySelectorAll(`#row210-${r} .thirty-block`);
-            blocks.forEach(blk => blk.style.border = "none");
-        }
-    }
-
-    function activate7Code() {
-        unifyTo210();
-        const b7 = document.getElementById('cell210-7');
-        if (b7) b7.classList.add('zero-blade');
-
-        for (let i = 1; i <= 15 * 210; i++) {
-            const cell = document.getElementById(`cell210-${i}`);
-            if (!cell) continue;
-            if (i % 7 === 0 && i !== 7) cell.classList.add('faded');
-            if ([7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47].includes(i)) {
-                cell.classList.add('confirmed');
-            }
-        }
-    }
-
-    function reset210Grid() {
-        location.reload();   // أو يمكنك عمل تنظيف أنظف لاحقاً
-    }
-    window.onload = () => {
-        runBabaLab();
-        setLang('en');
-        showSubTab('sub-3');
-    };
-</script>
 </body>
 </html>
