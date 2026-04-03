@@ -267,8 +267,87 @@
     }
 
     // الترجمات (كاملة)
-    const trans = { /* نفس كائن trans الكامل الذي أعطيتك إياه في الرسالة السابقة */ 
-        // (انسخ كائن trans من النسخة السابقة كاملاً هنا)
+    const trans = { const trans = {
+        en: {
+            logo: "The Primes Rhyme Lab",
+            foot: "Supervising Authors:",
+            t1: "Probability Columns", t2: "Recurrence Property", t3: "Folding Property",
+            t4: "Hexagonal Folder", t5: "Primorial 5# Folder", t6: "Mid-Real Folds",
+            t7: "Mid-Grid Folds", t8: "BaBa-ln x Refined",
+            recurrenceTitle: "Recurrence Property - Interactive",
+            recurrenceDesc: `<p>This property reveals the generation of primes and gaps and their recurrence according to p# tables. We see the fixed positions of primes in each formula such as:</p>
+                <ul style="color: var(--accent); font-weight: bold;">
+                    <li>Hexagonal system: 6k ± 1</li>
+                    <li>30-system: 30k ± (1, 7, 11, 13)</li>
+                </ul>
+                <p>Through this lab, we monitor the role of <b>ZeRo BlAdEs</b> in each table, and reveal <b>ColumN HeaDs</b> (probability column heads) in each stage with complete certainty.</p>`,
+            sub3Title: "Hexagonal Birth Lab (2# → 3#)",
+            sub5Title: "Thirty Transformation Lab (3# → 5#)",
+            sub7Title: "210 Unified Lab (5# → 7#)",
+            btn1sub3: "Unify Hexagonal",
+            btn2sub3: "Activate Code (3)",
+            btn1sub5: "Unify Thirty",
+            btn2sub5: "Activate Code (5)",
+            btn1sub7: "Unify 210",
+            btn2sub7: "Activate Code (7)",
+            // ... باقي الترجمات السابقة (desc1, labT, ... )
+            desc1: `...`, // ضع هنا الوصف السابق لـ t1
+            labT: "BaBa-ln x Refined Formula Lab",
+            labD: "Test prime density between 9,999,995,824,729 and 10,000,002,149,284...",
+            calc: "Calculate", lbl: "Enter X:", cres: "Classical:", bres: "BaBa-ln x:", fld: "Fold"
+        },
+        ar: {
+            logo: "مختبر تناغم الأولية",
+            foot: "المؤلفون المشرفون:",
+            t1: "أعمدة الإحتمالات", t2: "خاصية التكرار", t3: "خاصية الطي",
+            t4: "المطوية السداسية", t5: "مطوية الـ 5#", t6: "النصف الحقيقي",
+            t7: "النصف التمثيلي", t8: "تحسين بابا-لن إكس",
+            recurrenceTitle: "خصائص نمط الأوليات: خاصية التكرار التفاعلية",
+            recurrenceDesc: `<p>تكشف هذه الخاصية توليد الأوليات والفجوات وتكرارها وفق صيغة الجداول p#. نرى المواقع الثابتة للأوليات في كل صيغة مثل:</p>
+                <ul style="color: var(--accent); font-weight: bold;">
+                    <li>نظام السداسي: 6k ± 1</li>
+                    <li>نظام الثلاثيني: 30k ± (1, 7, 11, 13)</li>
+                </ul>
+                <p>من خلال هذا المختبر، نراقب دور <b>ZeRo BlAdEs</b> (شفرات الزيرو) في كل جدول، ونكشف عن <b>ColumN HeaDs</b> (رؤوس أعمدة الاحتمالات) في كل مرحلة بيقين تام.</p>`,
+            sub3Title: "مختبر ولادة السداسي (2# → 3#)",
+            sub5Title: "مختبر التحول الثلاثيني (3# → 5#)",
+            sub7Title: "مختبر الـ 210 الموحد (5# → 7#)",
+            btn1sub3: "تجميع السداسي",
+            btn2sub3: "تفعيل شفرة (3)",
+            btn1sub5: "تجميع الثلاثيني",
+            btn2sub5: "تفعيل شفرة (5)",
+            btn1sub7: "تجميع الـ 210",
+            btn2sub7: "تفعيل شفرة (7)",
+            desc1: `...`, // وصف t1 بالعربي
+            labT: "مختبر معادلة بابا-لن إكس المحسنة",
+            labD: "اختبر كثافة الأعداد الأولية في النطاق ...",
+            calc: "احسب", lbl: "أدخل X:", cres: "الكلاسيكية:", bres: "بابا-لن إكس:", fld: "طي"
+        },
+        fr: {
+            // يمكنك ملؤه لاحقاً، أو اتركه مؤقتاً مثل الإنجليزي
+            logo: "Labo Rime des Primes",
+            foot: "Auteurs Superviseurs :",
+            t1: "Colonnes de Probabilité", t2: "Propriété de Récurrence", t3: "Propriété de Pliage",
+            t4: "Dossier Hexagonal", t5: "Dossier Primorial 5#", t6: "Pliages Mi-Réels",
+            t7: "Pliages Mi-Grille", t8: "BaBa-ln x Raffiné",
+            recurrenceTitle: "Propriété de Récurrence Interactive",
+            recurrenceDesc: `<p>Cette propriété révèle la génération des nombres premiers et des écarts selon les tables p#. Nous voyons les positions fixes des nombres premiers dans chaque formule :</p>
+                <ul style="color: var(--accent); font-weight: bold;">
+                    <li>Système hexagonal : 6k ± 1</li>
+                    <li>Système 30 : 30k ± (1, 7, 11, 13)</li>
+                </ul>
+                <p>Dans ce laboratoire, nous observons le rôle des <b>ZeRo BlAdEs</b> et révélons les <b>ColumN HeaDs</b> avec certitude absolue.</p>`,
+            sub3Title: "Labo de Naissance Hexagonale (2# → 3#)",
+            sub5Title: "Labo de Transformation Trente (3# → 5#)",
+            sub7Title: "Labo Unifié 210 (5# → 7#)",
+            btn1sub3: "Unifier Hexagonal",
+            btn2sub3: "Activer Code (3)",
+            btn1sub5: "Unifier Trente",
+            btn2sub5: "Activer Code (5)",
+            btn1sub7: "Unifier 210",
+            btn2sub7: "Activer Code (7)",
+            fld: "Plier"
+        }
     };
 
     function setLang(lang) {
