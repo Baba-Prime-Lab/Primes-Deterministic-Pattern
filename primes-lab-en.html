@@ -56,42 +56,40 @@
     <div id="t6" class="tab-content"> <!-- محتوى التبويب السادس --> </div>
     <div id="t7" class="tab-content"> <!-- محتوى التبويب السابع --> </div>
     <div id="t8" class="tab-content"> <div class="model-card">
-    <h2 style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px;">BaBa-ln x Refined Formula</h2>
+    <h2 style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px;">BaBa-ln x Refined (Precision Interval)</h2>
     
-    <!-- Explanation Box -->
-    <div style="background: #eef2f7; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #3498db; text-align: left;">
-        <p style="margin: 0; line-height: 1.8; color: #2c3e50;">
-            This calculator demonstrates the <b>BaBa Refined Formula</b>. At the range of <b>10<sup>13</sup></b>, 
-            while the classical <b>(x/ln x)</b> formula deviates by billions, this refined model uses the precision factor <b>m</b> 
-            to reduce the error to only <b>251.09</b>.
-        </p>
+    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-right: 5px solid #ffca28; text-align: left; font-size: 0.95rem;">
+        <strong>Scientific Note:</strong> This formula operates within the precision interval defined by the boundaries of <b>√10<sup>13</sup></b>. The factor <i>m</i> synchronizes the logarithmic curve with the actual deterministic density.
     </div>
 
-    <!-- Calculator Interface -->
-    <div style="max-width: 600px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 15px; border: 1px solid #ddd; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
-        <div style="margin-bottom: 25px; text-align: center;">
-            <label style="display: block; font-weight: bold; margin-bottom: 10px; color: var(--primary);">Enter Value (X):</label>
-            <input type="number" id="baba-x-val" value="10000000000000" style="width: 80%; padding: 12px; font-size: 1.2rem; border: 2px solid #3498db; border-radius: 8px; text-align: center; font-weight: bold;">
+    <div style="max-width: 650px; margin: auto; background: #fff; padding: 25px; border-radius: 15px; border: 1px solid #ddd; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <label style="font-weight: bold; color: var(--primary);">Target Range (X):</label>< border-bottom: 1px dashed #ccc; padding-bottom: 10px;>
+            <input type="number" id="baba-x-val" value="10000000000000" oninput="updateInterval()" style="width: 70%; padding: 12px; font-size: 1.3rem; border: 2px solid var(--primary); border-radius: 8px; text-align: center;">
         </div>
 
-        <button onclick="runBabaLab()" style="width: 100%; padding: 15px; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s;">
-            Calculate Precision
-        </button>
+        <!-- إظهار طرفي المساحة (The Boundaries) -->
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-family: monospace; color: #666; background: #f9f9f9; padding: 10px; border-radius: 6px;">
+            <div>Lower Bound (√X): <span id="lower-bound" style="color:var(--accent)">-</span></div>
+            <div>Upper Bound (X): <span id="upper-bound" style="color:var(--accent)">-</span></div>
+        </div>
 
-        <div style="margin-top: 30px; display: grid; gap: 15px;">
-            <div style="padding: 15px; background: #fdf2f2; border-radius: 8px; border: 1px solid #fab1a0;">
-                <small style="color: #d63031; font-weight: bold;">Classical (x / ln x)</small>
-                <div id="classic-res" style="font-size: 1.4rem; font-weight: bold; color: #2d3436;">0</div>
+        <button onclick="runBabaLab()" style="width: 100%; padding: 15px; background: var(--primary); color: gold; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Calculate Precision</button>
+
+        <!-- النتائج -->
+        <div id="results-area" style="margin-top: 25px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div style="padding: 15px; border: 1px solid #eee; border-radius: 8px; text-align: center;">
+                <small>Classical x/ln x</small>
+                <div id="classic-res" style="font-size: 1.2rem; font-weight: bold;">0</div>
             </div>
-            <div style="padding: 15px; background: #f2fdf5; border-radius: 8px; border: 1px solid #55efc4;">
-                <small style="color: #00b894; font-weight: bold;">BaBa Refined (Result)</small>
-                <div id="baba-res" style="font-size: 1.4rem; font-weight: bold; color: #2d3436;">0</div>
+            <div style="padding: 15px; border: 2px solid #27ae60; border-radius: 8px; text-align: center; background: #f2faf5;">
+                <small style="color: #27ae60; font-weight: bold;">BaBa Refined</small>
+                <div id="baba-res" style="font-size: 1.2rem; font-weight: bold; color: #2c3e50;">0</div>
             </div>
         </div>
     </div>
 </div>
- </div>
-</div>
+
 
 
     <!-- Tab 1: Probability -->
@@ -190,6 +188,16 @@ function openTab(evt, tabName) {
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
 }
+function updateInterval() {
+    const x = parseFloat(document.getElementById('baba-x-val').value);
+    if (x > 0) {
+        document.getElementById('lower-bound').innerText = Math.sqrt(x).toLocaleString(undefined, {maximumFractionDigits: 2});
+        document.getElementById('upper-bound').innerText = x.toLocaleString();
+    }
+}
+
+// استدعاء الدالة عند تحميل الصفحة لأول مرة لتظهر الأرقام
+window.onload = updateInterval;
 
 
     // هنا تضع دوال الـ JavaScript الخاصة بكل نموذج (التي تولد المصفوفات)
