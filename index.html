@@ -83,18 +83,21 @@
         <div class="model-card" id="desc-t1"></div>
     </div>
 
-    <!-- t2 - Recurrence (مترجم) -->
+      <!-- t2 - Recurrence Property -->
     <div id="t2" class="tab-content">
         <div class="model-card">
             <h2 id="t2-main-title" style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px;"></h2>
+            
             <div id="recurrence-desc" style="background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 25px; line-height: 1.8;"></div>
 
+            <!-- أزرار اختيار الأنظمة -->
             <div class="btn-group" style="background: #eee; padding: 15px; border-radius: 50px; margin-bottom: 30px;">
-                <button onclick="showSubTab('sub-3')" id="btn-sub-3" style="background: var(--primary);">3#</button>
-                <button onclick="showSubTab('sub-5')" id="btn-sub-5">5#</button>
-                <button onclick="showSubTab('sub-7')" id="btn-sub-7">7#</button>
+                <button onclick="showSubTab('sub-3')" id="btn-sub-3" style="background: var(--primary);">نظام السداسي 3#</button>
+                <button onclick="showSubTab('sub-5')" id="btn-sub-5">نظام الثلاثيني 5#</button>
+                <button onclick="showSubTab('sub-7')" id="btn-sub-7">نظام السباعي 7#</button>
             </div>
 
+            <!-- sub-3: السداسي -->
             <div id="sub-3" class="sub-tab-content active-sub">
                 <h4 id="sub3-title" style="text-align:center;"></h4>
                 <div class="controls">
@@ -104,6 +107,7 @@
                 <div class="stage-wrapper"><div id="grid-3" class="grid-sub-container"></div></div>
             </div>
 
+            <!-- sub-5: الثلاثيني -->
             <div id="sub-5" class="sub-tab-content" style="display:none;">
                 <h4 id="sub5-title" style="text-align:center;"></h4>
                 <div class="controls">
@@ -113,16 +117,25 @@
                 <div class="stage-wrapper"><div id="grid-5" class="grid-sub-container"></div></div>
             </div>
 
+            <!-- sub-7: السباعي 210 (النموذج الجديد) -->
             <div id="sub-7" class="sub-tab-content" style="display:none;">
                 <h4 id="sub7-title" style="text-align:center;"></h4>
-                <div class="controls">
-                    <button onclick="unifyTo210()">1. <span id="btn1-sub7"></span></button>
-                    <button onclick="activate7Code()">2. <span id="btn2-sub7"></span></button>
+                
+                <div style="background: white; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                    <div class="controls" style="margin-bottom: 15px;">
+                        <button onclick="unifyTo210()">1. تجميع الـ 210</button>
+                        <button onclick="activate7Code()">2. تفعيل شفرة (7) وحسم [7-47]</button>
+                        <button onclick="reset210Grid()">إعادة تعيين</button>
+                    </div>
+                    
+                    <div class="grid-wrapper" style="width: 100%; overflow-x: auto; background: white; padding: 10px 0; border: 1px solid #ddd; border-radius: 6px;">
+                        <div id="grid-210" style="display: flex; flex-direction: column; gap: 1px; width: fit-content; direction: ltr !important;"></div>
+                    </div>
                 </div>
-                <div class="stage-wrapper"><div id="grid-7" class="grid-sub-container"></div></div>
             </div>
         </div>
 
+        <!-- النسخة الإنجليزية -->
         <div class="model-card">
             <h2 id="title-t2">Recurrence</h2>
             <p id="desc-t2"></p>
@@ -390,6 +403,88 @@
     }
 
     // ==================== تشغيل الصفحة ====================
+    // ==================== نموذج الـ 210 (7#) ====================
+    let grid210Initialized = false;
+
+    function init210Grid() {
+        if (grid210Initialized) return;
+        grid210Initialized = true;
+
+        const container = document.getElementById('grid-210');
+        const rows = 15;
+        const isP30 = (n) => [1, 7, 11, 13, 17, 19, 23, 29].includes(n % 30);
+        const primesTo47 = [7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
+
+        for (let r = 0; r < rows; r++) {
+            const rowWrapper = document.createElement('div');
+            rowWrapper.className = 'row-wrapper';
+            rowWrapper.id = `row210-${r}`;
+            rowWrapper.style.display = 'flex';
+            rowWrapper.style.gap = '6px';
+            rowWrapper.style.height = '18px';
+            rowWrapper.style.transition = '0.8s';
+
+            for (let b = 0; b < 7; b++) {
+                const block = document.createElement('div');
+                block.className = 'thirty-block';
+                block.id = `block210-${r}-${b}`;
+                block.style.display = 'flex';
+                block.style.gap = '1px';
+                block.style.border = '0.5px dashed #ddd';
+
+                for (let c = 1; c <= 30; c++) {
+                    const num = (r * 210) + (b * 30) + c;
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.id = `cell210-${num}`;
+                    cell.style.width = '6.3px';
+                    cell.style.height = '17px';
+                    cell.style.background = '#fff';
+                    cell.style.border = 'none';
+                    cell.style.margin = '0';
+                    cell.style.padding = '0';
+                    cell.style.transition = '0.4s';
+                    cell.style.boxSizing = 'border-box';
+
+                    if ([2, 3, 5].includes(num)) cell.classList.add('zero-blade');
+                    if (isP30(num)) cell.classList.add('is-head');
+
+                    block.appendChild(cell);
+                }
+                rowWrapper.appendChild(block);
+            }
+            container.appendChild(rowWrapper);
+        }
+    }
+
+    function unifyTo210() {
+        init210Grid();
+        for (let r = 0; r < 15; r++) {
+            const row = document.getElementById(`row210-${r}`);
+            if (row) row.classList.add('unified-row');
+            const blocks = document.querySelectorAll(`#row210-${r} .thirty-block`);
+            blocks.forEach(blk => blk.style.border = "none");
+        }
+    }
+
+    function activate7Code() {
+        unifyTo210();
+        const b7 = document.getElementById('cell210-7');
+        if (b7) b7.classList.add('zero-blade');
+
+        for (let i = 1; i <= 15 * 210; i++) {
+            const cell = document.getElementById(`cell210-${i}`);
+            if (!cell) continue;
+            if (i % 7 === 0 && i !== 7) cell.classList.add('faded');
+            if ([7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47].includes(i)) {
+                cell.classList.add('confirmed');
+            }
+        }
+    }
+
+    function reset210Grid() {
+        location.reload();   // أو يمكنك عمل تنظيف أنظف لاحقاً
+    }
     window.onload = () => {
         runBabaLab();
         setLang('en');
