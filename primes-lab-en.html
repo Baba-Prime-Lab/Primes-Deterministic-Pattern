@@ -166,7 +166,48 @@
     </div>
 
     <!-- Tab 2: Recurrence Property -->
+        <!-- Tab 2: Recurrence Property -->
     <div id="t2" class="tab-content">
+        <div class="model-card">
+            <h2>Recurrence Property</h2>
+            <p>This property reveals the generation of primes and gaps and their recurrence according to primorial (p#) tables with absolute certainty.</p>
+            
+            <div class="btn-group">
+                <button onclick="showSubTab('sub-3')" id="btn-sub-3">3# Hexagonal System</button>
+                <button onclick="showSubTab('sub-5')" id="btn-sub-5">5# Thirty System</button>
+                <button onclick="showSubTab('sub-7')" id="btn-sub-7" style="background: var(--accent);">7# 210 System</button>
+            </div>
+
+            <!-- Sub-3 -->
+            <div id="sub-3" class="sub-tab-content" style="display: none;">
+                <h4>Hexagonal System (3#)</h4>
+                <p>Content will be added soon...</p>
+            </div>
+
+            <!-- Sub-5 -->
+            <div id="sub-5" class="sub-tab-content" style="display: none;">
+                <h4>Thirty System (5#)</h4>
+                <p>Content will be added soon...</p>
+            </div>
+
+            <!-- Sub-7: 210 Model (النموذج الذي تريده) -->
+            <div id="sub-7" class="sub-tab-content">
+                <h4>210 Unified Lab (7#) - Deterministic Overlap</h4>
+                
+                <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0; border: 1px solid #ddd;">
+                    <div class="btn-group" style="margin-bottom: 20px;">
+                        <button onclick="unifyTo210()">1. Unify to 210</button>
+                        <button onclick="activate7Code()">2. Activate Code (7) - Mark [7-47]</button>
+                        <button onclick="reset210Grid()">Reset Grid</button>
+                    </div>
+                    
+                    <div style="overflow-x: auto; background: #fff; padding: 15px; border: 1px solid #eee; border-radius: 8px;">
+                        <div id="grid-210" style="display: flex; flex-direction: column; gap: 3px; width: fit-content; margin: 0 auto;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
         <div class="model-card">
             <h2>Recurrence Property</h2>
             <p>This property reveals the generation of primes and gaps according to primorial (p#) tables with absolute certainty.</p>
