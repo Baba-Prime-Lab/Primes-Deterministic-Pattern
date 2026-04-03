@@ -107,7 +107,53 @@
     }
 </style>
 
-    <div id="t5" class="tab-content"> <!-- محتوى التبويب الخامس --> </div>
+    <div id="t5" class="tab-content"> <div class="model-card" style="background: white; border-radius: 12px; padding: 20px; text-align: center; min-height: 900px; overflow: hidden; border: 1px solid #ddd;">
+    <h2 style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px;">Primorial 5# Folder (105-Unit)</h2>
+    <p style="color: #666; margin-bottom: 20px;">Deterministic 105-unit folding with Zigzag row distribution.</p>
+
+    <!-- أزرار التحكم في طي الـ 105 -->
+    <div class="btn-group" style="display: flex; gap: 8px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap;">
+        <button class="fold-btn" onclick="toggleS(1)">15</button>
+        <button class="fold-btn" onclick="toggleS(2)">30</button>
+        <button class="fold-btn" onclick="toggleS(3)">45</button>
+        <button class="fold-btn" onclick="toggleS(4)">60</button>
+        <button class="fold-btn" onclick="toggleS(5)">75</button>
+        <button class="fold-btn" onclick="toggleS(6)">90</button>
+        <button class="fold-btn" onclick="resetS()" style="background: #e74c3c; color: white;">Reset</button>
+    </div>
+    
+    <!-- مسرح العرض الكبير -->
+    <div id="stage-105" class="stage-container" style="position: relative; width: 100%; height: 750px; perspective: 6000px; overflow: auto; background: #fafafa; border-radius: 8px; border: 1px solid #eee;">
+        <!-- سيتم توليد الـ 105 وحدات هنا -->
+    </div>
+</div>
+
+<style>
+    /* تنسيقات المطوية الملكية 105 */
+    .row-105 { position: absolute; display: flex; transform-style: preserve-3d; transition: 3s; left: 20px; }
+    .f-unit { display: flex; transform-style: preserve-3d; transition: transform 2.5s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: left center; }
+    
+    .cell-105 { 
+        width: 12px; height: 35px; background: white; color: black; 
+        display: flex; align-items: center; justify-content: center; 
+        font-weight: bold; border: 0.1px solid #ddd; font-size: 7px; flex-shrink: 0; 
+    }
+
+    .p-col-105 { background: #3498db !important; color: white !important; }
+    .h-half { background: #f1c40f !important; width: 6px; border: 0.5px solid #d4ac0d; }
+
+    /* ميكانيكا الطي المتتابع */
+    .s1 .f-15 { transform: rotateY(-180deg); } 
+    .s2 .f-30 { transform: rotateY(180deg); }  
+    .s3 .f-45 { transform: rotateY(-180deg); } 
+    .s4 .f-60 { transform: rotateY(180deg); }
+    .s5 .f-75 { transform: rotateY(-180deg); }
+    .s6 .f-90 { transform: rotateY(180deg); }
+
+    .fold-btn { padding: 8px 15px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; font-weight: bold; }
+    .fold-btn:hover { background: gold; }
+</style>
+ </div>
     <div id="t6" class="tab-content"> <!-- محتوى التبويب السادس --> </div>
     <div id="t7" class="tab-content"> <!-- محتوى التبويب السابع --> </div>
     <div id="t8" class="tab-content"> <div class="model-card">
@@ -258,6 +304,58 @@ function resetFolds() {
     const stage = document.getElementById('folder-stage');
     stage.classList.remove('is-folded-1', 'is-folded-2', 'is-folded-3', 'is-folded-4');
 }
+function init105Folder() {
+    const stage = document.getElementById('stage-105');
+    if(!stage) return;
+    stage.innerHTML = '';
+
+    function isPrime30(n) {
+        let m = n % 30;
+        return [1, 7, 11, 13, 17, 19, 23, 29].includes(m);
+    }
+
+    for (let r = 0; r < 12; r++) {
+        const row = document.createElement('div');
+        row.className = 'row-105';
+        row.style.top = (r * 50) + 'px';
+        
+        let rowNums = [];
+        let startNum = r * 105;
+        for (let i = startNum; i <= startNum + 105; i++) rowNums.push(i);
+        
+        // تطبيق قانون الزقزاق (Zigzag)
+        if (r % 2 !== 0) rowNums.reverse();
+
+        let html = `<div class="f-unit">`;
+        for (let s = 0; s < 7; s++) {
+            let segment = rowNums.slice(s * 15, (s * 15) + 16);
+            if (s > 0) html += `<div class="f-unit f-${s * 15}">`;
+            
+            html += `<div class="h-half"></div>`; // مفصل أيسر
+            for (let i = 1; i < 15; i++) {
+                let n = segment[i];
+                let cls = isPrime30(n) ? "p-col-105" : "";
+                html += `<div class="cell-105 ${cls}">${n}</div>`;
+            }
+            html += `<div class="h-half"></div>`; // مفصل أيمن
+        }
+        html += `</div>`.repeat(7);
+        row.innerHTML = html;
+        stage.appendChild(row);
+    }
+}
+
+function toggleS(n) { document.getElementById('t5').classList.toggle('s' + n); }
+function resetS() { 
+    const t5 = document.getElementById('t5');
+    for(let i=1; i<=6; i++) t5.classList.remove('s'+i);
+}
+
+// تحديث الاستدعاء عند التحميل ليشمل النموذج الجديد
+window.addEventListener('load', () => {
+    if(typeof initHexFolder === 'function') initHexFolder();
+    init105Folder();
+});
 
 // تشغيل التوليد عند تحميل الصفحة
 window.addEventListener('load', initHexFolder);
