@@ -7,13 +7,13 @@
     <style>
         :root { --primary: #2c3e50; --accent: #c0392b; --bg: #f4f7f6; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; }
-        header { background: white; padding: 15px 5%; border-bottom: 2px solid #eee; display: flex; justify-content: space-between; }
+        header { background: white; padding: 15px 5%; border-bottom: 2px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .container { max-width: 1400px; margin: 20px auto; padding: 0 20px; }
         
-        .tabs-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px; border-bottom: 2px solid #ddd; justify-content: center; }
-        .tab-btn { padding: 12px 20px; cursor: pointer; border: none; background: #eee; border-radius: 8px 8px 0 0; font-weight: bold; }
-        .tab-btn.active { background: var(--primary); color: gold; border-bottom: 4px solid var(--accent); }
-        .tab-content { display: none; background: white; padding: 30px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-height: 800px; }
+        .tabs-nav { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #ddd; }
+        .tab-btn { padding: 10px 15px; cursor: pointer; border: none; background: #eee; font-weight: bold; border-radius: 5px 5px 0 0; font-size: 0.9rem; }
+        .tab-btn.active { background: var(--primary); color: gold; border-bottom: 3px solid var(--accent); }
+        .tab-content { display: none; background: white; padding: 25px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-height: 700px; overflow: hidden; }
         .tab-content.active { display: block; }
 
         /* Folders Style */
@@ -30,30 +30,41 @@
         .s5 .f-75 { transform: rotateY(-180deg); }
         .s6 .f-90 { transform: rotateY(180deg); }
 
-        .action-btn { padding: 10px 20px; cursor: pointer; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: bold; }
+        .action-btn { padding: 8px 16px; cursor: pointer; background: var(--primary); color: white; border: none; border-radius: 4px; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <header>
     <div style="font-weight:bold; font-size:1.2rem;">Albaba & Baba Research Lab</div>
-    <a href="../index.html" style="color:var(--accent); text-decoration:none;">← Back to Main Page</a>
+    <a href="../index.html" style="color:var(--accent); text-decoration:none; font-weight:bold;">← Back</a>
 </header>
 
 <div class="container">
+    <!-- الترتيب الكامل للثمانية أزرار كما طلبت -->
     <div class="tabs-nav">
-        <button class="tab-btn" onclick="openTab(event, 't1')">1. Probability</button>
-        <button class="tab-btn" onclick="openTab(event, 't4')">4. Hex Folder</button>
-        <button class="tab-btn" onclick="openTab(event, 't5')">5. 105 Folder</button>
-        <button class="tab-btn active" onclick="openTab(event, 't8')">8. BaBa-ln x Refined</button>
+        <button class="tab-btn active" onclick="openTab(event, 't1')">1. Probability Columns</button>
+        <button class="tab-btn" onclick="openTab(event, 't2')">2. Recurrence Property</button>
+        <button class="tab-btn" onclick="openTab(event, 't3')">3. Folding Property</button>
+        <button class="tab-btn" onclick="openTab(event, 't4')">4. Hexagonal Folder</button>
+        <button class="tab-btn" onclick="openTab(event, 't5')">5. Primorial 5# Folder</button>
+        <button class="tab-btn" onclick="openTab(event, 't6')">6. Mid-Real Folds</button>
+        <button class="tab-btn" onclick="openTab(event, 't7')">7. Mid-Grid Folds</button>
+        <button class="tab-btn" onclick="openTab(event, 't8')">8. BaBa-ln x Refined</button>
     </div>
 
-    <div id="t1" class="tab-content"><h2>Probability Explorer</h2><p>Coming Soon...</p></div>
+    <div id="t1" class="tab-content active">
+        <h2>Probability Columns</h2>
+        <p>Main explorer for deterministic prime distribution.</p>
+    </div>
 
-    <!-- Tab 4: Hex Folder -->
+    <div id="t2" class="tab-content"><h2>Recurrence Property</h2><p>Deterministic recurrence models will be placed here.</p></div>
+    <div id="t3" class="tab-content"><h2>Folding Property</h2><p>Folding models explorer.</p></div>
+
+    <!-- Tab 4: Hexagonal Folder -->
     <div id="t4" class="tab-content">
         <div style="text-align: center;">
-            <h2>15-Unit Hexagonal Folder</h2>
+            <h2>Hexagonal 15-Unit Folder</h2>
             <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 30px;">
                 <button class="action-btn" onclick="toggleT4('is-folded-1')">Fold 3</button>
                 <button class="action-btn" onclick="toggleT4('is-folded-2')">Fold 6</button>
@@ -65,10 +76,10 @@
         </div>
     </div>
 
-    <!-- Tab 5: 105 Folder -->
+    <!-- Tab 5: Primorial 5# Folder -->
     <div id="t5" class="tab-content">
         <div style="text-align: center;">
-            <h2>105-Unit Primorial 5# Folder</h2>
+            <h2>Primorial 5# Folder (105-Unit)</h2>
             <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 25px; flex-wrap: wrap;">
                 <button class="action-btn" onclick="toggleT5(1)">15</button>
                 <button class="action-btn" onclick="toggleT5(2)">30</button>
@@ -82,15 +93,18 @@
         </div>
     </div>
 
+    <div id="t6" class="tab-content"></div>
+    <div id="t7" class="tab-content"></div>
+
     <!-- Tab 8: BaBa-ln x -->
-    <div id="t8" class="tab-content active">
+    <div id="t8" class="tab-content">
         <div style="max-width: 700px; margin: auto;">
-            <h2>BaBa-ln x Refined Formula</h2>
+            <h2 style="text-align:center;">BaBa-ln x Refined Formula</h2>
             <div style="background: #eef2f7; padding: 20px; border-left: 5px solid #3498db; text-align: left; margin-bottom: 20px;">
                 <p><strong>Note:</strong> At 10<sup>13</sup>, actual primes: 346,065,536,839. This formula reduces error to <b>251.09</b> using factor <b>m</b>.</p>
             </div>
             <div style="border: 1px solid #ddd; padding: 30px; border-radius: 15px; text-align: center;">
-                <label>Enter X Value:</label><br>
+                <label style="font-weight:bold;">Enter X Value:</label><br>
                 <input type="number" id="bx" value="10000000000000" oninput="calcBaba()" style="width: 80%; padding: 12px; margin: 20px 0; font-size: 1.3rem; text-align: center; border: 2px solid #3498db; border-radius: 8px;">
                 <div style="display: flex; justify-content: space-around; background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                     <div>Lower Bound:<br><b id="low" style="color:red">-</b></div>
@@ -106,7 +120,7 @@
 </div>
 
 <script>
-    const p30 =;
+    const p30 = [1, 7, 11, 13, 17, 19, 23, 29];
 
     function openTab(e, n) {
         let c = document.getElementsByClassName("tab-content");
@@ -117,10 +131,12 @@
         e.currentTarget.classList.add("active");
         if(n === 't4') initHex();
         if(n === 't5') init105();
+        if(n === 't8') calcBaba();
     }
 
     function calcBaba() {
         const x = parseFloat(document.getElementById('bx').value);
+        if(!x) return;
         const m = 0.965345122765404763;
         const classic = x / Math.log(x);
         document.getElementById('cres').innerText = Math.round(classic).toLocaleString();
@@ -164,7 +180,8 @@
     function toggleT5(n) { document.getElementById('t5').classList.toggle('s'+n); }
     function resetT5() { let t=document.getElementById('t5'); for(let i=1; i<=6; i++) t.classList.remove('s'+i); }
     
-    window.onload = calcBaba;
+    // تشغيل الحسابات تلقائياً عند فتح الصفحة
+    window.onload = function() { calcBaba(); };
 </script>
 </body>
 </html>
