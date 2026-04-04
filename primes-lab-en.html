@@ -1,373 +1,170 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deterministic Prime Pattern Lab</title>
     <style>
-        :root { --primary: #2c3e50; --accent: #c0392b; --bg: #f4f7f6; --text: #333; }
+        :root { --primary: #2c3e50; --accent: #c0392b; --bg: #f4f7f6; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; }
         header { background: white; padding: 15px 5%; border-bottom: 2px solid #eee; display: flex; justify-content: space-between; }
         .container { max-width: 1400px; margin: 20px auto; padding: 0 20px; }
         
-        /* تسيير التبويبات */
-        .tabs-nav { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #ddd; }
-        .tab-btn { padding: 10px 15px; cursor: pointer; border: none; background: #eee; font-weight: bold; border-radius: 5px 5px 0 0; }
-        .tab-btn.active { background: var(--primary); color: gold; border-bottom: 3px solid var(--accent); }
-        .tab-content { display: none; background: white; padding: 20px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .tabs-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px; border-bottom: 2px solid #ddd; justify-content: center; }
+        .tab-btn { padding: 12px 20px; cursor: pointer; border: none; background: #eee; border-radius: 8px 8px 0 0; font-weight: bold; }
+        .tab-btn.active { background: var(--primary); color: gold; border-bottom: 4px solid var(--accent); }
+        .tab-content { display: none; background: white; padding: 30px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-height: 800px; }
         .tab-content.active { display: block; }
 
-        /* تنسيق الشبكة (Grid) المشترك لجميع النماذج */
-        .grid-matrix { display: grid; gap: 2px; margin-top: 20px; overflow: auto; background: #eee; padding: 10px; border-radius: 8px; }
-        .cell { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: white; font-size: 0.8rem; border-radius: 3px; }
-        .prime { background: #27ae60; color: white; font-weight: bold; }
-        .composite { color: #ccc; }
+        /* Folders Style */
+        .f-unit { display: flex; transform-style: preserve-3d; transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: left center; }
+        .cell { display: flex; align-items: center; justify-content: center; font-weight: bold; border: 1px solid #ddd; background: white; }
+        .p-blue { background: #3498db !important; color: white !important; }
+        .h-gold { background: #f1c40f !important; border: 1px solid #d4ac0d !important; }
         
-        .btn-group { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-        button.action-btn { padding: 8px 16px; cursor: pointer; background: var(--primary); color: white; border: none; border-radius: 4px; }
+        /* Animation Classes */
+        .is-folded-1 .f3-6, .s1 .f-15 { transform: rotateY(-180deg); }
+        .is-folded-2 .f6-9, .s2 .f-30 { transform: rotateY(180deg); }
+        .is-folded-3 .f9-12, .s3 .f-45 { transform: rotateY(-180deg); }
+        .is-folded-4 .f12-15, .s4 .f-60 { transform: rotateY(180deg); }
+        .s5 .f-75 { transform: rotateY(-180deg); }
+        .s6 .f-90 { transform: rotateY(180deg); }
+
+        .action-btn { padding: 10px 20px; cursor: pointer; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <header>
     <div style="font-weight:bold; font-size:1.2rem;">Albaba & Baba Research Lab</div>
-    <a href="../index.html" style="color:var(--accent); text-decoration:none;">← Back</a>
+    <a href="../index.html" style="color:var(--accent); text-decoration:none;">← Back to Main Page</a>
 </header>
 
 <div class="container">
-    <!-- Main Tabs: شريط التنقل بين الأقسام الثمانية -->
     <div class="tabs-nav">
-        <button class="tab-btn active" onclick="openTab(event, 't1')">1. Probability Columns</button>
-        <button class="tab-btn" onclick="openTab(event, 't2')">2. Recurrence Property</button>
-        <button class="tab-btn" onclick="openTab(event, 't3')">3. Folding Property</button>
-        <button class="tab-btn" onclick="openTab(event, 't4')">4. Hexagonal Folder</button>
-        <button class="tab-btn" onclick="openTab(event, 't5')">5. Primorial 5# Folder</button>
-        <button class="tab-btn" onclick="openTab(event, 't6')">6. Mid-Real Folds</button>
-        <button class="tab-btn" onclick="openTab(event, 't7')">7. Mid-Grid Folds</button>
-        <button class="tab-btn" onclick="openTab(event, 't8')">8. BaBa-ln x Refined</button>
+        <button class="tab-btn" onclick="openTab(event, 't1')">1. Probability</button>
+        <button class="tab-btn" onclick="openTab(event, 't4')">4. Hex Folder</button>
+        <button class="tab-btn" onclick="openTab(event, 't5')">5. 105 Folder</button>
+        <button class="tab-btn active" onclick="openTab(event, 't8')">8. BaBa-ln x Refined</button>
     </div>
 
-    <!-- هنا تبدأ صناديق المحتوى (حيث سنلصق النماذج لاحقاً) -->
-    <div id="t1" class="tab-content active"> <!-- محتوى التبويب الأول --> </div>
-    <div id="t2" class="tab-content"> <!-- محتوى التبويب الثاني --> </div>
-    <div id="t3" class="tab-content"> <!-- محتوى التبويب الثالث --> </div>
-    <div id="t4" class="tab-content"> <div class="model-card" style="background: white; border-radius: 12px; padding: 25px; text-align: center; min-height: 800px; overflow: hidden; border: 1px solid #ddd;">
-    <h2 style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px;">The Ultimate 15-Unit Folder</h2>
-    <p style="color: #666; margin-bottom: 30px;">Deterministic folding property across the 15-unit hexagonal grid.</p>
+    <div id="t1" class="tab-content"><h2>Probability Explorer</h2><p>Coming Soon...</p></div>
 
-    <!-- أزرار التحكم -->
-    <div class="btn-group" style="margin-bottom: 40px;">
-        <button class="fold-btn" onclick="toggleFold('is-folded-1')">Fold (3)</button>
-        <button class="fold-btn" onclick="toggleFold('is-folded-2')">Fold (6)</button>
-        <button class="fold-btn" onclick="toggleFold('is-folded-3')">Fold (9)</button>
-        <button class="fold-btn" onclick="toggleFold('is-folded-4')">Fold (12)</button>
-        <button class="fold-btn" onclick="resetFolds()" style="background: #e74c3c; color: white;">Reset All</button>
-    </div>
-    
-    <!-- مسرح العرض الفاتح -->
-    <div id="folder-stage" style="position: relative; width: 100%; height: 600px; perspective: 4000px; margin-top: 20px;">
-        <!-- يتم توليده عبر JavaScript -->
-    </div>
-</div>
-
-<style>
-    /* تنسيقات المطوية بالنمط الفاتح */
-    .row-container { position: absolute; width: 100%; display: flex; transform-style: preserve-3d; justify-content: center; }
-    
-    .cell-hex {
-        width: 45px; height: 45px; background: #fff; color: #333;
-        display: flex; align-items: center; justify-content: center;
-        font-weight: bold; border: 1px solid #ccc; font-size: 14px;
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
-    }
-    
-    /* لون الأعداد الأولية - أزرق مريح */
-    .p-col { background: #3498db !important; color: white !important; border-color: #2980b9 !important; }
-    
-    /* لون المفاصل - أصفر ذهبي */
-    .hng { background: #f1c40f !important; width: 22px; border: 1px solid #d4ac0d !important; color: #856404 !important; }
-
-    .fold-btn { 
-        padding: 10px 20px; cursor: pointer; background: #ecf0f1; 
-        color: #2c3e50; border-radius: 6px; border: 1px solid #bdc3c7; 
-        font-weight: bold; transition: 0.3s;
-    }
-    .fold-btn:hover { background: #dfe6e9; }
-
-    /* حركات الطي (ثابتة) */
-    .is-folded-1 .fold-layer-3-6 { transform: rotateY(-180deg); } 
-    .is-folded-2 .fold-layer-6-9 { transform: rotateY(180deg); }  
-    .is-folded-3 .fold-layer-9-12 { transform: rotateY(-180deg); } 
-    .is-folded-4 .fold-layer-12-15 { transform: rotateY(180deg); }
-    
-    .fold-layer-3-6, .fold-layer-6-9, .fold-layer-9-12, .fold-layer-12-15 {
-        display: flex; transform-style: preserve-3d;
-        transition: transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
-        transform-origin: left center;
-    }
-</style>
-
-    <div id="t5" class="tab-content"> <div class="model-card" style="background: white; border-radius: 12px; padding: 20px; text-align: center; min-height: 900px; overflow: hidden; border: 1px solid #ddd;">
-    <h2 style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px;">Primorial 5# Folder (105-Unit)</h2>
-    <p style="color: #666; margin-bottom: 20px;">Deterministic 105-unit folding with Zigzag row distribution.</p>
-
-    <!-- أزرار التحكم في طي الـ 105 -->
-    <div class="btn-group" style="display: flex; gap: 8px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap;">
-        <button class="fold-btn" onclick="toggleS(1)">15</button>
-        <button class="fold-btn" onclick="toggleS(2)">30</button>
-        <button class="fold-btn" onclick="toggleS(3)">45</button>
-        <button class="fold-btn" onclick="toggleS(4)">60</button>
-        <button class="fold-btn" onclick="toggleS(5)">75</button>
-        <button class="fold-btn" onclick="toggleS(6)">90</button>
-        <button class="fold-btn" onclick="resetS()" style="background: #e74c3c; color: white;">Reset</button>
-    </div>
-    
-    <!-- مسرح العرض الكبير -->
-    <div id="stage-105" class="stage-container" style="position: relative; width: 100%; height: 750px; perspective: 6000px; overflow: auto; background: #fafafa; border-radius: 8px; border: 1px solid #eee;">
-        <!-- سيتم توليد الـ 105 وحدات هنا -->
-    </div>
-</div>
-
-<style>
-    /* تنسيقات المطوية الملكية 105 */
-    .row-105 { position: absolute; display: flex; transform-style: preserve-3d; transition: 3s; left: 20px; }
-    .f-unit { display: flex; transform-style: preserve-3d; transition: transform 2.5s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: left center; }
-    
-    .cell-105 { 
-        width: 12px; height: 35px; background: white; color: black; 
-        display: flex; align-items: center; justify-content: center; 
-        font-weight: bold; border: 0.1px solid #ddd; font-size: 7px; flex-shrink: 0; 
-    }
-
-    .p-col-105 { background: #3498db !important; color: white !important; }
-    .h-half { background: #f1c40f !important; width: 6px; border: 0.5px solid #d4ac0d; }
-
-    /* ميكانيكا الطي المتتابع */
-    .s1 .f-15 { transform: rotateY(-180deg); } 
-    .s2 .f-30 { transform: rotateY(180deg); }  
-    .s3 .f-45 { transform: rotateY(-180deg); } 
-    .s4 .f-60 { transform: rotateY(180deg); }
-    .s5 .f-75 { transform: rotateY(-180deg); }
-    .s6 .f-90 { transform: rotateY(180deg); }
-
-    .fold-btn { padding: 8px 15px; cursor: pointer; background: #eee; border: 1px solid #ccc; border-radius: 5px; font-weight: bold; }
-    .fold-btn:hover { background: gold; }
-</style>
- </div>
-    <div id="t6" class="tab-content"> <!-- محتوى التبويب السادس --> </div>
-    <div id="t7" class="tab-content"> <!-- محتوى التبويب السابع --> </div>
-    <div id="t8" class="tab-content"> <div class="model-card">
-    <h2 style="color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px;">BaBa-ln x Refined (Precision Interval)</h2>
-    
-    <div style="background: #eef2f7; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #3498db; text-align: left;">
-        <p style="margin: 0; line-height: 1.8; color: #2c3e50;">
-            <strong>Scientific Insight:</strong> This formula achieves its peak precision within a specific deterministic interval. At <b>10<sup>13</sup></b>, the error is reduced to <b>251.09</b> by synchronizing the logarithmic curve with the actual density.
-        </p>
-    </div>
-
-    <div style="max-width: 650px; margin: auto; background: #fff; padding: 25px; border-radius: 15px; border: 1px solid #ddd; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
-        <div style="text-align: center; margin-bottom: 20px;">
-            <label style="font-weight: bold; color: var(--primary); display: block; margin-bottom: 10px;">Target Range (X):</label>
-            <input type="number" id="baba-x-val" value="10000000000000" oninput="updateBabaInterval()" style="width: 80%; padding: 12px; font-size: 1.3rem; border: 2px solid var(--primary); border-radius: 8px; text-align: center; font-weight: bold;">
-        </div>
-
-        <!-- إظهار طرفي المساحة الدقيقين -->
-        <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px dashed #ccc;">
-            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #555;">
-                <span>Lower Limit: <b id="lower-limit" style="color:var(--accent)">9,999,995,824,729</b></span>
-                <span>Upper Limit: <b id="upper-limit" style="color:var(--accent)">10,000,002,149,284</b></span>
-            </div>
-            <div style="text-align: center; font-size: 0.8rem; color: #888; margin-top: 10px;">(Interval of Maximum Precision)</div>
-        </div>
-
-        <button onclick="runBabaLab()" style="width: 100%; padding: 15px; background: var(--primary); color: gold; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1rem;">Calculate Precision</button>
-
-        <div style="margin-top: 25px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div style="padding: 15px; border: 1px solid #eee; border-radius: 8px; text-align: center; background: #fff;">
-                <small style="color: #e74c3c;">Classical x/ln x</small>
-                <div id="classic-res" style="font-size: 1.2rem; font-weight: bold; margin-top: 5px;">0</div>
-            </div>
-            <div style="padding: 15px; border: 2px solid #27ae60; border-radius: 8px; text-align: center; background: #f2faf5;">
-                <small style="color: #27ae60; font-weight: bold;">BaBa Refined</small>
-                <div id="baba-res" style="font-size: 1.2rem; font-weight: bold; color: #2c3e50; margin-top: 5px;">0</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-    <!-- Tab 1: Probability -->
-    <div id="t1" class="tab-content active">
-        <h2>Probability Columns</h2>
-        <p>Main explorer for deterministic prime distribution.</p>
-        <!-- الصق كود نموذج الأعمدة هنا -->
-    </div>
-
-    <!-- Tab 2: Recurrence Systems (The 3 Models) -->
-    <div id="t2" class="tab-content">
-        <h2>Recurrence Property</h2>
-        <div class="btn-group">
-            <button class="action-btn" onclick="showSub('sub3')">3# (Base 6)</button>
-            <button class="action-btn" onclick="showSub('sub5')">5# (Base 30)</button>
-            <button class="action-btn" onclick="showSub('sub7')">7# (Base 210)</button>
-        </div>
-        
-        <div id="sub3" class="sub-section">
-            <h3>Hexagonal Recurrence (3#)</h3>
-            <!-- الصق كود الـ 6n هنا -->
-        </div>
-        <div id="sub5" class="sub-section" style="display:none">
-            <h3>Thirty System (5#)</h3>
-            <!-- الصق كود الـ 30 هنا -->
-        </div>
-        <div id="sub7" class="sub-section" style="display:none">
-            <h3>210 Unified Lab (7#)</h3>
-            <!-- الصق كود الـ 210 هنا -->
-        </div>
-    </div>
-
-    <!-- Tab 3: Folding Property -->
-    <div id="t3" class="tab-content">
-        <h2>Folding Property Model</h2>
-        <!-- الصق كود المطوية الأولى هنا -->
-    </div>
-
-    <!-- Tab 4: Hexagonal Folder -->
+    <!-- Tab 4: Hex Folder -->
     <div id="t4" class="tab-content">
-        <h2>Hexagonal Folding Model</h2>
-        <!-- الصق كود المطوية الثانية هنا -->
+        <div style="text-align: center;">
+            <h2>15-Unit Hexagonal Folder</h2>
+            <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 30px;">
+                <button class="action-btn" onclick="toggleT4('is-folded-1')">Fold 3</button>
+                <button class="action-btn" onclick="toggleT4('is-folded-2')">Fold 6</button>
+                <button class="action-btn" onclick="toggleT4('is-folded-3')">Fold 9</button>
+                <button class="action-btn" onclick="toggleT4('is-folded-4')">Fold 12</button>
+                <button class="action-btn" onclick="resetT4()" style="background:#c0392b">Reset</button>
+            </div>
+            <div id="stage-hex" style="position:relative; height:600px; perspective:4000px;"></div>
+        </div>
+    </div>
+
+    <!-- Tab 5: 105 Folder -->
+    <div id="t5" class="tab-content">
+        <div style="text-align: center;">
+            <h2>105-Unit Primorial 5# Folder</h2>
+            <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 25px; flex-wrap: wrap;">
+                <button class="action-btn" onclick="toggleT5(1)">15</button>
+                <button class="action-btn" onclick="toggleT5(2)">30</button>
+                <button class="action-btn" onclick="toggleT5(3)">45</button>
+                <button class="action-btn" onclick="toggleT5(4)">60</button>
+                <button class="action-btn" onclick="toggleT5(5)">75</button>
+                <button class="action-btn" onclick="toggleT5(6)">90</button>
+                <button class="action-btn" onclick="resetT5()" style="background:#c0392b">Reset</button>
+            </div>
+            <div id="stage-105" style="position:relative; height:700px; perspective:6000px; overflow:auto; background:#f9f9f9; border:1px solid #eee;"></div>
+        </div>
+    </div>
+
+    <!-- Tab 8: BaBa-ln x -->
+    <div id="t8" class="tab-content active">
+        <div style="max-width: 700px; margin: auto;">
+            <h2>BaBa-ln x Refined Formula</h2>
+            <div style="background: #eef2f7; padding: 20px; border-left: 5px solid #3498db; text-align: left; margin-bottom: 20px;">
+                <p><strong>Note:</strong> At 10<sup>13</sup>, actual primes: 346,065,536,839. This formula reduces error to <b>251.09</b> using factor <b>m</b>.</p>
+            </div>
+            <div style="border: 1px solid #ddd; padding: 30px; border-radius: 15px; text-align: center;">
+                <label>Enter X Value:</label><br>
+                <input type="number" id="bx" value="10000000000000" oninput="calcBaba()" style="width: 80%; padding: 12px; margin: 20px 0; font-size: 1.3rem; text-align: center; border: 2px solid #3498db; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-around; background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <div>Lower Bound:<br><b id="low" style="color:red">-</b></div>
+                    <div>Upper Bound:<br><b id="up" style="color:red">-</b></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div style="padding:15px; border:1px solid #eee; border-radius:8px;">Classical (x/ln x):<br><b id="cres">-</b></div>
+                    <div style="padding:15px; border:2px solid #27ae60; border-radius:8px; background:#f2faf5;">BaBa Refined:<br><b id="bres" style="color:#27ae60">-</b></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-  // --- 1. وظيفة التنقل بين التبويبات الرئيسية ---
-function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tab-content");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-        tabcontent[i].classList.remove("active");
-    }
-    tablinks = document.getElementsByClassName("tab-btn");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    document.getElementById(tabName).classList.add("active");
-    evt.currentTarget.className += " active";
-    
-    // إعادة تشغيل المولدات لضمان الظهور
-    if(tabName === 't4') initHexFolder();
-    if(tabName === 't5') init105Folder();
-}
+    const p30 =;
 
-// --- 2. وظائف حاسبة بابا (t8) ---
-function updateBabaInterval() {
-    const xInput = document.getElementById('baba-x-val');
-    if(!xInput) return;
-    const x = parseFloat(xInput.value);
-    const low = document.getElementById('lower-limit');
-    const up = document.getElementById('upper-limit');
-    
-    if (x === 10000000000000) {
-        if(low) low.innerText = "9,999,995,824,729";
-        if(up) up.innerText = "10,000,002,149,284";
-    } else if (x > 0) {
-        if(low) low.innerText = Math.round(x - 4175271).toLocaleString();
-        if(up) up.innerText = Math.round(x + 2149284).toLocaleString();
+    function openTab(e, n) {
+        let c = document.getElementsByClassName("tab-content");
+        for (let i of c) i.style.display = "none";
+        let b = document.getElementsByClassName("tab-btn");
+        for (let i of b) i.classList.remove("active");
+        document.getElementById(n).style.display = "block";
+        e.currentTarget.classList.add("active");
+        if(n === 't4') initHex();
+        if(n === 't5') init105();
     }
-}
 
-function runBabaLab() {
-    const xVal = document.getElementById('baba-x-val');
-    if (!xVal) return;
-    const x = parseFloat(xVal.value);
-    const m = 0.965345122765404763;
-    const classic = x / Math.log(x);
-    const babaRefined = classic / m;
-    
-    const resC = document.getElementById('classic-res');
-    const resB = document.getElementById('baba-res');
-    if(resC) resC.innerText = Math.round(classic).toLocaleString();
-    if(resB) resB.innerText = Math.round(babaRefined).toLocaleString();
-}
-
-// --- 3. وظائف المطوية السداسية (t4) ---
-function initHexFolder() {
-    const stage = document.getElementById('folder-stage');
-    if(!stage) return;
-    stage.innerHTML = '';
-    for (let r = 0; r < 9; r++) {
-        const row = document.createElement('div');
-        row.className = 'row-container';
-        row.style.top = (r * 55) + 'px';
-        let b = r * 15;
-        row.innerHTML = `<div style="display:flex;transform-style:preserve-3d;"><div class="cell-hex hng">${b}</div><div class="cell-hex p-col">${b+1}</div><div class="cell-hex">${b+2}</div><div class="cell-hex hng">${b+3}</div><div class="fold-layer-3-6"><div class="cell-hex hng">${b+3}</div><div class="cell-hex">${b+4}</div><div class="cell-hex p-col">${b+5}</div><div class="cell-hex hng">${b+6}</div><div class="fold-layer-6-9"><div class="cell-hex hng">${b+6}</div><div class="cell-hex p-col">${b+7}</div><div class="cell-hex">${b+8}</div><div class="cell-hex hng">${b+9}</div><div class="fold-layer-9-12"><div class="cell-hex hng">${b+9}</div><div class="cell-hex">${b+10}</div><div class="cell-hex p-col">${b+11}</div><div class="cell-hex hng">${b+12}</div><div class="fold-layer-12-15"><div class="cell-hex hng">${b+12}</div><div class="cell-hex p-col">${b+13}</div><div class="cell-hex">${b+14}</div><div class="cell-hex hng">${b+15}</div></div></div></div></div></div>`;
-        stage.appendChild(row);
+    function calcBaba() {
+        const x = parseFloat(document.getElementById('bx').value);
+        const m = 0.965345122765404763;
+        const classic = x / Math.log(x);
+        document.getElementById('cres').innerText = Math.round(classic).toLocaleString();
+        document.getElementById('bres').innerText = Math.round(classic/m).toLocaleString();
+        document.getElementById('low').innerText = Math.round(x-4175271).toLocaleString();
+        document.getElementById('up').innerText = Math.round(x+2149284).toLocaleString();
     }
-}
-function toggleFold(cls) { 
-    const stg = document.getElementById('folder-stage');
-    if(stg) stg.classList.toggle(cls); 
-}
-function resetFolds() { 
-    const stg = document.getElementById('folder-stage');
-    if(stg) stg.className = ''; 
-}
 
-// --- 4. وظائف المطوية 105 (t5) ---
-function init105Folder() {
-    const stage = document.getElementById('stage-105');
-    if(!stage) return;
-    stage.innerHTML = '';
-    // الأرقام الاحتمالية في مود 30
-    const primeMod30 = [1, 7, 11, 13, 17, 19, 23, 29];
-    
-    for (let r = 0; r < 12; r++) {
-        const row = document.createElement('div');
-        row.className = 'row-105';
-        row.style.top = (r * 50) + 'px';
-        let nums = [];
-        for (let i = r*105; i <= (r*105)+105; i++) nums.push(i);
-        if (r % 2 !== 0) nums.reverse();
-        
-        let html = `<div class="f-unit">`;
-        for (let s = 0; s < 7; s++) {
-            let seg = nums.slice(s*15, (s*15)+16);
-            if (s > 0) html += `<div class="f-unit f-${s*15}">`;
-            html += `<div class="h-half"></div>`;
-            for (let i=1; i<15; i++) {
-                let n = seg[i];
-                let isP = primeMod30.includes(n % 30);
-                html += `<div class="cell-105 ${isP ? 'p-col-105' : ''}">${n}</div>`;
-            }
-            html += `<div class="h-half"></div>`;
+    function initHex() {
+        const s = document.getElementById('stage-hex'); s.innerHTML = '';
+        for (let r=0; r<9; r++) {
+            const rw = document.createElement('div');
+            rw.style.cssText = `position:absolute; top:${r*55}px; left:0; width:100%; display:flex; justify-content:center; transform-style:preserve-3d;`;
+            let b = r*15;
+            rw.innerHTML = `<div style="display:flex;transform-style:preserve-3d;"><div class="cell h-gold" style="width:22px;height:45px;">${b}</div><div class="cell p-blue" style="width:45px;height:45px;">${b+1}</div><div class="cell" style="width:45px;height:45px;">${b+2}</div><div class="cell h-gold" style="width:22px;height:45px;">${b+3}</div><div class="f-unit f3-6"><div class="cell h-gold" style="width:22px;height:45px;">${b+3}</div><div class="cell" style="width:45px;height:45px;">${b+4}</div><div class="cell p-blue" style="width:45px;height:45px;">${b+5}</div><div class="cell h-gold" style="width:22px;height:45px;">${b+6}</div><div class="f-unit f6-9"><div class="cell h-gold" style="width:22px;height:45px;">${b+6}</div><div class="cell p-blue" style="width:45px;height:45px;">${b+7}</div><div class="cell" style="width:45px;height:45px;">${b+8}</div><div class="cell h-gold" style="width:22px;height:45px;">${b+9}</div><div class="f-unit f9-12"><div class="cell h-gold" style="width:22px;height:45px;">${b+9}</div><div class="cell" style="width:45px;height:45px;">${b+10}</div><div class="cell p-blue" style="width:45px;height:45px;">${b+11}</div><div class="cell h-gold" style="width:22px;height:45px;">${b+12}</div><div class="f-unit f12-15"><div class="cell h-gold" style="width:22px;height:45px;">${b+12}</div><div class="cell p-blue" style="width:45px;height:45px;">${b+13}</div><div class="cell" style="width:45px;height:45px;">${b+14}</div><div class="cell h-gold" style="width:22px;height:45px;">${b+15}</div></div></div></div></div></div>`;
+            s.appendChild(rw);
         }
-        html += `</div>`.repeat(7);
-        row.innerHTML = html;
-        stage.appendChild(row);
     }
-}
-function toggleS(n) { 
-    const t5 = document.getElementById('t5');
-    if(t5) t5.classList.toggle('s' + n); 
-}
-function resetS() { 
-    const t5 = document.getElementById('t5');
-    if(t5) for(let i=1; i<=6; i++) t5.classList.remove('s'+i); 
-}
 
-// --- تشغيل كل شيء عند التحميل ---
-window.onload = function() {
-    updateBabaInterval();
-    runBabaLab();
-    initHexFolder();
-    init105Folder();
-};
+    function init105() {
+        const s = document.getElementById('stage-105'); s.innerHTML = '';
+        for (let r=0; r<12; r++) {
+            const rw = document.createElement('div');
+            rw.style.cssText = `position:absolute; top:${r*45}px; left:20px; display:flex; transform-style:preserve-3d; transition:3s;`;
+            let nums = []; for (let i=r*105; i<=r*105+105; i++) nums.push(i);
+            if(r%2!==0) nums.reverse();
+            let h = `<div class="f-unit">`;
+            for (let j=0; j<7; j++) {
+                let seg = nums.slice(j*15, j*15+16);
+                if(j>0) h += `<div class="f-unit f-${j*15}">`;
+                h += `<div class="cell h-gold" style="width:6px;height:35px;border:0.1px solid #ddd;"></div>`;
+                for (let k=1; k<15; k++) h += `<div class="cell ${p30.includes(seg[k]%30)?'p-blue':''}" style="width:12px;height:35px;font-size:7px;border:0.1px solid #eee;">${seg[k]}</div>`;
+                h += `<div class="cell h-gold" style="width:6px;height:35px;border:0.1px solid #ddd;"></div>`;
+            }
+            h += `</div>`.repeat(7); rw.innerHTML = h; s.appendChild(rw);
+        }
+    }
 
-    // هنا تضع دوال الـ JavaScript الخاصة بكل نموذج (التي تولد المصفوفات)
+    function toggleT4(c) { document.getElementById('t4').classList.toggle(c); }
+    function resetT4() { document.getElementById('t4').className = 'tab-content active'; }
+    function toggleT5(n) { document.getElementById('t5').classList.toggle('s'+n); }
+    function resetT5() { let t=document.getElementById('t5'); for(let i=1; i<=6; i++) t.classList.remove('s'+i); }
+    
+    window.onload = calcBaba;
 </script>
-
 </body>
 </html>
