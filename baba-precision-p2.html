@@ -2,19 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BaBa-LnX Interactive Atlas</title>
+    <title>Interactive Atlas</title>
     <style>
         :root { --bg: #f4f7f6; --side: #ffffff; --accent: #2c3e50; --gold: #b8860b; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; display: flex; height: 100vh; overflow: hidden; }
-        #left-sidebar { width: 330px; background: var(--side); padding: 20px; border-right: 1px solid #ddd; overflow-y: auto; }
+        
+        /* القائمة اليسرى */
+        #left-sidebar { width: 330px; background: var(--side); padding: 20px; border-right: 1px solid #ddd; overflow-y: auto; flex-shrink: 0; }
+        
         .menu-title { color: var(--accent); border-bottom: 2px solid var(--gold); padding-bottom: 5px; margin-top: 15px; font-size: 0.9rem; }
         .branch-btn { width: 100%; background: #fff; border: 1px solid #eee; padding: 10px; margin-bottom: 5px; border-radius: 4px; cursor: pointer; text-align: left; font-size: 0.8rem; }
         .branch-btn:hover { background: var(--accent); color: #fff; }
+
+        /* منطقة العرض الرئيسية - أصبحت الآن تأخذ كل المساحة المتبقية */
         #main-stage { flex-grow: 1; padding: 20px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; background: #f4f7f6; }
-        #content-area { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: 95%; min-height: 85vh; }
-        #right-sidebar { width: 250px; background: var(--side); padding: 20px; border-left: 1px solid #ddd; order: 2; }
-        .papa-btn { background: var(--accent); color: white; width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
-        .insight-card { border: 1px solid var(--gold); padding: 12px; font-size: 0.8rem; margin-top: 15px; }
+        
+        /* تعديل العرض هنا إلى 100% لأقصى اتساع */
+        #content-area { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: 100%; min-height: 85vh; box-sizing: border-box; }
+        
         iframe { width: 100%; height: 80vh; border: none; border-radius: 8px; }
         .visual-btn { margin-top: 20px; padding: 12px 25px; background: var(--gold); color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; }
     </style>
@@ -45,21 +50,11 @@
         <button class="branch-btn" onclick="updateView('13')">13. Primorial 105-Unit Folder</button>
     </div>
 
-    <!-- منطقة العرض المركزية -->
+    <!-- منطقة العرض المركزية (تمت إزالة العمود الأيمن وتوسيع هذه المنطقة) -->
     <div id="main-stage">
         <div id="content-area">
-            <h2 style="text-align:center; color:#2c3e50;">BaBa-LnX Interactive Hub</h2>
+            <h2 style="text-align:center; color:#2c3e50;">Interactive Hub</h2>
             <p style="text-align:center;">Select a model to begin visualization.</p>
-        </div>
-    </div>
-
-    <!-- الجهة اليمنى (R1) -->
-    <div id="right-sidebar">
-        <button class="papa-btn" onclick="loadExternal('R1.html')">BaBa-LnX</button>
-        <div class="insight-card">
-            <strong>Scientific Insight:</strong><br><br>
-            Zero Statistical Error range:<br>
-            <strong>[ 10<sup>n</sup> ± 2√10<sup>n</sup> ]</strong>
         </div>
     </div>
 
