@@ -2,33 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Interactive Atlas</title>
+    <title>Interactive Atlas - Full Screen</title>
     <style>
         :root { --bg: #f4f7f6; --side: #ffffff; --accent: #2c3e50; --gold: #b8860b; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; display: flex; height: 100vh; overflow: hidden; }
-        
-        /* القائمة اليسرى */
-        #left-sidebar { width: 330px; background: var(--side); padding: 20px; border-right: 1px solid #ddd; overflow-y: auto; flex-shrink: 0; }
-        
+
+        /* القائمة الجانبية القابلة للإخفاء */
+        #left-sidebar { 
+            width: 300px; 
+            background: var(--side); 
+            padding: 20px; 
+            border-right: 1px solid #ddd; 
+            overflow-y: auto; 
+            flex-shrink: 0;
+            transition: margin-left 0.3s ease; /* أنيميشن سلاسة الإغلاق */
+        }
+
+        /* حالة الإغلاق */
+        #left-sidebar.closed { margin-left: -340px; }
+
+        /* زر السهم (Toggle) */
+        #toggle-btn {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            z-index: 1000;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .menu-title { color: var(--accent); border-bottom: 2px solid var(--gold); padding-bottom: 5px; margin-top: 15px; font-size: 0.9rem; }
         .branch-btn { width: 100%; background: #fff; border: 1px solid #eee; padding: 10px; margin-bottom: 5px; border-radius: 4px; cursor: pointer; text-align: left; font-size: 0.8rem; }
         .branch-btn:hover { background: var(--accent); color: #fff; }
 
-        /* منطقة العرض الرئيسية - أصبحت الآن تأخذ كل المساحة المتبقية */
-        #main-stage { flex-grow: 1; padding: 20px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; background: #f4f7f6; }
+        /* منطقة العرض الرئيسية - تتوسع تلقائياً */
+        #main-stage { flex-grow: 1; height: 100vh; display: flex; flex-direction: column; background: #f4f7f6; position: relative; }
         
-        /* تعديل العرض هنا إلى 100% لأقصى اتساع */
-        #content-area { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: 100%; min-height: 85vh; box-sizing: border-box; }
+        #content-area { 
+            background: white; 
+            width: 100%; 
+            height: 100%; 
+            box-sizing: border-box; 
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
         
-        iframe { width: 100%; height: 80vh; border: none; border-radius: 8px; }
+        /* iframe يغطي كامل المساحة المتاحة */
+        iframe { width: 100%; flex-grow: 1; border: none; border-radius: 8px; }
+        
         .visual-btn { margin-top: 20px; padding: 12px 25px; background: var(--gold); color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <!-- الجهة اليسرى (L1 - L13) -->
+    <!-- زر السهم للتحكم في القائمة -->
+    <button id="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    <!-- القائمة اليسرى -->
     <div id="left-sidebar">
-        <h3 class="menu-title">Probability Column Models</h3>
+        <h3 style="margin-top:40px;" class="menu-title">Probability Models</h3>
         <button class="branch-btn" onclick="updateView('1')">1. Sequential Order Model</button>
         <button class="branch-btn" onclick="updateView('2')">2. Full Inverse Zigzag</button>
         <button class="branch-btn" onclick="updateView('3')">3. Centered Model (±1)</button>
@@ -40,21 +83,24 @@
         <button class="branch-btn" onclick="updateView('7')">7. Recurrence: (2×7) & (7×2)</button>
         <button class="branch-btn" onclick="updateView('8')">8. Redundant Table 18</button>
 
-        <h3 class="menu-title">Activated Primorial Tables</h3>
-        <button class="branch-btn" onclick="updateView('9')">9. Activated Hexagonal (p#6)</button>
-        <button class="branch-btn" onclick="updateView('10')">10. Activated Trigonal (p#30)</button>
-        <button class="branch-btn" onclick="updateView('11')">11. Activated 7# (p#210)</button>
+        <h3 class="menu-title">Activated Primorial</h3>
+        <button class="branch-btn" onclick="updateView('9')">9. Activated Hexagonal</button>
+        <button class="branch-btn" onclick="updateView('10')">10. Activated Trigonal</button>
+        <button class="branch-btn" onclick="updateView('11')">11. Activated 7#</button>
 
         <h3 class="menu-title">Mechanical Folders</h3>
-        <button class="branch-btn" onclick="updateView('12')">12. Hexagonal 15-Unit Folder</button>
-        <button class="branch-btn" onclick="updateView('13')">13. Primorial 105-Unit Folder</button>
+        <button class="branch-btn" onclick="updateView('12')">12. Hexagonal 15-Unit</button>
+        <button class="branch-btn" onclick="updateView('13')">13. Primorial 105-Unit</button>
     </div>
 
-    <!-- منطقة العرض المركزية (تمت إزالة العمود الأيمن وتوسيع هذه المنطقة) -->
+    <!-- منطقة العرض المركزية -->
     <div id="main-stage">
         <div id="content-area">
-            <h2 style="text-align:center; color:#2c3e50;">Interactive Hub</h2>
-            <p style="text-align:center;">Select a model to begin visualization.</p>
+            <h2 id="view-title" style="text-align:center; color:#2c3e50; margin-top: 40px;">Interactive Hub</h2>
+            <p id="view-desc" style="text-align:center;">Select a model from the menu to begin.</p>
+            <div id="iframe-container" style="flex-grow:1; display:flex; flex-direction:column; align-items:center;">
+                <!-- المحتوى يظهر هنا -->
+            </div>
         </div>
     </div>
 
@@ -65,31 +111,43 @@
             '3': { title: "3. Centered Model (±1)", text: "Focuses on the Primitive Gap around Zero." },
             '4': { title: "4. Half-Inverse Zigzag", text: "Aesthetic alignment via half-mark reversal." },
             '5': { title: "5. Selective Zigzag (Odd 21)", text: "Half-Cell Shift for odd primorial consistency." },
-            '6': { title: "6. Recurrence: (2×3) & (3×2)", text: "Theoretical basis of combining units to form p#6." },
-            '7': { title: "7. Recurrence: (2×7) & (7×2)", text: "Generation of trigonal structures and φ(M) logic." },
-            '8': { title: "8. Redundant Table 18", text: "Demonstrates redundancy in higher primorial stages." },
-            '9': { title: "9. Activated Hexagonal (p#6)", text: "p#6 table with ZeRo BlAdEs (2, 3) activated." },
-            '10': { title: "10. Activated Trigonal (p#30)", text: "p#30 table with ZeRo BlAdEs (2, 3, 5) activated." },
-            '11': { title: "11. Activated 7# (p#210)", text: "Higher-order determinism with p#210 structure." },
-            '12': { title: "12. Hexagonal 15-Unit Folder", text: "Mechanical 3D folding at 3-unit intervals." },
-            '13': { title: "13. Primorial 105-Unit Folder", text: "Structural symmetry folding up to 105 units." }
+            '6': { title: "6. Recurrence: (2×3) & (3×2)", text: "Theoretical basis of p#6." },
+            '7': { title: "7. Recurrence: (2×7) & (7×2)", text: "Generation of trigonal structures." },
+            '8': { title: "8. Redundant Table 18", text: "Redundancy in higher primorial stages." },
+            '9': { title: "9. Activated Hexagonal (p#6)", text: "ZeRo BlAdEs (2, 3) activated." },
+            '10': { title: "10. Activated Trigonal (p#30)", text: "ZeRo BlAdEs (2, 3, 5) activated." },
+            '11': { title: "11. Activated 7# (p#210)", text: "Higher-order determinism." },
+            '12': { title: "12. Hexagonal 15-Unit Folder", text: "Mechanical 3D folding." },
+            '13': { title: "13. Primorial 105-Unit Folder", text: "Structural symmetry folding." }
         };
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('left-sidebar');
+            const btn = document.getElementById('toggle-btn');
+            sidebar.classList.toggle('closed');
+            // تغيير شكل الزر عند الفتح والإغلاق
+            btn.innerHTML = sidebar.classList.contains('closed') ? '➤' : '☰';
+        }
 
         function updateView(id) {
             const data = contentData[id];
-            document.getElementById('content-area').innerHTML = `
-                <h2 style="color:#2c3e50; border-bottom: 2px solid #b8860b;">${data.title}</h2>
+            document.getElementById('iframe-container').innerHTML = `
+                <h2 style="color:#2c3e50; border-bottom: 2px solid #b8860b; width:100%">${data.title}</h2>
                 <p>${data.text}</p>
-                <div style="text-align:center; margin-top:30px;">
-                    <button class="visual-btn" onclick="loadExternal('L' + ${id} + '.html')">Launch Interactive Model →</button>
-                </div>
+                <button class="visual-btn" onclick="loadExternal('L' + ${id} + '.html')">Launch Full Screen Model →</button>
             `;
+            // إخفاء العناوين الترحيبية الأصلية
+            document.getElementById('view-title').style.display = 'none';
+            document.getElementById('view-desc').style.display = 'none';
         }
 
         function loadExternal(fileName) {
-            document.getElementById('content-area').innerHTML = `
+            document.getElementById('iframe-container').innerHTML = `
                 <iframe src="${fileName}" title="Model Content"></iframe>
             `;
+            // إغلاق القائمة تلقائياً عند عرض النموذج لتوفير مساحة
+            document.getElementById('left-sidebar').classList.add('closed');
+            document.getElementById('toggle-btn').innerHTML = '➤';
         }
     </script>
 </body>
