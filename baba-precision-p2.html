@@ -64,74 +64,45 @@
     </div>
 
     <script>
-        const contentData = {
-            '1': { title: "1. Sequential Order Model", text: "Linear flow of p#30 potential columns." },
-            '2': { title: "2. Full Inverse Zigzag", text: "Mirror symmetry via total row reversal." },
-            '3': { title: "3. Centered Model (±1)", text: "Focuses on the Primitive Gap around Zero." },
-            '4': { title: "4. Half-Inverse Zigzag", text: "Aesthetic alignment via half-mark reversal." },
-            '5': { title: "5. Selective Zigzag (Odd 21)", text: "Half-Cell Shift for odd primorial consistency." },
-            '6': { title: "6. Recurrence: (2×3) & (3×2)", text: "Theoretical basis of combining units to form p#6." },
-            '7': { title: "7. Recurrence: (2×7) & (7×2)", text: "Generation of trigonal structures and φ(M) logic." },
-            '8': { title: "8. Redundant Table 18", text: "Demonstrates redundancy in higher primorial stages." },
-            '9': { title: "9. Activated Hexagonal (p#6)", text: "p#6 table with ZeRo BlAdEs (2, 3) activated." },
-            '10': { title: "10. Activated Trigonal (p#30)", text: "p#30 table with ZeRo BlAdEs (2, 3, 5) activated." },
-            '11': { title: "11. Activated 7# (p#210)", text: "Higher-order determinism with p#210 structure." },
-            '12': { title: "12. Hexagonal 15-Unit Folder", text: "Mechanical 3D folding at 3-unit intervals." },
-            '13': { title: "13. Primorial 105-Unit Folder", text: "Structural symmetry folding up to 105 units." }
-        };
+       const contentData = {
+    '1': { title: "1. Sequential Order Model (p#30)", text: "Visualizes the fundamental 8 potential columns of p#30 in a linear structure." },
+    '2': { title: "2. Full Inverse Zigzag", text: "Demonstrates mirror symmetry and twin gaps via total row reversal." },
+    '3': { title: "3. Centered Model (±1)", text: "Focuses on the Primitive Gap and potential twins {1, -1} around the Zero Point." },
+    '4': { title: "4. Half-Inverse Zigzag", text: "The foundation of aesthetic column alignment via half-mark reversal." },
+    '5': { title: "5. Selective Zigzag (Odd 21)", text: "Features the 'Half-Cell Shift' necessary for odd primorial column consistency." },
+    '6': { title: "6. Recurrence: Model (2×3) & (3×2)", text: "Theoretical basis of combining units to form p#6." },
+    '7': { title: "7. Recurrence: Model (2×7) & (7×2)", text: "Generation of trigonal structures and φ(M) logic." },
+    '8': { title: "8. Recurrence: Redundant Table 18", text: "Demonstrates redundancy in higher primorial stages." },
+    '9': { title: "9. Activated Hexagonal (p#6)", text: "p#6 table with ZeRo BlAdEs (2, 3) activated." },
+    '10': { title: "10. Activated Trigonal (p#30)", text: "p#30 table with ZeRo BlAdEs (2, 3, 5) activated." },
+    '11': { title: "11. Activated 7# (p#210)", text: "Higher-order determinism with p#210 structure." },
+    '12': { title: "12. Hexagonal 15-Unit Folder", text: "Mechanical 3D folding at 3-unit intervals." },
+    '13': { title: "13. Primorial 105-Unit Folder", text: "Structural symmetry folding up to 105 units." }
+};
 
-        function updateView(id) {
-            const data = contentData[id];
-            document.getElementById('content-area').innerHTML = `
-                <h2>${data.title}</h2>
-                <p>${data.text}</p>
-                <button class="visual-btn" onclick="alert('Loading Model ' + ${id})">Launch Interactive Chart →</button>
-            `;
-        }
-   // أضف هذه الدالة تحت دالة updateView السابقة
-function showBabaLnX() {
-    const area = document.getElementById('content-area');
-    area.innerHTML = `
-        <h2 style="color:var(--accent-blue); text-align:center;">BaBa-LnX Scientific Insight</h2>
-        <div style="background: #eef2f7; padding: 20px; border-left: 5px solid var(--gold-touch); margin-bottom: 20px;">
-            <p>This system provides a <b>Deterministic Model</b> for Zero Statistical Error at maturity marks (powers of 10).</p>
-            <p>Accuracy is maintained within the stability range of: <strong>[ 10<sup>n</sup> ± 2√10<sup>n</sup> ]</strong></p>
-        </div>
-        
-        <div style="border: 2px solid var(--accent-blue); padding: 25px; border-radius: 15px; text-align: center; background: #fff;">
-            <h3 style="margin-top:0;">Precision Calculator</h3>
-            <p>Enter X value to see the refined prime distribution:</p>
-            <input type="number" id="bx" value="10000000000" style="width: 80%; padding: 12px; font-size: 1.2rem; text-align: center; border: 2px solid var(--gold-touch); border-radius: 8px;">
-            <br>
-            <button class="visual-btn" onclick="runBabaCalc()">Calculate Accuracy</button>
-            <div id="res-baba" style="margin-top:20px; text-align:left; font-size: 1rem; color: #2c3e50;"></div>
+// دالة تحديث الشرح مع زر "Launch" الذي يفتح ملفات L
+function updateView(id) {
+    const data = contentData[id];
+    document.getElementById('content-area').innerHTML = `
+        <h2 style="color:var(--accent-blue); border-bottom: 2px solid var(--gold-touch); padding-bottom:10px;">${data.title}</h2>
+        <p style="font-size:1.15rem; color:#444; margin-top:20px;">${data.text}</p>
+        <div style="margin-top:40px; padding:20px; border: 1px dashed #ccc; border-radius:8px; text-align:center;">
+            <button class="visual-btn" onclick="loadExternalModel('L' + ${id} + '.html')">Launch Interactive Model →</button>
         </div>
     `;
 }
+
+// دالة العرض المركزية (المحرك)
 function loadExternalModel(fileName) {
     const area = document.getElementById('content-area');
-    // تنظيف المنطقة أولاً ثم وضع إطار العرض
     area.innerHTML = `
         <iframe src="${fileName}" 
-                style="width:100%; height:80vh; border:none; border-radius:10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" 
+                style="width:100%; height:85vh; border:none; border-radius:10px; background:white;" 
                 title="Model View">
         </iframe>
     `;
 }
 
-// دالة الحساب الخاصة ببصيرة بابا
-function runBabaCalc() {
-    let x = parseFloat(document.getElementById('bx').value);
-    let lx = Math.log(x);
-    let classic = x / lx;
-    let refined = classic * 1.000000000007; // معامل بابا الافتراضي للتبسيط
-    document.getElementById('res-baba').innerHTML = `
-        <hr>
-        <b>Classical Result (x/ln x):</b> ${Math.round(classic).toLocaleString()}<br>
-        <b>BaBa Refined Result:</b> ${Math.round(refined).toLocaleString()}<br>
-        <small style="color:green;">Status: Within Stability Range ✔</small>
-    `;
-}
 
  </script>
 </body>
