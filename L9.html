@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مختبر ولادة السداسي: شفرة الثلاثة</title>
+    <style>
+        :root { --zero-blade: #ff5722; --column-head: #2c3e50; --prob: #00bcd4; --bg: #f8f9fa; --prime-confirmed: #1a237e; }
+        body { background: var(--bg); font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 0; }
+        .header-section { text-align: center; background: white; width: 100%; padding: 15px; border-bottom: 3px solid var(--column-head); margin-bottom: 20px; }
+        .controls { display: flex; gap: 10px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+        button { padding: 8px 15px; cursor: pointer; background: var(--column-head); color: white; border: none; border-radius: 4px; font-weight: bold; font-size: 0.85rem; }
+        
+        /* الحاوية القسرية لضمان ظهور الأعمدة */
+        .grid-wrapper { width: 95vw; max-width: 600px; overflow-x: auto; background: white; padding: 10px; border-radius: 8px; border: 1px solid #ddd; }
+        
+        #grid-container { display: flex; flex-direction: column; gap: 2px; width: fit-content; margin: auto; }
+        .row-wrapper { display: flex; gap: 12px; transition: 0.8s; align-items: center; }
+        .unified-row { gap: 0 !important; }
+
+        .binary-block { display: flex; gap: 4px; border: 1px dashed #ccc; transition: 0.5s; }
+        .unified-block { border: none !important; gap: 0 !important; border-right: 1px solid #eee !important; }
+
+        .cell { 
+            width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; 
+            background: #fff; border: 0.5px solid #eee; font-size: 11px; font-weight: bold; color: #888; 
+            transition: 0.4s; box-sizing: border-box; 
+        }
+
+        .zero-blade { background: var(--zero-blade) !important; color: white !important; box-shadow: 0 0 8px var(--zero-blade); z-index: 10; border: 1px solid gold !important; }
+        .is-head { background: var(--prob) !important; color: white !important; }
+        .confirmed { background: var(--prime-confirmed) !important; color: gold !important; border: 1px solid gold !important; }
+        .faded { background: #e0e0e0 !important; color: #bbb !important; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <h3>مختبر ولادة السداسي (2# &rarr; 3#)</h3>
+        <div class="controls">
+            <button onclick="unifyToHex()">1. تجميع السداسي</button>
+            <button onclick="activate3Code()">2. تفعيل شفرة (3)</button>
+            <button onclick="location.reload()">إعادة تعيين</button>
+        </div>
+    </div>
+    <div class="grid-wrapper">
+        <div id="grid-container"></div>
+    </div>
+    <script>
+        const container = document.getElementById('grid-container');
+        const rows = 10;
+        for (let r = 0; r < rows; r++) {
+            const rowWrapper = document.createElement('div');
+            rowWrapper.className = 'row-wrapper';
+            rowWrapper.id = `row-${r}`;
+            for (let b = 0; b < 3; b++) {
+                const block = document.createElement('div');
+                block.className = 'binary-block';
+                block.id = `block-${r}-${b}`;
+                for (let c = 1; c <= 2; c++) {
+                    const num = (r * 6) + (b * 2) + c;
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.id = `cell-${num}`;
+                    cell.innerText = num;
+                    if (num === 2) cell.classList.add('zero-blade');
+                    if (num % 2 !== 0) cell.classList.add('is-head');
+                    block.appendChild(cell);
+                }
+                rowWrapper.appendChild(block);
+            }
+            container.appendChild(rowWrapper);
+        }
+        function unifyToHex() {
+            for (let r = 0; r < rows; r++) {
+                document.getElementById(`row-${r}`).classList.add('unified-row');
+                for (let b = 0; b < 3; b++) document.getElementById(`block-${r}-${b}`).classList.add('unified-block');
+            }
+        }
+        function activate3Code() {
+            unifyToHex();
+            const b3 = document.getElementById('cell-3');
+            if(b3) { b3.classList.remove('is-head'); b3.classList.add('zero-blade'); }
+            for (let i = 1; i <= rows * 6; i++) {
+                if (i % 6 === 3 && i !== 3) document.getElementById(`cell-${i}`).classList.add('faded');
+                // حسم 5 و 7 كأوليات
+                if ([5, 7].includes(i)) {
+                    const c = document.getElementById(`cell-${i}`);
+                    c.classList.remove('is-head'); c.classList.add('confirmed');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

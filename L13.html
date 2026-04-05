@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>: The 5# 105 Fold (Light Edition)</title>
+    <style>
+        /* تغيير الخلفية للأبيض المريح والخط للداكن */
+        body { 
+            background: #f4f7f6; 
+            color: #2c3e50; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; padding: 20px; overflow-x: auto; 
+            display: flex; flex-direction: column; align-items: center; 
+        }
+        
+        .stage { position: relative; width: 100%; height: 1000px; perspective: 6000px; margin-top: 30px; }
+        
+        .row-container { position: absolute; display: flex; transform-style: preserve-3d; transition: 3.5s; left: 10%; }
+
+        .f-unit { display: flex; transform-style: preserve-3d; transition: transform 3s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: left center; }
+
+        /* تصغير حجم الخلية وتغيير ألوانها للفاتح */
+        .cell { 
+            width: 10px; height: 40px; /* تصغير البكسل لتحسين الظهور */
+            background: white; color: #555; 
+            display: flex; align-items: center; justify-content: center; 
+            font-weight: bold; border: 0.1px solid #ddd; font-size: 10px; flex-shrink: 0; 
+        }
+
+        /* أعمدة الاحتمالات باللون الأزرق الملكي المتوهج */
+        .prime-col { background: #007bff !important; color: white !important; transition: 2s; }
+        
+        /* المفصل المنصف (ذهبي ملكي) */
+        .hinge-half { background: #f1c40f !important; width: 6px; border: 0.5px solid #d4af0d; }
+
+        /* تلوين شفرات زيرو (2, 3, 5) بالكحلي المميز */
+        .zero-blade { background: #000080 !important; color: white !important; border: 1.5px solid #d4af37; }
+
+        /* منطق الطي */
+        .s1 .f-15 { transform: rotateY(-175deg); } 
+        .s2 .f-30 { transform: rotateY(175deg); }  
+        .s3 .f-45 { transform: rotateY(-175deg); } 
+        .s4 .f-60 { transform: rotateY(175deg); }
+        .s5 .f-75 { transform: rotateY(-175deg); }
+        .s6 .f-90 { transform: rotateY(175deg); }
+
+        /* توهج الأعمدة عند اكتمال الطي */
+        .s7 .prime-col { box-shadow: 0 0 15px #007bff; background: #fff !important; color: #007bff !important; border: 1px solid #007bff; }
+
+        /* تنسيق أزرار التحكم */
+        .btn-group { 
+            display: flex; gap: 10px; margin-bottom: 20px; position: sticky; top: 10px; z-index: 1000; 
+            background: white; padding: 12px 25px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        button { padding: 8px 18px; cursor: pointer; background: #2c3e50; color: gold; border: none; border-radius: 20px; font-weight: bold; transition: 0.3s; }
+        button:hover { background: #007bff; color: white; transform: scale(1.1); }
+        .btn-reset { background: #c0392b; color: white; }
+    </style>
+</head>
+<body>
+
+    <h2 style="margin-top:0;">The 5# 105 Fold Model</h2>
+    
+    <div class="btn-group">
+        <button onclick="toggleS(1)">Fold 15</button>
+        <button onclick="toggleS(2)">Fold 30</button>
+        <button onclick="toggleS(3)">Fold 45</button>
+        <button onclick="toggleS(4)">Fold 60</button>
+        <button onclick="toggleS(5)">Fold 75</button>
+        <button onclick="toggleS(6)">Fold 90</button>
+        <button onclick="toggleS(7)">Glow Columns</button>
+        <button class="btn-reset" onclick="resetAll()">Reset All</button>
+    </div>
+    
+    <div id="stage" class="stage"></div>
+
+    <script>
+        const stage = document.getElementById('stage');
+        
+        function isPrimeCol(n) {
+            let m = Math.abs(n) % 30;
+            if (m === 0 && n !== 0) m = 30;
+            return [1, 7, 11, 13, 17, 19, 23, 29].includes(m);
+        }
+
+        // بناء 12 صفاً (قطار رقمي مستمر)
+        for (let r = 0; r < 12; r++) {
+            const row = document.createElement('div');
+            row.className = 'row-container';
+            row.style.top = (r * 50) + 'px';
+            
+            let rowNums = [];
+            let startNum = r * 105;
+            for (let i = 0; i <= 105; i++) rowNums.push(startNum + i);
+            
+            // قانون الزقزاق: عكس اتجاه الصفوف الفردية (Index 1, 3, 5...)
+            if (r % 2 !== 0) rowNums.reverse();
+
+            let html = `<div class="f-unit base">`;
+            for (let s = 0; s < 7; s++) {
+                let segmentNums = rowNums.slice(s * 15, (s * 15) + 16);
+                if (s > 0) html += `<div class="f-unit f-${s * 15}">`;
+                
+                html += `<div class="hinge-half"></div>`;
+                
+                for (let i = 1; i < 15; i++) {
+                    let num = segmentNums[i];
+                    let cls = isPrimeCol(num) ? "prime-col" : "";
+                    // تمييز شفرات زيرو 2, 3, 5
+                    if (num <= 5 && [2, 3, 5].includes(num)) cls += " zero-blade";
+                    html += `<div class="cell ${cls}">${num}</div>`;
+                }
+                html += `<div class="hinge-half"></div>`;
+            }
+            html += `</div>`.repeat(7);
+            row.innerHTML = html;
+            stage.appendChild(row);
+        }
+
+        function toggleS(n) { document.body.classList.toggle('s' + n); }
+        function resetAll() { 
+            for(let i=1; i<=7; i++) document.body.classList.remove('s' + i);
+        }
+    </script>
+</body>
+</html>

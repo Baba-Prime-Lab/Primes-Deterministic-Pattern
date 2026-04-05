@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model 7: Side-by-Side Expansion (2x7 vs 7x2)</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        
+        /* حاوية الجداول لتكون متجاورة */
+        .lab-wrapper { 
+            display: flex; 
+            gap: 20px; 
+            margin-top: 15px; 
+            justify-content: center; 
+            width: 100%;
+        }
+
+        .table-unit { 
+            background: white; 
+            padding: 10px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            border-top: 3px solid #2c3e50;
+        }
+
+        /* تقليل عرض الأعمدة لتناسب التجاور */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(14, 25px); 
+            border: 1px solid #2c3e50; 
+            background: #eee; 
+        }
+
+        .cell { 
+            width: 25px; 
+            height: 25px; 
+            border: 0.1px solid #fff; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 0.65rem; /* تصغير الخط قليلاً */
+            color: #999; 
+            background: #fff; 
+        }
+        
+        .potential { background-color: #007bff !important; color: white !important; font-weight: bold; }
+        .zero-blade { background-color: #000080 !important; color: white !important; font-weight: 900; border: 1px solid #d4af37; }
+        .eliminated { background-color: #ffebee !important; color: #cfd8dc !important; text-decoration: line-through; }
+        
+        .controls { margin-bottom: 15px; }
+        .btn { padding: 8px 18px; cursor: pointer; border: none; border-radius: 20px; font-weight: bold; margin: 0 5px; transition: 0.3s; font-size: 0.8rem; }
+        .btn-combine { background: #b8860b; color: white; }
+        .btn-blade { background: #000080; color: white; }
+        h3 { color: #2c3e50; font-size: 0.9rem; margin-bottom: 10px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <h2 style="color:#2c3e50; font-size: 1.4rem;">7. Compact Expansion Lab: (2×7) vs (7×2)</h2>
+    
+    <div class="controls">
+        <button class="btn btn-combine" onclick="updateLab(1)">Step 1: Combine</button>
+        <button class="btn btn-blade" onclick="updateLab(2)">Step 2: Activate Blades</button>
+    </div>
+
+    <div class="lab-wrapper">
+        <div class="table-unit">
+            <h3>Binary Focus (2×7)</h3>
+            <div id="grid1" class="grid"></div>
+        </div>
+
+        <div class="table-unit">
+            <h3>Heptagonal Focus (7×2)</h3>
+            <div id="grid2" class="grid"></div>
+        </div>
+    </div>
+
+    <script>
+        const rows = 12; // زدنا الصفوف قليلاً لزيادة الوضوح
+        const pLimit = 14;
+
+        function updateLab(step) {
+            renderTable("grid1", step, "binary");
+            renderTable("grid2", step, "heptagonal");
+        }
+
+        function renderTable(gridId, step, type) {
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = '';
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 1; c <= pLimit; c++) {
+                    const num = (r * pLimit) + c;
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.innerText = num;
+
+                    if (step === 1) {
+                        if (type === "binary" && c % 2 !== 0) cell.classList.add('potential');
+                        if (type === "heptagonal" && c % 7 !== 0) cell.classList.add('potential');
+                    } 
+                    else if (step === 2) {
+                        if (num === 2 || num === 7) {
+                            cell.classList.add('zero-blade');
+                        } else {
+                            if (type === "binary") {
+                                if (c === 7) cell.classList.add('eliminated');
+                                else if (c % 2 !== 0) cell.classList.add('potential');
+                            } else {
+                                if (c % 2 === 0) cell.classList.add('eliminated');
+                                else if (c % 7 !== 0) cell.classList.add('potential');
+                            }
+                        }
+                    }
+                    grid.appendChild(cell);
+                }
+            }
+        }
+        updateLab(1);
+    </script>
+</body>
+</html>

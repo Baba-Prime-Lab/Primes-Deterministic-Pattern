@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model 8: Table 18 Structural Base</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        
+        .grid-18 { 
+            display: grid; 
+            /* 18 عمود مقسمة لـ 3 مجموعات سداسية مع فواصل واضحة */
+            grid-template-columns: repeat(6, 42px) 20px repeat(6, 42px) 20px repeat(6, 42px); 
+            background: #fff; 
+            padding: 15px; 
+            border: 2px solid #2c3e50; 
+            border-radius: 8px;
+        }
+
+        .cell { 
+            width: 42px; height: 35px; 
+            border: 0.1px solid #f0f0f0; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 0.9rem; color: #888; 
+        }
+
+        .gap { width: 20px; background: transparent; } /* فاصل شفاف بين الجداول */
+        
+        /* تلوين شفرات زيرو (2 و 3) */
+        .zero-blade { 
+            background-color: #000080 !important; 
+            color: white !important; 
+            font-weight: 900; 
+            border: 1.5px solid #d4af37; 
+        }
+
+        /* الأعمدة الاحتمالية (Potential Columns) */
+        .potential { 
+            background-color: #007bff !important; 
+            color: white !important; 
+            font-weight: bold; 
+        }
+        
+        .info-panel { margin-top: 25px; font-weight: bold; color: #2c3e50; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+
+    <h2 style="color:#2c3e50;">8. Table 18: Three Hexagonal Repeats (3 × p#6)</h2>
+    
+    <div class="grid-18" id="grid18"></div>
+
+    <div class="info-panel">
+        φ(18) = 3 × φ(6) = 6 Potential Columns
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid18');
+
+        // رسم 8 صفوف
+        for (let r = 0; r < 8; r++) { 
+            // رسم 3 مجموعات سداسية متفرقة
+            for (let block = 0; block < 3; block++) { 
+                for (let c = 1; c <= 6; c++) {
+                    const num = (r * 18) + (block * 6) + c;
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.innerText = num;
+
+                    // 1. تلوين شفرات زيرو الأساسية (2 و 3)
+                    if (num === 2 || num === 3) {
+                        cell.classList.add('zero-blade');
+                    }
+                    // 2. تلوين أعمدة الاحتمالات في كل سداسي (العمود 1 و 5 من كل ستة)
+                    else if (c === 1 || c === 5) {
+                        cell.classList.add('potential');
+                    }
+
+                    grid.appendChild(cell);
+                }
+                // إضافة الفاصل الميكانيكي بين المجموعات الثلاث
+                if (block < 2) {
+                    const gap = document.createElement('div');
+                    gap.className = 'gap';
+                    grid.appendChild(gap);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

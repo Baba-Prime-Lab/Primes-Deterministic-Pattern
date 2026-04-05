@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model 5: Corrected Odd Zigzag (p#21)</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(22, 42px); /* 22 Columns total */
+            background: #fff;
+            border: 2px solid #2c3e50;
+        }
+        .cell {
+            width: 42px; height: 35px;
+            border: 0.1px solid #f0f0f0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; color: #bbb;
+        }
+        .hinge-col { background-color: #f9f9f9 !important; color: #333 !important; font-weight: bold; border: 1px solid #ddd; }
+        .column-head { background-color: #007bff !important; color: white !important; font-weight: bold; }
+        .zero-blade { background-color: #000080 !important; color: #fff !important; font-weight: 900; border: 1.5px solid #d4af37; }
+    </style>
+</head>
+<body>
+
+    <h2 style="color:#2c3e50;">5. Selective Zigzag (Odd p#21)</h2>
+    <div id="grid" class="grid-container"></div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const colHeads = [1, 2, 4, 5, 8, 10, 11, 13, 16, 17, 19, 20]; // Potential for p=21
+        const zeroBlades = [3, 7];
+        const rows = 10;
+        const pLimit = 21;
+
+        for (let r = 0; r < rows; r++) {
+            let rowData = [];
+            let startVal = r * pLimit;
+            let endVal = (r + 1) * pLimit;
+
+            // توليد أرقام الصف بناءً على الاتجاه
+            if (r % 2 === 0) { // صف فردي: من اليسار لليمين (0 -> 21)
+                for (let i = startVal; i <= endVal; i++) rowData.push(i);
+            } else { // صف زوجي: من اليمين لليسار (42 -> 21)
+                for (let i = endVal; i >= startVal; i--) rowData.push(i);
+            }
+
+            rowData.forEach((num, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.innerText = num;
+
+                // تحديد رقم العمود (0 to 21)
+                // في الصفوف المعكوسة، نحتاج لحساب الموقع الأصلي للرقم لضمان التراصف
+                let colPos = (r % 2 === 0) ? index : (pLimit - index);
+
+                // تلوين المفاصل (العمود الأول والأخير)
+                if (index === 0 || index === pLimit) {
+                    cell.classList.add('hinge-col');
+                }
+                
+                // تلوين الشفرات ورؤوس الأعمدة
+                let checkVal = num % pLimit;
+                if (checkVal === 0 && num !== 0) checkVal = pLimit;
+
+                if (num <= 7 && zeroBlades.includes(num)) {
+                    cell.classList.add('zero-blade');
+                } else if (colHeads.includes(colPos)) {
+                    cell.classList.add('column-head');
+                }
+
+                grid.appendChild(cell);
+            });
+        }
+    </script>
+</body>
+</html>

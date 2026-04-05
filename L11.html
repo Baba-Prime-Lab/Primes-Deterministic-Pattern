@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مختبر الـ 210: انطباق هندسي كامل</title>
+    <style>
+        :root { --zero-blade: #ff5722; --column-head: #2c3e50; --prob: #00bcd4; --bg: #f8f9fa; --prime-confirmed: #1a237e; }
+        body { background: var(--bg); font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 5px; margin: 0; }
+        .header-section { text-align: center; background: white; width: 100%; padding: 10px; border-bottom: 3px solid var(--column-head); margin-bottom: 15px; }
+        .controls { display: flex; gap: 5px; justify-content: center; margin-top: 5px; }
+        button { padding: 8px 15px; cursor: pointer; background: var(--column-head); color: white; border: none; border-radius: 4px; font-weight: bold; font-size: 0.8rem; }
+        
+        .grid-wrapper { width: 99vw; overflow-x: auto; background: white; padding: 10px 0; display: flex; justify-content: center; }
+        #grid-container { display: flex; flex-direction: column; gap: 1px; width: fit-content; direction: ltr !important; }
+        
+        .row-wrapper { display: flex; gap: 6px; transition: 0.8s; height: 18px; }
+        .unified-row { gap: 0 !important; }
+
+        .thirty-block { display: flex; gap: 1px; border: 0.5px dashed #ddd; transition: 0.8s; }
+        .unified-block { border: none !important; gap: 0 !important; }
+
+        /* خلية بدون إطارات خارجية لضمان البكسل الموحد */
+        .cell { 
+            width: 5.1px !important; 
+            height: 12px !important; 
+            background: #fff; 
+            border: none !important; /* حذف الإطارات تماماً */
+            margin: 0; 
+            padding: 0;
+            transition: 0.4s; 
+            box-sizing: border-box;
+        }
+
+        /* تلوين صافي بدون إطارات */
+        .zero-blade { background: var(--zero-blade) !important; z-index: 10; }
+        .is-head { background: var(--prob) !important; }
+        .confirmed { background: var(--prime-confirmed) !important; }
+        .faded { background: #eee !important; opacity: 0.2; }
+
+        .cell:hover { background: yellow !important; width: 20px !important; position: relative; z-index: 100; }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <h4 style="margin:5px;">مختبر الـ 210: الانطباق اليقيني (بدون إطارات)</h4>
+        <div class="controls">
+            <button onclick="unifyTo210()">1. تجميع الـ 210</button>
+            <button onclick="activate7Code()">2. تفعيل شفرة (7) وحسم [7-47]</button>
+            <button onclick="location.reload()">إعادة تعيين</button>
+        </div>
+    </div>
+    <div class="grid-wrapper">
+        <div id="grid-container"></div>
+    </div>
+
+    <script>
+        const container = document.getElementById('grid-container');
+        const rows = 15;
+        const isP30 = (n) => [1, 7, 11, 13, 17, 19, 23, 29].includes(n % 30);
+        const primesTo47 = [7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
+
+        for (let r = 0; r < rows; r++) {
+            const rowWrapper = document.createElement('div');
+            rowWrapper.className = 'row-wrapper';
+            rowWrapper.id = `row-${r}`;
+            
+            for (let b = 0; b < 7; b++) {
+                const block = document.createElement('div');
+                block.className = 'thirty-block';
+                block.id = `block-${r}-${b}`;
+                for (let c = 1; c <= 30; c++) {
+                    const num = (r * 210) + (b * 30) + c;
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.id = `cell-${num}`;
+                    
+                    if ([2, 3, 5].includes(num)) cell.classList.add('zero-blade');
+                    if (isP30(num)) cell.classList.add('is-head');
+                    
+                    block.appendChild(cell);
+                }
+                rowWrapper.appendChild(block);
+            }
+            container.appendChild(rowWrapper);
+        }
+
+        function unifyTo210() {
+            for (let r = 0; r < rows; r++) {
+                document.getElementById(`row-${r}`).classList.add('unified-row');
+                const blocks = document.querySelectorAll(`#row-${r} .thirty-block`);
+                blocks.forEach(blk => blk.style.border = "none");
+            }
+        }
+
+        function activate7Code() {
+            unifyTo210();
+            const b7 = document.getElementById('cell-7');
+            if(b7) b7.classList.add('zero-blade');
+
+            for (let i = 1; i <= rows * 210; i++) {
+                const cell = document.getElementById(`cell-${i}`);
+                if (!cell) continue;
+                if (i % 7 === 0 && isP30(i) && i !== 7) cell.classList.add('faded');
+                if (primesTo47.includes(i)) cell.classList.add('confirmed');
+            }
+        }
+    </script>
+</body>
+</html>

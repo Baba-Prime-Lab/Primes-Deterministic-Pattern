@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model 6: Structural Evolution (2x3 vs 3x2)</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .lab-wrapper { display: flex; gap: 40px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
+        .table-unit { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 300px; }
+        .grid { display: grid; grid-template-columns: repeat(6, 40px); border: 1.5px solid #2c3e50; background: #eee; }
+        .cell { width: 40px; height: 32px; border: 0.1px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #999; background: #fff; }
+        
+        /* الألوان الملكية */
+        .potential { background-color: #007bff !important; color: white !important; font-weight: bold; }
+        .zero-blade { background-color: #000080 !important; color: white !important; font-weight: 900; border: 1px solid #d4af37; }
+        .eliminated { background-color: #ffebee !important; color: #cfd8dc !important; text-decoration: line-through; }
+        
+        .controls { margin-bottom: 25px; }
+        .btn { padding: 10px 20px; cursor: pointer; border: none; border-radius: 20px; font-weight: bold; margin: 0 10px; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .btn-combine { background: #b8860b; color: white; }
+        .btn-blade { background: #000080; color: white; }
+        h3 { color: #2c3e50; border-bottom: 2px solid #b8860b; margin-bottom: 15px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <h2 style="color:#2c3e50;">6. Table Evolution Lab (p#6 Analysis)</h2>
+    
+    <div class="controls">
+        <button class="btn btn-combine" onclick="updateLab(1)">Step 1: Combine (p#6 Structure)</button>
+        <button class="btn btn-blade" onclick="updateLab(2)">Step 2: Activate ZeRo BlAdEs</button>
+    </div>
+
+    <div class="lab-wrapper">
+        <!-- الجدول الأول: 2x3 -->
+        <div class="table-unit">
+            <h3>Binary Focus (2×3)</h3>
+            <div id="grid1" class="grid"></div>
+            <p id="info1" style="font-size:0.8rem; margin-top:10px; color:#666;"></p>
+        </div>
+
+        <!-- الجدول الثاني: 3x2 -->
+        <div class="table-unit">
+            <h3>Ternary Focus (3×2)</h3>
+            <div id="grid2" class="grid"></div>
+            <p id="info2" style="font-size:0.8rem; margin-top:10px; color:#666;"></p>
+        </div>
+    </div>
+
+    <script>
+        const rows = 10;
+        
+        function updateLab(step) {
+            renderTable("grid1", "info1", step, "binary");
+            renderTable("grid2", "info2", step, "ternary");
+        }
+
+        function renderTable(gridId, infoId, step, type) {
+            const grid = document.getElementById(gridId);
+            const info = document.getElementById(infoId);
+            grid.innerHTML = '';
+            
+            // تعريف الأعمدة الاحتمالية لكل نوع
+            const binPotential = [1, 3, 5];
+            const terPotential = [1, 2, 4, 5];
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 1; c <= 6; c++) {
+                    const num = (r * 6) + c;
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.innerText = num;
+
+                    if (step === 1) { // المرحلة الأولى: تجميع الأعمدة
+                        if (type === "binary" && binPotential.includes(c)) cell.classList.add('potential');
+                        if (type === "ternary" && terPotential.includes(c)) cell.classList.add('potential');
+                        info.innerText = "Tables combined into a hexagonal p#6 base.";
+                    } 
+                    else if (step === 2) { // المرحلة الثانية: الحسم بالشفرات
+                        if (num === 2 || num === 3) {
+                            cell.classList.add('zero-blade');
+                        } else {
+                            if (type === "binary") {
+                                if (c === 3) cell.classList.add('eliminated');
+                                else if (binPotential.includes(c)) cell.classList.add('potential');
+                            } else {
+                                if (c === 2 || c === 4) cell.classList.add('eliminated');
+                                else if (terPotential.includes(c)) cell.classList.add('potential');
+                            }
+                        }
+                        info.innerText = "ZeRo BlAdEs {2,3} activated. φ(M) = 2.";
+                    }
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        // تشغيل المرحلة الأولى تلقائياً عند الفتح
+        updateLab(1);
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>مطوية الـ 15 - تخصيص شفرة الزيرو 3</title>
+    <style>
+        body { background: #f4f7f6; color: #2c3e50; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-x: hidden; }
+        .stage { position: relative; width: 1000px; height: 750px; margin-top: 20px; perspective: 4000px; }
+        .row-container { position: absolute; width: 100%; display: flex; transform-style: preserve-3d; justify-content: center; transition: 3.5s; }
+        .base-layer, .fold-layer { display: flex; transform-style: preserve-3d; position: relative; }
+        .fold-layer { transition: transform 2.2s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: left center; }
+
+        .cell {
+            width: 45px; height: 45px; background: white;
+            color: #333; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; border: 1px solid #ddd; font-size: 14px; box-sizing: border-box;
+        }
+
+        .prime-col { background: #3498db !important; color: white !important; }
+        .hinge { background: #f1c40f !important; width: 22.5px; border: 1px solid #d4ac0d; color: #333; }
+
+        /* تلوين شفرات زيرو (2، 3) حصراً بالكحلي */
+        .zero-blade { 
+            background: #000080 !important; 
+            color: white !important; 
+            border: 1.5px solid #d4af37 !important; 
+        }
+
+        /* مراحل الطي */
+        .is-folded-1 .f3 { transform: rotateY(-180deg); } 
+        .is-folded-2 .f6 { transform: rotateY(180deg); }  
+        .is-folded-3 .f9 { transform: rotateY(-180deg); } 
+        .is-folded-4 .f12 { transform: rotateY(180deg); }
+
+        .btn-group { display: flex; gap: 10px; margin-bottom: 20px; background: white; padding: 12px 25px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        button { padding: 8px 18px; cursor: pointer; background: #2c3e50; color: gold; font-weight: bold; border-radius: 20px; border: none; transition: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="btn-group">
+        <button onclick="document.body.classList.toggle('is-folded-1')">Fold (3)</button>
+        <button onclick="document.body.classList.toggle('is-folded-2')">Fold (6)</button>
+        <button onclick="document.body.classList.toggle('is-folded-3')">Fold (9)</button>
+        <button onclick="document.body.classList.toggle('is-folded-4')">Fold (12)</button>
+    </div>
+    
+    <div class="stage" id="stage"></div>
+
+    <script>
+        const stage = document.getElementById('stage');
+        
+        for (let r = 0; r < 10; r++) {
+            const rowWrapper = document.createElement('div');
+            rowWrapper.className = 'row-container';
+            rowWrapper.style.top = (r * 55) + 'px';
+
+            let b = r * 15;
+            let nums = [];
+            for (let i = 0; i <= 15; i++) nums.push(b + i);
+            if (r % 2 !== 0) nums.reverse();
+
+            // شفرات زيرو الأصلية فقط (2 و 3)
+            const isZeroBlade = (n) => (n === 2 || n === 3);
+            const isPrime = (n) => (n % 2 !== 0);
+
+            function createCell(val) {
+                let cls = "cell";
+                if (isZeroBlade(val)) cls += " zero-blade";
+                else if (isPrime(val)) cls += " prime-col";
+                return `<div class="${cls}">${val}</div>`;
+            }
+
+            function createHinge(val) {
+                let cls = "cell hinge";
+                // تلوين الرقم 3 فقط بالكحلي في المفصل
+                if (val === 3) cls += " zero-blade";
+                return `<div class="${cls}">${val}</div>`;
+            }
+
+            rowWrapper.innerHTML = `
+                <div class="base-layer">
+                    ${createHinge(nums[0])}
+                    ${createCell(nums[1])}
+                    ${createCell(nums[2])}
+                    ${createHinge(nums[3])}
+                    
+                    <div class="fold-layer f3">
+                        ${createHinge(nums[3])}
+                        ${createCell(nums[4])}
+                        ${createCell(nums[5])}
+                        ${createHinge(nums[6])}
+                        
+                        <div class="fold-layer f6">
+                            ${createHinge(nums[6])}
+                            ${createCell(nums[7])}
+                            ${createCell(nums[8])}
+                            ${createHinge(nums[9])}
+                            
+                            <div class="fold-layer f9">
+                                ${createHinge(nums[9])}
+                                ${createCell(nums[10])}
+                                ${createCell(nums[11])}
+                                ${createHinge(nums[12])}
+                                
+                                <div class="fold-layer f12">
+                                    ${createHinge(nums[12])}
+                                    ${createCell(nums[13])}
+                                    ${createCell(nums[14])}
+                                    ${createHinge(nums[15])}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            stage.appendChild(rowWrapper);
+        }
+    </script>
+</body>
+</html>

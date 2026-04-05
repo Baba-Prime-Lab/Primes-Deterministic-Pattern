@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model 1: Sequential (p#30) - The ZeRo BlAdEs</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(30, 42px); /* 30 columns */
+            background: #fff;
+            border: 2px solid #2c3e50;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .cell {
+            width: 42px;
+            height: 38px;
+            border: 0.1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #bbb; /* Faded for non-essential numbers */
+        }
+        /* ColumN HeaDs (Potential Columns) */
+        .column-head {
+            background-color: #007bff !important; /* Royal Blue */
+            color: white !important;
+            font-weight: bold;
+        }
+        /* ZeRo BlAdEs (2, 3, 5) */
+        .zero-blade {
+            background-color: #000080 !important; /* Navy Blue */
+            color: #fff !important;
+            font-weight: 900;
+            border: 2px solid #d4af37; /* Gold Frame for the Blades */
+        }
+        .legend { margin-top: 20px; padding: 15px; background: white; border-radius: 8px; border: 1px solid #ddd; }
+        .legend-item { display: inline-block; margin-right: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2 style="color:#2c3e50;">1. Sequential Order Model (p#30)</h2>
+    
+    <div class="grid-container" id="grid"></div>
+
+    <div class="legend">
+        <div class="legend-item"><span style="color:#000080">■</span> ZeRo BlAdEs: {2, 3, 5}</div>
+        <div class="legend-item"><span style="color:#007bff">■</span> ColumN HeaDs: {1, 7, 11, 13, 17, 19, 23, 29}</div>
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const colHeads = [1, 7, 11, 13, 17, 19, 23, 29];
+        const zeroBlades = [2, 3, 5];
+        const rows = 10;
+        const pPrime = 30;
+
+        for (let r = 0; r < rows; r++) {
+            for (let c = 1; c <= pPrime; c++) {
+                const currentNum = (r * pPrime) + c;
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.innerText = currentNum;
+
+                // Identification of ZeRo BlAdEs (First Row Focus)
+                if (r === 0 && zeroBlades.includes(currentNum)) {
+                    cell.classList.add('zero-blade');
+                }
+                // Identification of ColumN HeaDs (The 8 Potential Columns)
+                else if (colHeads.includes(c)) {
+                    cell.classList.add('column-head');
+                }
+
+                grid.appendChild(cell);
+            }
+        }
+    </script>
+</body>
+</html>
