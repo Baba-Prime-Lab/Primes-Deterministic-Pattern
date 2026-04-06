@@ -39,6 +39,20 @@
             align-items: center;
             justify-content: center;
         }
+.home-btn {
+    display: block;
+    width: 100%;
+    background: #e74c3c; /* لون أحمر مميز أو اختر ما يناسبك */
+    color: white;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+.home-btn:hover { background: #c0392b; }
 
         .menu-title { color: var(--accent); border-bottom: 2px solid var(--gold); padding-bottom: 5px; margin-top: 15px; font-size: 0.9rem; }
         .branch-btn { width: 100%; background: #fff; border: 1px solid #eee; padding: 10px; margin-bottom: 5px; border-radius: 4px; cursor: pointer; text-align: left; font-size: 0.8rem; }
@@ -55,6 +69,7 @@
     <button id="toggle-btn" onclick="toggleSidebar()">☰</button>
 
     <div id="left-sidebar">
+        <a href="index.html" class="home-btn">🏠 العودة للرئيسية</a>
         <h3 style="margin-top:40px;" class="menu-title">Modèles de Probabilité</h3>
         <button class="branch-btn" onclick="updateView('1')">1. Ordre Séquentiel</button>
         <button class="branch-btn" onclick="updateView('2')">2. Zigzag Inverse Complet</button>
