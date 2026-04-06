@@ -6,6 +6,32 @@
     <style>
         :root { --primary: #2c3e50; --accent: #c0392b; --success: #27ae60; --bg: #f4f7f6; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); margin: 0; color: #000; }
+        
+        /* تنسيق زر العودة الجديد */
+        .nav-header { 
+            width: 100%; 
+            background: white; 
+            padding: 10px 20px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            display: flex; 
+            justify-content: flex-start; 
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .home-btn { 
+            text-decoration: none; 
+            background: var(--accent); 
+            color: white; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            transition: 0.3s; 
+        }
+        .home-btn:hover { background: #a93226; transform: translateY(-1px); }
+
         .container { max-width: 1300px; margin: 20px auto; padding: 0 20px; }
         .lab-ui { max-width: 900px; margin: auto; border: 2px solid #ddd; padding: 40px; border-radius: 15px; text-align: center; background: white; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
         input { width: 85%; padding: 15px; font-size: 1.8rem; border: 3px solid var(--primary); border-radius: 10px; text-align: center; font-weight: bold; margin: 20px 0; color: #c0392b; }
@@ -21,15 +47,20 @@
 </head>
 <body>
 
-<div class="container"><div class="scientific-note">
-    <div style="font-size: 1.2rem; margin-bottom: 8px;"><strong>Scientific Insight:</strong></div>
-    This system provides a <b>Deterministic Model</b> for <b>Zero Statistical Error</b> at maturity marks (powers of 10). 
-    Accuracy is maintained within the stability range of: 
-    <span style="font-family: 'Times New Roman', serif; font-size: 1.4rem; font-weight: bold; color: #2c3e50; margin-left: 10px;">
-        [ 10<sup>n</sup> &plusmn; 2&radic;<span style="text-decoration:overline;">10<sup>n</sup></span> ]
-    </span>
+<!-- إضافة شريط العودة في أعلى الصفحة -->
+<div class="nav-header">
+    <a href="index.html" class="home-btn">🏠 Back to Home</a>
 </div>
 
+<div class="container">
+    <div class="scientific-note">
+        <div style="font-size: 1.2rem; margin-bottom: 8px;"><strong>Scientific Insight:</strong></div>
+        This system provides a <b>Deterministic Model</b> for <b>Zero Statistical Error</b> at maturity marks (powers of 10). 
+        Accuracy is maintained within the stability range of: 
+        <span style="font-family: 'Times New Roman', serif; font-size: 1.4rem; font-weight: bold; color: #2c3e50; margin-left: 10px;">
+            [ 10<sup>n</sup> &plusmn; 2&radic;<span style="text-decoration:overline;">10<sup>n</sup></span> ]
+        </span>
+    </div>
 
     <div class="lab-ui">
         <h2 style="color:var(--primary);">Precision Explorer (10<sup>1</sup> to 10<sup>17</sup>)</h2>
