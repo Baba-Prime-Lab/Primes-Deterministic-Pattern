@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>مختبر ولادة السداسي: شفرة الثلاثة</title>
+    <title>Hexagonal Birth Lab: Code (3)</title>
     <style>
         :root { --zero-blade: #ff5722; --column-head: #2c3e50; --prob: #00bcd4; --bg: #f8f9fa; --prime-confirmed: #1a237e; }
-        body { background: var(--bg); font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 0; }
+        body { background: var(--bg); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 0; }
         .header-section { text-align: center; background: white; width: 100%; padding: 15px; border-bottom: 3px solid var(--column-head); margin-bottom: 20px; }
         .controls { display: flex; gap: 10px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
-        button { padding: 8px 15px; cursor: pointer; background: var(--column-head); color: white; border: none; border-radius: 4px; font-weight: bold; font-size: 0.85rem; }
+        button { padding: 8px 15px; cursor: pointer; background: var(--column-head); color: white; border: none; border-radius: 4px; font-weight: bold; font-size: 0.85rem; transition: 0.3s; }
+        button:hover { background: #34495e; transform: translateY(-1px); }
         
-        /* الحاوية القسرية لضمان ظهور الأعمدة */
-        .grid-wrapper { width: 95vw; max-width: 600px; overflow-x: auto; background: white; padding: 10px; border-radius: 8px; border: 1px solid #ddd; }
+        /* Container for Grid */
+        .grid-wrapper { width: 95vw; max-width: 600px; overflow-x: auto; background: white; padding: 10px; border-radius: 8px; border: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         
         #grid-container { display: flex; flex-direction: column; gap: 2px; width: fit-content; margin: auto; }
         .row-wrapper { display: flex; gap: 12px; transition: 0.8s; align-items: center; }
@@ -34,16 +35,18 @@
 </head>
 <body>
     <div class="header-section">
-        <h3>مختبر ولادة السداسي (2# &rarr; 3#)</h3>
+        <h3 style="color: var(--column-head);">Hexagonal Birth Lab (2# &rarr; 3#)</h3>
         <div class="controls">
-            <button onclick="unifyToHex()">1. تجميع السداسي</button>
-            <button onclick="activate3Code()">2. تفعيل شفرة (3)</button>
-            <button onclick="location.reload()">إعادة تعيين</button>
+            <button onclick="unifyToHex()">1. Hexagonal Unification</button>
+            <button onclick="activate3Code()">2. Activate Code (3)</button>
+            <button onclick="location.reload()">Reset View</button>
         </div>
     </div>
+
     <div class="grid-wrapper">
         <div id="grid-container"></div>
     </div>
+
     <script>
         const container = document.getElementById('grid-container');
         const rows = 10;
@@ -69,22 +72,30 @@
             }
             container.appendChild(rowWrapper);
         }
+
         function unifyToHex() {
             for (let r = 0; r < rows; r++) {
                 document.getElementById(`row-${r}`).classList.add('unified-row');
                 for (let b = 0; b < 3; b++) document.getElementById(`block-${r}-${b}`).classList.add('unified-block');
             }
         }
+
         function activate3Code() {
             unifyToHex();
             const b3 = document.getElementById('cell-3');
             if(b3) { b3.classList.remove('is-head'); b3.classList.add('zero-blade'); }
             for (let i = 1; i <= rows * 6; i++) {
-                if (i % 6 === 3 && i !== 3) document.getElementById(`cell-${i}`).classList.add('faded');
-                // حسم 5 و 7 كأوليات
+                if (i % 6 === 3 && i !== 3) {
+                    const c = document.getElementById(`cell-${i}`);
+                    if(c) c.classList.add('faded');
+                }
+                // Confirm 5 and 7 as primes
                 if ([5, 7].includes(i)) {
                     const c = document.getElementById(`cell-${i}`);
-                    c.classList.remove('is-head'); c.classList.add('confirmed');
+                    if(c) {
+                        c.classList.remove('is-head'); 
+                        c.classList.add('confirmed');
+                    }
                 }
             }
         }
