@@ -57,7 +57,21 @@
             display: flex;
             flex-direction: column;
         }
-        
+        .home-btn {
+    display: block;
+    width: 100%;
+    background: #e74c3c; /* لون أحمر مميز أو اختر ما يناسبك */
+    color: white;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+.home-btn:hover { background: #c0392b; }
+
         /* iframe يغطي كامل المساحة المتاحة */
         iframe { width: 100%; flex-grow: 1; border: none; border-radius: 8px; }
         
@@ -71,6 +85,7 @@
 
     <!-- القائمة اليسرى -->
     <div id="left-sidebar">
+        <a href="index.html" class="home-btn">🏠 Back to Home</a>
         <h3 style="margin-top:40px;" class="menu-title">Probability Models</h3>
         <button class="branch-btn" onclick="updateView('1')">1. Sequential Order Model</button>
         <button class="branch-btn" onclick="updateView('2')">2. Full Inverse Zigzag</button>
