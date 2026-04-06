@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Atlas Interactif - Plein Écran</title>
+    <style>
+        :root { --bg: #f4f7f6; --side: #ffffff; --accent: #2c3e50; --gold: #b8860b; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; display: flex; height: 100vh; overflow: hidden; }
+
+        /* Barre latérale gauche */
+        #left-sidebar { 
+            width: 300px; 
+            background: var(--side); 
+            padding: 20px; 
+            border-right: 1px solid #ddd; 
+            overflow-y: auto; 
+            flex-shrink: 0;
+            transition: margin-left 0.3s ease; 
+        }
+
+        #left-sidebar.closed { margin-left: -340px; }
+
+        /* Bouton Toggle */
+        #toggle-btn {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            z-index: 1000;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-title { color: var(--accent); border-bottom: 2px solid var(--gold); padding-bottom: 5px; margin-top: 15px; font-size: 0.9rem; }
+        .branch-btn { width: 100%; background: #fff; border: 1px solid #eee; padding: 10px; margin-bottom: 5px; border-radius: 4px; cursor: pointer; text-align: left; font-size: 0.8rem; }
+        .branch-btn:hover { background: var(--accent); color: #fff; }
+
+        #main-stage { flex-grow: 1; height: 100vh; display: flex; flex-direction: column; background: #f4f7f6; position: relative; }
+        #content-area { background: white; width: 100%; height: 100%; box-sizing: border-box; padding: 20px; display: flex; flex-direction: column; }
+        iframe { width: 100%; flex-grow: 1; border: none; border-radius: 8px; }
+        .visual-btn { margin-top: 20px; padding: 12px 25px; background: var(--gold); color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <button id="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    <div id="left-sidebar">
+        <h3 style="margin-top:40px;" class="menu-title">Modèles de Probabilité</h3>
+        <button class="branch-btn" onclick="updateView('1')">1. Ordre Séquentiel</button>
+        <button class="branch-btn" onclick="updateView('2')">2. Zigzag Inverse Complet</button>
+        <button class="branch-btn" onclick="updateView('3')">3. Modèle Centré (±1)</button>
+        <button class="branch-btn" onclick="updateView('4')">4. Demi-Zigzag Inverse</button>
+        <button class="branch-btn" onclick="updateView('5')">5. Zigzag Sélectif (Impair 21)</button>
+
+        <h3 class="menu-title">Récurrence Théorique</h3>
+        <button class="branch-btn" onclick="updateView('6')">6. Récurrence: (2×3) & (3×2)</button>
+        <button class="branch-btn" onclick="updateView('7')">7. Récurrence: (2×7) & (7×2)</button>
+        <button class="branch-btn" onclick="updateView('8')">8. Table Redondante 18</button>
+
+        <h3 class="menu-title">Primoriales Activées</h3>
+        <button class="branch-btn" onclick="updateView('9')">9. Hexagonale Activée (p#6)</button>
+        <button class="branch-btn" onclick="updateView('10')">10. Trigonale Activée (p#30)</button>
+        <button class="branch-btn" onclick="updateView('11')">11. Activée 7# (p#210)</button>
+
+        <h3 class="menu-title">Dossiers Mécaniques</h3>
+        <button class="branch-btn" onclick="updateView('12')">12. Dossier Hexagonal (15 Unités)</button>
+        <button class="branch-btn" onclick="updateView('13')">13. Dossier Primorial (105 Unités)</button>
+    </div>
+
+    <div id="main-stage">
+        <div id="content-area">
+            <h2 id="view-title" style="text-align:center; color:#2c3e50; margin-top: 40px;">Hub Interactif</h2>
+            <p id="view-desc" style="text-align:center;">Sélectionnez un modèle pour commencer la visualisation.</p>
+            <div id="iframe-container" style="flex-grow:1; display:flex; flex-direction:column; align-items:center;"></div>
+        </div>
+    </div>
+
+    <script>
+        const contentData = {
+            '1': { title: "1. Modèle d'Ordre Séquentiel", text: "Flux linéaire des colonnes potentielles p#30." },
+            '2': { title: "2. Zigzag Inverse Complet", text: "Symétrie miroir via l'inversion totale des rangées." },
+            '3': { title: "3. Modèle Centré (±1)", text: "Focus sur l'écart primitif autour de Zéro." },
+            '4': { title: "4. Demi-Zigzag Inverse", text: "Alignement esthétique par inversion à mi-chemin." },
+            '5': { title: "5. Zigzag Sélectif (Impair 21)", text: "Décalage d'une demi-cellule pour la cohérence primoriale impaire." },
+            '6': { title: "6. Récurrence: (2×3) & (3×2)", text: "Base théorique de la combinaison d'unités pour former p#6." },
+            '7': { title: "7. Récurrence: (2×7) & (7×2)", text: "Génération de structures trigonales et logique φ(M)." },
+            '8': { title: "8. Table Redondante 18", text: "Démontre la redondance dans les stades primoriaux supérieurs." },
+            '9': { title: "9. Hexagonale Activée (p#6)", text: "Table p#6 avec ZeRo BlAdEs (2, 3) activées." },
+            '10': { title: "10. Trigonale Activée (p#30)", text: "Table p#30 avec ZeRo BlAdEs (2, 3, 5) activées." },
+            '11': { title: "11. Activée 7# (p#210)", text: "Déterminisme d'ordre supérieur avec la structure p#210." },
+            '12': { title: "12. Dossier Hexagonal (15 Unités)", text: "Pliage mécanique 3D à intervalles de 3 unités." },
+            '13': { title: "13. Dossier Primorial (105 Unités)", text: "Pliage par symétrie structurelle jusqu'à 105 unités." }
+        };
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('left-sidebar');
+            const btn = document.getElementById('toggle-btn');
+            sidebar.classList.toggle('closed');
+            btn.innerHTML = sidebar.classList.contains('closed') ? '➤' : '☰';
+        }
+
+        function updateView(id) {
+            const data = contentData[id];
+            document.getElementById('iframe-container').innerHTML = `
+                <h2 style="color:#2c3e50; border-bottom: 2px solid #b8860b; width:100%">${data.title}</h2>
+                <p>${data.text}</p>
+                <button class="visual-btn" onclick="loadExternal('L' + ${id} + '.html')">Lancer le Modèle Interactif →</button>
+            `;
+            document.getElementById('view-title').style.display = 'none';
+            document.getElementById('view-desc').style.display = 'none';
+        }
+
+        function loadExternal(fileName) {
+            document.getElementById('iframe-container').innerHTML = `<iframe src="${fileName}" title="Contenu du modèle"></iframe>`;
+            document.getElementById('left-sidebar').classList.add('closed');
+            document.getElementById('toggle-btn').innerHTML = '➤';
+        }
+    </script>
+</body>
+</html>
