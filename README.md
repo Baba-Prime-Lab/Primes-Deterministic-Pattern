@@ -3,7 +3,7 @@
 <p>
   <strong>Research Identifiers:</strong><br>
   • <strong>DOI:</strong> <a href="https://zenodo.org/records/19437516">10.5281/zenodo.19437516</a> (Official Archive)<br>
-  • <strong>License:</strong> <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a>
+  • <strong>License:</strong> <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en">Creative Commons Attribution 4.0</a>
 </p>
 
 <p>A comprehensive research framework unveiling the structural laws governing prime numbers through the dual study of Prime Patterns and Gap Patterns.</p>
