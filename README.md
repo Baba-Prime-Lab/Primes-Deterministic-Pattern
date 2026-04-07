@@ -33,7 +33,7 @@ Access via Zenodo: <a href="https://zenodo.org/records/19437516">https://zenodo.
 <h2>Acknowledgments</h2>
 <ul>
   <li><strong>Developer ziiibra</strong> (Discord community): Special recognition for his proactive initiative in creating an inspiring interactive visualization.</li>
-  <li>Explore his related project: <a href="https://creaayi.github.io/_stringDiagramsReason_public/components/HTML_proto_Explorables/the-primes-rhyme.htm">The Primes Rhyme</a></li>
+  <li>Explore his related project: <a href="https://creaayi.github.io/_stringDiagramsReason_public/components/HTML_proto_Explorables/the-primes-rhyme.html">The Primes Rhyme</a></li>
 </ul>
 
 <hr>
