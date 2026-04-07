@@ -1,12 +1,9 @@
 <h1>The Deterministic Architecture of Prime Distribution (v2.0)</h1>
 
 <p>
-  <a href="https://zenodo.org">
-    <img src="https://shields.io" alt="DOI">
-  </a>
-  <a href="https://creativecommons.org">
-    <img src="https://shields.io" alt="License">
-  </a>
+  <strong>Research Identifiers:</strong><br>
+  • <strong>DOI:</strong> <a href="https://zenodo.org">10.5281/zenodo.19437516</a> (Official Archive)<br>
+  • <strong>License:</strong> <a href="https://creativecommons.org">Creative Commons Attribution 4.0</a>
 </p>
 
 <p>A comprehensive research framework unveiling the structural laws governing prime numbers through the dual study of Prime Patterns and Gap Patterns.</p>
