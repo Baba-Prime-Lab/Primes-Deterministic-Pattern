@@ -19,7 +19,7 @@
 <h2>Interactive Atlas Hub</h2>
 <p>Explore the structural foundations live:</p>
 <ul>
-  <li><a href="[(https://baba-prime-lab.github.io/Primes-Deterministic-Pattern/baba-precision-p2.html)]">English Lab (Main Interface)</a></li>
+  <li><a href="https://baba-prime-lab.github.io/Primes-Deterministic-Pattern/baba-precision-p2.html">English Lab (Main Interface)</a></li>
   <li><a href="[https://github.io](https://baba-prime-lab.github.io/Primes-Deterministic-Pattern/index_ar.html)">المختبر العربي (Version Arabe)</a></li>
   <li><a href="[https://github.io](https://baba-prime-lab.github.io/Primes-Deterministic-Pattern/index_fr.html)">Labo Français (Version Française)</a></li>
   <li><a href="[https://github.io](https://baba-prime-lab.github.io/Primes-Deterministic-Pattern/R1.html)">BaBa-LnX & BaBa-X Engine (Calculator)</a></li>
