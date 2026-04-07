@@ -22,7 +22,7 @@ Live visualization of the structural foundations (AR, EN, FR):
 ## 📖 Publication Detail
 Official paper: **"Deterministic Pattern in Prime Distribution"**  
 Co-authored with **Prof. Nousseiba Baba** (Hassan II University).  
-**Access via Zenodo:** [DOI: 10.5281/zenodo.19437516](https://doi.org)
+**Access via Zenodo:** [DOI: 10.5281/zenodo.19437516](https://[doi.org](https://zenodo.org/records/19437516))
 
 ## 🤝 Acknowledgments
 - **Developer ziiibra** (Discord community): Special recognition for his proactive initiative in creating an inspiring interactive visualization. His work served as a foundational catalyst for the development of our additional interactive models.
