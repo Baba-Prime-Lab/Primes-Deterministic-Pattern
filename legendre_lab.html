@@ -12,50 +12,48 @@
             background: var(--bg); 
             color: white; 
             text-align: center;
-            overflow: hidden; /* لمنع ظهور شريطين للتمرير */
+            overflow: hidden; 
         }
         
         .nav-bar { 
             background: var(--nav); 
             padding: 15px; 
-            position: relative;
             z-index: 1000; 
             border-bottom: 2px solid var(--gold);
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
         .nav-btn { 
-            padding: 10px 18px; 
-            margin: 5px; 
-            background: transparent; 
-            border: 1px solid var(--gold); 
-            color: var(--gold); 
-            cursor: pointer; 
-            border-radius: 5px; 
-            transition: 0.3s; 
-            font-weight: bold;
-            font-size: 0.9rem;
+            padding: 10px 18px; margin: 5px; background: transparent; 
+            border: 1px solid var(--gold); color: var(--gold); 
+            cursor: pointer; border-radius: 5px; transition: 0.3s; 
+            font-weight: bold; font-size: 0.9rem;
         }
 
         .nav-btn:hover, .nav-btn.active { 
-            background: var(--gold); 
-            color: white; 
+            background: var(--gold); color: white; 
             box-shadow: 0 0 15px rgba(184, 134, 11, 0.4);
         }
 
-        .header-info { 
-            padding: 15px; 
-            background: rgba(184, 134, 11, 0.1); 
-            font-size: 1rem;
-            border-bottom: 1px solid rgba(184, 134, 11, 0.2);
+        /* حاوية الشرح (تظهر في البداية) */
+        #welcome-screen {
+            padding: 50px 20px;
+            max-width: 800px;
+            margin: auto;
+            line-height: 1.6;
+        }
+        .intro-card {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(184, 134, 11, 0.3);
         }
 
-        /* حاوية الـ iframe لضمان الظهور */
         .lab-viewport {
             width: 100%;
-            height: calc(100vh - 160px); /* حساب المساحة المتبقية بدقة */
+            height: calc(100vh - 160px);
             border: none;
-            background: white; /* خلفية بيضاء مؤقتة للتأكد من التحميل */
+            display: none; /* مخفي في البداية */
         }
     </style>
 </head>
@@ -74,35 +72,38 @@
     </a>
 </div>
 
-<div class="header-info" id="info-text">
-    Welcome to the Deterministic Lab. Please select a phase.
+<!-- واجهة الشرح -->
+<div id="welcome-screen">
+    <div class="intro-card">
+        <h2 style="color:var(--gold);">Legendre's Conjecture Laboratory</h2>
+        <p>This interactive lab demonstrates the **Structural Determinism** of prime distribution between consecutive squares ($n^2$ and $(n+1)^2$).</p>
+        <ul style="text-align: left; display: inline-block; color: #cbd5e1;">
+            <li>Select a <b>Phase</b> from the navigation bar above.</li>
+            <li>Observe how the <b>ZeRo BlAdEs</b> (in Orange) eliminate non-primes.</li>
+            <li>The <b>Red Glow</b> marks the consecutive squares range.</li>
+            <li>Note the surviving <b>Deterministic Columns</b> (in Cyan/Blue) within the glowing range.</li>
+        </ul>
+        <p style="margin-top: 20px; font-style: italic; color: var(--gold);">Choose a Phase to begin the visual proof.</p>
+    </div>
 </div>
 
-<!-- التأكد من وجود الـ id الصحيح للاستدعاء -->
-<iframe id="model-frame" class="lab-viewport" src="PL1.html"></iframe>
+<iframe id="model-frame" class="lab-viewport" src=""></iframe>
 
 <script>
     function loadModel(modelId, btn, range) {
-        // 1. تحديث الأزرار
+        // 1. إخفاء واجهة الترحيب وإظهار الـ iframe
+        document.getElementById('welcome-screen').style.display = 'none';
+        const frame = document.getElementById('model-frame');
+        frame.style.display = 'block';
+
+        // 2. تحديث الأزرار
         const buttons = document.querySelectorAll('.nav-btn');
         buttons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         
-        // 2. تحديث النص
-        document.getElementById('info-text').innerText = "Visualizing Range: [" + range + "] via " + modelId + " Deterministic Model";
-        
         // 3. تغيير مسار الـ iframe
-        const frame = document.getElementById('model-frame');
         frame.src = modelId + ".html";
-        
-        console.log("Loading model: " + modelId + ".html"); // للتأكد من عمل الدالة في الكونسول
     }
-
-    // تحميل المرحلة الأولى تلقائياً عند فتح الصفحة لضمان عدم ظهورها بيضاء
-    window.onload = function() {
-        const firstBtn = document.getElementsByClassName('nav-btn')[0];
-        if(firstBtn) loadModel('PL1', firstBtn, '9, 16, 25');
-    };
 </script>
 
 </body>
