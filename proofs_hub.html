@@ -24,7 +24,27 @@
             z-index: -1;
             filter: grayscale(20%); /* لمسة فنية لتقليل حدة الألوان */
         }
+   /* تعديل العنوان الرئيسي: أبيض بإطار ذهبي */
+    .header h1 { 
+        font-size: 3.2rem; 
+        color: white; /* النص أبيض */
+        /* إطار ذهبي عبر التظليل المتعدد */
+        text-shadow: 
+            -1px -1px 0 var(--gold),  
+             1px -1px 0 var(--gold),
+            -1px  1px 0 var(--gold),
+             1px  1px 0 var(--gold),
+             0 0 20px rgba(184, 134, 11, 0.8); 
+        margin-bottom: 10px;
+        font-weight: 800;
+    }
 
+    /* توحيد لون التاج (Tag) ليكون أكثر رسمية */
+    .status-tag {
+        color: var(--gold);
+        border: 1px solid var(--gold);
+        background: rgba(184, 134, 11, 0.1);
+    }
         .header { padding: 60px 20px; }
         .header h1 { 
             font-size: 2.8rem; 
