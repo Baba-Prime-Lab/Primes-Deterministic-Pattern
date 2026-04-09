@@ -58,7 +58,7 @@
         const container = document.getElementById('grid-container');
         const rows = 15;
         const isP30 = (n) => [1, 7, 11, 13, 17, 19, 23, 29].includes(n % 30);
-        const primesTo47 = [7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
+        const primesTo47 = [ 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
 
         for (let r = 0; r < rows; r++) {
             const rowWrapper = document.createElement('div');
@@ -93,11 +93,20 @@
             }
         }
 
-        function activate7Code() {
-            unifyTo210();
-            const b7 = document.getElementById('cell-7');
-            if(b7) b7.classList.add('zero-blade');
-
+       function activate7Code() {
+    unifyTo210();
+    
+    // 1. استهداف الرقم 7 بالتحديد لقلب حالته
+    const b7 = document.getElementById('cell-7');
+    if(b7) {
+        b7.classList.remove('is-head');    // نزع صفة "رأس عمود" (الأزرق)
+        b7.classList.remove('confirmed'); // نزع صفة "أولي محسوم" (الكحلي)
+        b7.classList.add('zero-blade');    // إضافة صفة "شفرة زيرو" (البرتقالي)
+        
+        // تأكيد اللون برمجياً لقطع الشك باليقين
+        b7.style.backgroundColor = "#ff5722"; 
+        b7.style.color = "white";
+    }
             for (let i = 1; i <= rows * 210; i++) {
                 const cell = document.getElementById(`cell-${i}`);
                 if (!cell) continue;
