@@ -26,7 +26,6 @@
 
         .header { padding: 60px 20px; }
         
-        /* العنوان الأبيض الفخم بإطار ذهبي */
         .header h1 { 
             font-size: 3.5rem; 
             color: white;
@@ -40,6 +39,7 @@
             font-weight: 800;
         }
 
+        /* الحاوية الأساسية للبطاقات */
         .proofs-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -56,12 +56,10 @@
             border-radius: 15px;
             transition: 0.5s ease;
             backdrop-filter: blur(8px);
-            text-decoration: none;
             color: white;
-            display: block;
+            position: relative;
         }
         
-        /* تمييز البطاقة الجاهزة (Legendre) */
         .card-active {
             border: 2px solid var(--gold);
             box-shadow: 0 0 20px rgba(184, 134, 11, 0.3);
@@ -110,36 +108,39 @@
         <p style="font-size: 1.3rem; opacity: 0.9; letter-spacing: 2px; color: #cbd5e1;">Part II: Deterministic Structural Proofs</p>
     </div>
 
-    <div class="proof-card card-active" onclick="window.location.href='legendre_lab.html';"
- style="cursor: pointer;">
-    <div class="status-tag tag-ready">● INTERACTIVE LAB READY</div>
-    <h3 style="color: var(--gold); font-size: 1.6rem;">Legendre's Conjecture</h3>
-    <p style="color: #e2e8f0;">Full deterministic proof of prime existence between consecutive squares (n² to (n+1)²).</p>
-    <div style="margin-top: 15px; font-size: 0.8rem; color: var(--gold); font-weight: bold;">Click to enter the Lab →</div>
-</div>
+    <!-- بداية الشبكة المنظمة -->
+    <div class="proofs-grid">
+        
+        <!-- 1. Legendre's Conjecture (البطاقة المفعلة) -->
+        <div class="proof-card card-active" onclick="location.href='legendre_lab.html';">
+            <div class="status-tag tag-ready">● INTERACTIVE LAB READY</div>
+            <h3 style="color: var(--gold); font-size: 1.6rem;">Legendre's Conjecture</h3>
+            <p style="color: #e2e8f0;">Full deterministic proof of prime existence between consecutive squares (n² to (n+1)²).</p>
+            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--gold); font-weight: bold;">Click to enter the Lab →</div>
+        </div>
 
-
-        <!-- Goldbach's Conjecture -->
+        <!-- 2. Goldbach's Conjecture -->
         <div class="proof-card">
             <div class="status-tag tag-dev">IN DEVELOPMENT</div>
             <h3>Goldbach's Conjecture</h3>
             <p style="color: #cbd5e1;">Structural symmetry proof: Every even integer as a sum of two primes.</p>
         </div>
 
-        <!-- Twin Prime Conjecture -->
+        <!-- 3. Twin Prime Conjecture -->
         <div class="proof-card">
             <div class="status-tag tag-dev">IN DEVELOPMENT</div>
             <h3>Twin Prime Conjecture</h3>
             <p style="color: #cbd5e1;">Infinitude proof via the Eternal Prime Pattern recurrence.</p>
         </div>
 
-        <!-- Riemann Hypothesis -->
+        <!-- 4. Riemann Hypothesis -->
         <div class="proof-card">
             <div class="status-tag tag-dev">IN DEVELOPMENT</div>
             <h3>Riemann Hypothesis</h3>
             <p style="color: #cbd5e1;">Structural Integration: Linking Geometric Symmetry, Primorial Determinism, and Zero Statistical Error.</p>
         </div>
-    </div>
+
+    </div> <!-- نهاية الشبكة -->
 
     <a href="index.html" class="home-btn">🏠 Back to Atlas Home</a>
 
