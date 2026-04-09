@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PL4: Vertical Determinism 2310#</title>
+    <style>
+        :root { --zero-blade: #ff5722; --column-head: #2c3e50; --prob: #00bcd4; --bg: #f8f9fa; --prime-confirmed: #1a237e; --glow-red: #ff0000; }
+        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 5px; margin: 0; }
+        .header-section { text-align: center; background: white; width: 100%; padding: 15px; border-bottom: 3px solid var(--column-head); margin-bottom: 20px; }
+        .controls { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+        #pl4-trigger { padding: 12px 30px; cursor: pointer; background: #8e44ad; color: white; border: none; border-radius: 50px; font-weight: bold; transition: 0.3s; }
+        #pl4-trigger:hover { background: #7d3c98; transform: scale(1.05); }
+        .grid-wrapper { width: 99vw; overflow-x: auto; background: white; padding: 10px 0; display: flex; justify-content: center; }
+        #grid-container { display: flex; flex-direction: column; gap: 1px; width: fit-content; }
+        .row-wrapper { display: flex; gap: 0; height: 14px; }
+        .cell { width: 5.2px; height: 12px; background: #fff; border: none; margin: 0; padding: 0; transition: 0.4s; }
+        .zero-blade { background: var(--zero-blade) !important; z-index: 10; }
+        .is-head { background: var(--prob) !important; }
+        .confirmed { background: var(--prime-confirmed) !important; }
+        .faded { background: #eee !important; opacity: 0.08 !important; }
+        .legendre-glow {
+            background: var(--glow-red) !important;
+            box-shadow: 0 0 15px var(--glow-red), 0 0 25px var(--glow-red) !important;
+            z-index: 9999 !important;
+            transform: scale(2.5) !important;
+            border-radius: 2px;
+            opacity: 1 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <h3 style="margin:0;">PL4: Vertical Determinism (The 11# to remark 121 - 169)</h3>
+        <div class="controls">
+            <button id="pl4-trigger" onclick="executePL4()">Activate 11# Impact & Glow [121-169]</button>
+            <button onclick="location.reload()" style="background:#eee; color:#333; border:none; padding:5px 15px; border-radius:4px; cursor:pointer;">Reset</button>
+        </div>
+    </div>
+    <div class="grid-wrapper"><div id="grid-container"></div></div>
+
+    <script>
+        const container = document.getElementById('grid-container');
+        const rows = 15;
+        const isP30 = (n) => [1, 7, 11, 13, 17, 19, 23, 29].includes(n % 30);
+        const primesTo167 = [13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167];
+        const glowSquares = [121, 144, 169];
+
+        // بناء الجدول فوراً عند التحميل
+        function buildGrid() {
+            for (let r = 0; r < rows; r++) {
+                const rowWrapper = document.createElement('div');
+                rowWrapper.className = 'row-wrapper';
+                for (let c = 1; c <= 210; c++) {
+                    const num = (r * 210) + c;
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.id = `cell-${num}`;
+                    cell.dataset.col = c; // تخزين رقم العمود
+
+                    if ([2, 3, 5, 7].includes(num)) cell.classList.add('zero-blade');
+                    else if (isP30(num)) cell.classList.add('is-head');
+                    
+                    rowWrapper.appendChild(cell);
+                }
+                container.appendChild(rowWrapper);
+            }
+        }
+        buildGrid();
+
+function executePL4() {
+    // 1. ترقية 7 و 11 لشفرات زيرو برتقالية (الجزء العلوي فقط)
+    const blades = [7, 11];
+    blades.forEach(num => {
+        const cell = document.getElementById(`cell-${num}`);
+        if(cell) {
+            cell.classList.remove('is-head', 'confirmed');
+            cell.classList.add('zero-blade');
+            cell.style.backgroundColor = "#ff5722";
+        }
+    });
+
+    // 2. الحسم العمودي الكامل (Vertical Wipe)
+    for (let col = 1; col <= 210; col++) {
+        if (isP30(col)) {
+            // شرط الحسم: إذا كان العمود مضاعف لـ 7 أو 11
+            if (col % 7 === 0 || col % 11 === 0) {
+                const columnCells = document.querySelectorAll(`[data-col="${col}"]`);
+                columnCells.forEach(cell => {
+                    const cellNum = parseInt(cell.id.replace('cell-', ''));
+                    
+                    // استثناء الشفرات الحاكمة (7 و 11) فقط من الحذف
+                    if (cellNum !== 7 && cellNum !== 11) {
+                        cell.classList.remove('is-head'); // إزالة اللون الأزرق من الرأس
+                        cell.classList.add('faded');      // إضافة التلاشي
+                    }
+                });
+            }
+        }
+    }
+    // 2. الحسم العمودي (Vertical Wipe) - يشمل الأعمدة تحت 7 و 11
+    for (let col = 1; col <= 210; col++) {
+        if (isP30(col)) {
+            // شرط الحسم: إذا كان العمود مضاعف لـ 7 أو 11
+            if (col % 7 === 0 || col % 11 === 0) {
+                const columnCells = document.querySelectorAll(`[data-col="${col}"]`);
+                columnCells.forEach(cell => {
+                    // نحسم كل الخلايا في العمود ما عدا الخلية الأولى (التي أصبحت شفرة)
+                    const cellNum = parseInt(cell.id.replace('cell-', ''));
+                    if (cellNum > 210) { 
+                        cell.classList.add('faded');
+                    }
+                });
+            }
+        }
+    }
+
+    // 3. تلوين الأوليات المحسومة حتى 167
+    const primesTo167 = [11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167];
+    primesTo167.forEach(p => {
+        const pc = document.getElementById(`cell-${p}`);
+        // نلون الأوليات بالأزرق الكحلي ما عدا الشفرات (7 و 11)
+        if(pc && !blades.includes(p)) { 
+            pc.classList.remove('is-head'); 
+            pc.classList.add('confirmed'); 
+        }
+    });
+
+    // 4. تشعشع المربعات بالأحمر (121, 144, 169)
+    const glowSquares = [121, 144, 169];
+    glowSquares.forEach(sq => {
+        const sc = document.getElementById(`cell-${sq}`);
+        if(sc) sc.classList.add('legendre-glow');
+    });
+
+    document.getElementById('pl4-trigger').innerText = "2310 Architecture Active ✅";
+}
+
+    </script>
+</body>
+</html>

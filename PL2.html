@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PL2: Legendre Proof (30# Alignment)</title>
+    <style>
+        :root { --zero-blade: #ff5722; --column-head: #2c3e50; --prob: #00bcd4; --bg: #f8f9fa; --prime-confirmed: #1a237e; --glow-red: #ff0000; }
+        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 0; }
+        
+        .header-section { text-align: center; background: white; width: 100%; padding: 15px; border-bottom: 3px solid var(--column-head); margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .controls { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+        
+        #pl2-trigger { padding: 10px 25px; cursor: pointer; background: #8e44ad; color: white; border: none; border-radius: 4px; font-weight: bold; transition: 0.3s; }
+        #pl2-trigger:hover { background: #7d3c98; transform: scale(1.05); }
+
+        #grid-container { display: flex; flex-direction: column; gap: 0; transition: 1s; width: fit-content; margin: auto; }
+        .row-wrapper { display: flex; gap: 0; transition: 1s; }
+
+        .cell { 
+            width: 32px; height: 36px; display: flex; align-items: center; justify-content: center; 
+            background: #fff; border: 0.5px solid #eee; font-size: 10px; font-weight: bold; color: #888; 
+            transition: 0.5s; box-sizing: border-box; position: relative;
+        }
+
+        .zero-blade { background: var(--zero-blade) !important; color: white !important; z-index: 10; border: 1px solid gold !important; }
+        .is-head { background: var(--prob); color: white; border: none; }
+        .confirmed { background: var(--prime-confirmed) !important; color: gold !important; border: 1px solid gold !important; }
+        .faded { background: #eee !important; color: #ccc !important; opacity: 0.15; }
+
+        /* الوهج الأحمر للمربعات */
+        .legendre-glow {
+            background: var(--glow-red) !important;
+            color: white !important;
+            box-shadow: 0 0 15px var(--glow-red), 0 0 25px var(--glow-red);
+            z-index: 999 !important;
+            transform: scale(1.2);
+            border: 2px solid white !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-section">
+    <h4 style="margin: 5px 0;">PL2: Legendre Proof (30# Architecture)</h4>
+    <div style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">Observing the Deterministic Range: 25, 36, 49</div>
+    <div class="controls">
+        <button id="pl2-trigger" onclick="activatePL2()">Activate 5# Impact & Glow [25-49]</button>
+        <button onclick="location.reload()" style="background:#eee; color:#333;">Reset</button>
+    </div>
+</div>
+
+<div id="grid-container"></div>
+
+<script>
+    const container = document.getElementById('grid-container');
+    const rows = 12;
+    const primesTo47 = [7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
+    const glowSquares = [25, 36, 49];
+
+    // بناء الجدول
+    for (let r = 0; r < rows; r++) {
+        const rowWrapper = document.createElement('div');
+        rowWrapper.className = 'row-wrapper';
+        for (let c = 1; c <= 30; c++) {
+            const num = (r * 30) + c;
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.id = `cell-${num}`;
+            cell.innerText = num;
+            cell.dataset.col = c; // تخزين رقم العمود
+
+            if (num === 2 || num === 3) cell.classList.add('zero-blade');
+            if (num % 6 === 1 || num % 6 === 5) cell.classList.add('is-head');
+
+            rowWrapper.appendChild(cell);
+        }
+        container.appendChild(rowWrapper);
+    }
+
+    function activatePL2() {
+        // 1. ترقية الرقم 5 لشفرة زيرو
+        const b5 = document.getElementById('cell-5');
+        if(b5) {
+            b5.classList.remove('is-head');
+            b5.classList.add('zero-blade');
+            b5.style.backgroundColor = "#ff5722";
+        }
+
+        // 2. الحسم العمودي للأعمدة 5 و 25
+        [5].forEach(colIndex => {
+            const columnCells = document.querySelectorAll(`[data-col="${colIndex}"]`);
+            columnCells.forEach(cell => {
+                const cellNum = parseInt(cell.id.replace('cell-', ''));
+                if (cellNum !== 5) {
+                    cell.classList.remove('is-head');
+                    cell.classList.add('faded');
+                }
+            });
+        });
+
+        // 3. تلوين الأوليات والوهج
+        for (let i = 1; i <= rows * 30; i++) {
+            const cell = document.getElementById(`cell-${i}`);
+            if(!cell) continue;
+
+            if (primesTo47.includes(i) && i !== 5) {
+                cell.classList.remove('is-head');
+                cell.classList.add('confirmed');
+            }
+
+            if (glowSquares.includes(i)) {
+                cell.classList.add('legendre-glow');
+            }
+        }
+        document.getElementById('pl2-trigger').innerText = "30# Range Verified ✅";
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PL3: The 210# Alignment (49-121 Range)</title>
+    <style>
+        :root { --zero-blade: #ff5722; --column-head: #2c3e50; --prob: #00bcd4; --bg: #f8f9fa; --prime-confirmed: #1a237e; --glow-color: #ff0000; }
+        body { background: var(--bg); font-family: 'Segoe UI', Tahoma, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 5px; margin: 0; }
+        .header-section { text-align: center; background: white; width: 100%; padding: 15px; border-bottom: 3px solid var(--column-head); margin-bottom: 10px; }
+        .controls { display: flex; gap: 10px; justify-content: center; margin-top: 5px; }
+        #pl3-trigger { padding: 10px 25px; cursor: pointer; background: #8e44ad; color: white; border: none; border-radius: 50px; font-weight: bold; transition: 0.3s; }
+        #pl3-trigger:hover { background: #7d3c98; transform: scale(1.05); }
+        .grid-wrapper { width: 99vw; overflow-x: auto; background: white; padding: 10px 0; display: flex; justify-content: center; }
+        #grid-container { display: flex; flex-direction: column; gap: 1px; width: fit-content; direction: ltr !important; }
+        .row-wrapper { display: flex; gap: 0; height: 18px; }
+        .cell { width: 5.1px !important; height: 12px !important; background: #fff; border: none !important; margin: 0; padding: 0; transition: 0.4s; box-sizing: border-box; }
+        .zero-blade { background: var(--zero-blade) !important; z-index: 10; }
+        .is-head { background: var(--prob) !important; }
+        .confirmed { background: var(--prime-confirmed) !important; }
+        .faded { background: #eee !important; opacity: 0.08 !important; }
+        .legendre-glow {
+            background: var(--glow-color) !important;
+            box-shadow: 0 0 15px var(--glow-color), 0 0 25px var(--glow-color);
+            z-index: 9999 !important;
+            transform: scale(2.3) !important;
+            border-radius: 2px;
+            opacity: 1 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <h4 style="margin:5px; color: var(--column-head);">Legendre Proof: Phase 3 (Observe range 49 - 121)</h4>
+        <div class="controls">
+            <button id="pl3-trigger" onclick="activate7Code()">Activate 7# Impact & Visualize [49-121]</button>
+            <button onclick="location.reload()" style="background:#eee; color:#333; border:none; padding:5px 15px; border-radius:4px; cursor:pointer;">Reset</button>
+        </div>
+    </div>
+    <div class="grid-wrapper"><div id="grid-container"></div></div>
+
+    <script>
+        const container = document.getElementById('grid-container');
+        const rows = 15;
+        const squares = [49, 64, 81, 100, 121]; 
+        const isP30 = (n) => [1, 7, 11, 13, 17, 19, 23, 29].includes(n % 30);
+        const primesTo113 = [11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113];
+
+        function buildGrid() {
+            for (let r = 0; r < rows; r++) {
+                const rowWrapper = document.createElement('div');
+                rowWrapper.className = 'row-wrapper';
+                for (let c = 1; c <= 210; c++) {
+                    const num = (r * 210) + c;
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.id = `cell-${num}`;
+                    cell.dataset.col = c;
+                    if ([2, 3, 5].includes(num)) cell.classList.add('zero-blade');
+                    else if (isP30(num)) cell.classList.add('is-head');
+                    rowWrapper.appendChild(cell);
+                }
+                container.appendChild(rowWrapper);
+            }
+        }
+        buildGrid();
+
+        function activate7Code() {
+            // 1. ترقية 7 لشفرة زيرو
+            const b7 = document.getElementById('cell-7');
+            if(b7) {
+                b7.classList.remove('is-head', 'confirmed');
+                b7.classList.add('zero-blade');
+                b7.style.backgroundColor = "#ff5722";
+            }
+
+            // 2. الحسم العمودي الكامل لمضاعفات 7
+            for (let col = 1; col <= 210; col++) {
+                if (isP30(col) && col % 7 === 0) {
+                    const columnCells = document.querySelectorAll(`[data-col="${col}"]`);
+                    columnCells.forEach(cell => {
+                        if (cell.id !== 'cell-7') {
+                            cell.classList.remove('is-head');
+                            cell.classList.add('faded');
+                        }
+                    });
+                }
+            }
+
+            // 3. تلوين الأوليات والوهج
+            primesTo113.forEach(p => {
+                const pc = document.getElementById(`cell-${p}`);
+                if(pc) { pc.classList.remove('is-head'); pc.classList.add('confirmed'); }
+            });
+            squares.forEach(sq => {
+                const sc = document.getElementById(`cell-${sq}`);
+                if(sc) sc.classList.add('legendre-glow');
+            });
+            document.getElementById('pl3-trigger').innerText = "Phase 3 Verified ✅";
+        }
+    </script>
+</body>
+</html>

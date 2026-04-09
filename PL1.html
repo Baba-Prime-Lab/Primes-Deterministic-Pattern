@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PL1: Legendre Proof (Hexagonal Birth)</title>
+    <style>
+        :root { --zero-blade: #ff5722; --column-head: #2c3e50; --prob: #00bcd4; --bg: #f8f9fa; --prime-confirmed: #1a237e; --glow-red: #ff0000; }
+        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 0; }
+        
+        .header-section { text-align: center; background: white; width: 100%; padding: 15px; border-bottom: 3px solid var(--column-head); margin-bottom: 20px; }
+        .controls { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+        
+        #pl1-trigger { padding: 10px 25px; cursor: pointer; background: #8e44ad; color: white; border: none; border-radius: 4px; font-weight: bold; transition: 0.3s; }
+        #pl1-trigger:hover { background: #7d3c98; transform: scale(1.05); }
+
+        #grid-container { display: flex; flex-direction: column; gap: 0; transition: 1s; width: fit-content; margin: auto; }
+        .row-wrapper { display: flex; gap: 0; transition: 1s; }
+
+        .cell { 
+            width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; 
+            background: #fff; border: 0.5px solid #eee; font-size: 12px; font-weight: bold; color: #888; 
+            transition: 0.5s; box-sizing: border-box; 
+        }
+
+        .zero-blade { background: var(--zero-blade) !important; color: white !important; z-index: 10; border: 1.5px solid gold !important; }
+        .is-head { background: var(--prob); color: white; border: none; }
+        .confirmed { background: var(--prime-confirmed) !important; color: gold !important; border: 1.5px solid gold !important; }
+        .faded { background: #eee !important; color: #ccc !important; opacity: 0.2; }
+
+        /* الوهج الأحمر للمربعات 9, 16, 25 */
+        .legendre-glow {
+            background: var(--glow-red) !important;
+            color: white !important;
+            box-shadow: 0 0 15px var(--glow-red), 0 0 25px var(--glow-red);
+            z-index: 999 !important;
+            transform: scale(1.15);
+            border: 2px solid white !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-section">
+    <h4 style="margin: 5px 0;">PL1: Legendre Proof (6# Structural Genesis)</h4>
+    <div style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Deterministic Marks: 9, 16, 25</div>
+    <div class="controls">
+        <button id="pl1-trigger" onclick="activatePL1()">Activate 3# Impact & Glow [9-25]</button>
+        <button onclick="location.reload()" style="background:#eee; color:#333; border:none; padding:8px 15px; border-radius:4px; cursor:pointer;">Reset</button>
+    </div>
+</div>
+
+<div id="grid-container"></div>
+
+<script>
+    const container = document.getElementById('grid-container');
+    const rows = 10;
+    const confirmedPrimes = [5, 7, 11, 13, 17, 19, 23];
+    const glowSquares = [9, 16, 25];
+
+    // بناء الجدول السداسي
+    for (let r = 0; r < rows; r++) {
+        const rowWrapper = document.createElement('div');
+        rowWrapper.className = 'row-wrapper';
+        for (let c = 1; c <= 6; c++) {
+            const num = (r * 6) + c;
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.id = `cell-${num}`;
+            cell.innerText = num;
+            cell.dataset.col = c;
+
+            if (num === 2) cell.classList.add('zero-blade');
+            if (num % 2 !== 0) cell.classList.add('is-head');
+
+            rowWrapper.appendChild(cell);
+        }
+        container.appendChild(rowWrapper);
+    }
+
+    function activatePL1() {
+        // 1. ترقية الرقم 3 لشفرة زيرو برتقالية
+        const b3 = document.getElementById('cell-3');
+        if(b3) {
+            b3.classList.remove('is-head');
+            b3.classList.add('zero-blade');
+            b3.style.backgroundColor = "#ff5722";
+        }
+
+        // 2. الحسم العمودي للأعمدة 3 و 9 (مضاعفات 3 في الأعمدة النشطة)
+        // في السداسي، العمود 3 هو العمود الوحيد النشط الذي يحمل مضاعفات 3
+        const column3Cells = document.querySelectorAll(`[data-col="3"]`);
+        column3Cells.forEach(cell => {
+            const cellNum = parseInt(cell.id.replace('cell-', ''));
+            if (cellNum !== 3&& !glowSquares.includes(cellNum)) {
+                cell.classList.remove('is-head');
+                cell.classList.add('faded');
+            }
+        });
+
+        // 3. تلوين الأوليات لغاية 23 وتوهج المربعات
+        for (let i = 1; i <= rows * 6; i++) {
+            const cell = document.getElementById(`cell-${i}`);
+            if(!cell) continue;
+
+            if (confirmedPrimes.includes(i)) {
+                cell.classList.remove('is-head');
+                cell.classList.add('confirmed');
+            }
+
+            if (glowSquares.includes(i)) {
+                cell.classList.add('legendre-glow');
+            }
+        }
+        document.getElementById('pl1-trigger').innerText = "6# Proof Active ✅";
+    }
+</script>
+</body>
+</html>
