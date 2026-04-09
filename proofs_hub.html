@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BaBa-LnX | Proofs Hub - Part II</title>
+    <style>
+        :root { --primary: #2c3e50; --gold: #b8860b; --accent: #8e44ad; }
+        body { 
+            margin: 0; 
+            font-family: 'Segoe UI', sans-serif; 
+            background: #0f172a; /* خلفية داكنة لتوحي بالفضاء الرياضي */
+            color: white;
+            text-align: center;
+            overflow-x: hidden;
+        }
+        /* خلفية تعبيرية لدالة ريمان */
+        .zeta-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(142, 68, 173, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+        .header { padding: 50px 20px; }
+        .header h1 { font-size: 2.5rem; color: var(--gold); text-shadow: 0 0 15px rgba(184, 134, 11, 0.5); }
+        
+        .proofs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .proof-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(184, 134, 11, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            transition: 0.4s;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+        }
+        .proof-card:hover {
+            background: rgba(184, 134, 11, 0.1);
+            transform: translateY(-10px);
+            border-color: var(--gold);
+        }
+        .status-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #aaa;
+            border: 1px solid #555;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .home-btn {
+            margin-top: 50px;
+            display: inline-block;
+            padding: 12px 30px;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            border-radius: 25px;
+            transition: 0.3s;
+        }
+        .home-btn:hover { background: var(--gold); color: black; }
+    </style>
+</head>
+<body>
+    <div class="zeta-bg"></div>
+
+    <div class="header">
+        <h1>Prime Conjectures | Part II</h1>
+        <p style="opacity: 0.8;">The Geometric & Structural Deterministic Proofs</p>
+    </div>
+
+    <div class="proofs-grid">
+        <!-- 1. Goldbach -->
+        <div class="proof-card">
+            <div class="status-tag">In Development</div>
+            <h3>Goldbach's Conjecture</h3>
+            <p style="font-size: 0.85rem; color: #ccc;">Proving every even integer is the sum of two primes via structural symmetry.</p>
+        </div>
+
+        <!-- 2. Twin Primes -->
+        <div class="proof-card">
+            <div class="status-tag">In Development</div>
+            <h3>Infinitude of Twins</h3>
+            <p style="font-size: 0.85rem; color: #ccc;">Visualizing the zero-gap recurrence in the Eternal Prime Pattern.</p>
+        </div>
+
+        <!-- 3. Legendre -->
+        <div class="proof-card">
+            <div class="status-tag">In Development</div>
+            <h3>Legendre's Conjecture</h3>
+            <p style="font-size: 0.85rem; color: #ccc;">The deterministic guarantee of primes between n² and (n+1)².</p>
+        </div>
+
+        <!-- 4. Riemann -->
+        <div class="proof-card">
+            <div class="status-tag">Conceptual Stage</div>
+            <h3>Riemann Hypothesis</h3>
+            <p style="font-size: 0.85rem; color: #ccc;">Geometric Symmetry & The Zero Statistical Error Alignment.</p>
+        </div>
+    </div>
+
+    <a href="index.html" class="home-btn">🏠 Back to Atlas Home</a>
+
+    <p style="margin-top: 100px; opacity: 0.4; font-size: 0.8rem;">
+        Part II: Formalizing the structural foundation established in Part I.
+    </p>
+</body>
+</html>
