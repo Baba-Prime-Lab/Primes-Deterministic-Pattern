@@ -15,31 +15,18 @@
         }
         
         .zeta-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://i.postimg.cc/25SD8JYL/RRHH.png') no-repeat center center;
-            background-size: cover;
-            opacity: 0.25;
-            z-index: -1;
-            filter: grayscale(20%);
+            background-size: cover; opacity: 0.25; z-index: -1; filter: grayscale(20%);
         }
 
         .header { padding: 60px 20px; }
-        
         .header h1 { 
-            font-size: 3.5rem; 
-            color: white;
-            text-shadow: 
-                -2px -2px 0 var(--gold),  
-                 2px -2px 0 var(--gold),
-                -2px  2px 0 var(--gold),
-                 2px  2px 0 var(--gold),
-                 0 0 30px rgba(184, 134, 11, 0.6); 
-            margin-bottom: 10px;
-            font-weight: 800;
+            font-size: 3.5rem; color: white;
+            text-shadow: -2px -2px 0 var(--gold), 2px -2px 0 var(--gold), -2px 2px 0 var(--gold), 2px 2px 0 var(--gold), 0 0 30px rgba(184, 134, 11, 0.6); 
+            margin-bottom: 10px; font-weight: 800;
         }
 
-        /* الحاوية الأساسية للبطاقات */
         .proofs-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -47,6 +34,8 @@
             max-width: 1200px;
             margin: 20px auto;
             padding: 30px;
+            position: relative;
+            z-index: 100;
         }
 
         .proof-card {
@@ -57,79 +46,38 @@
             transition: 0.5s ease;
             backdrop-filter: blur(8px);
             color: white;
-            position: relative;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         
-        .card-active {
-            border: 2px solid var(--gold);
-            box-shadow: 0 0 20px rgba(184, 134, 11, 0.3);
-            cursor: pointer;
-        }
-
-        .proof-card:hover {
-            transform: translateY(-12px);
-            background: rgba(15, 23, 42, 0.9);
-            box-shadow: 0 15px 40px rgba(184, 134, 11, 0.4);
-        }
+        .card-active { cursor: pointer; }
+        .proof-card:hover { transform: translateY(-12px); background: rgba(15, 23, 42, 0.9); }
 
         .status-tag {
-            font-size: 0.75rem;
-            padding: 5px 12px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-bottom: 20px;
-            font-weight: bold;
-            letter-spacing: 1px;
+            font-size: 0.75rem; padding: 5px 12px; border-radius: 20px;
+            display: inline-block; margin-bottom: 20px; font-weight: bold; letter-spacing: 1px;
         }
-/* رفع شبكة البطاقات فوق الخلفية والعناصر الأخرى لضمان الاستجابة */
-.proofs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 25px;
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 30px;
-    position: relative; /* ضروري لعمل z-index */
-    z-index: 100;       /* يرفعها فوق الخلفية */
-}
 
-/* التأكد من أن الرابط يغطي كل مساحة البطاقة */
-.card-link {
-    text-decoration: none;
-    display: block;
-    color: inherit;
-}
+        /* تنسيقات البطاقة الخضراء (الاستكشاف) */
+        .card-exploration { border: 2px solid #27ae60 !important; box-shadow: 0 0 20px rgba(39, 174, 96, 0.2); }
+        .card-exploration:hover { box-shadow: 0 15px 40px rgba(39, 174, 96, 0.4) !important; }
+        .tag-foundation { color: #fff; border: 1px solid #27ae60; background: rgba(39, 174, 96, 0.3); }
+
+        /* تنسيقات البطاقة الذهبية (لوجاندر) */
+        .card-legendre { border: 2px solid var(--gold) !important; box-shadow: 0 0 20px rgba(184, 134, 11, 0.3); }
+        .card-legendre:hover { box-shadow: 0 15px 40px rgba(184, 134, 11, 0.4) !important; }
+        .tag-ready { color: #fff; border: 1px solid var(--gold); background: rgba(184, 134, 11, 0.3); }
 
         .tag-dev { color: #aaa; border: 1px solid #555; background: rgba(255,255,255,0.05); }
-        .tag-ready { color: #fff; border: 1px solid var(--gold); background: rgba(184, 134, 11, 0.3); text-shadow: 0 0 5px var(--gold); }
 
         .home-btn {
-            margin-top: 40px;
-            display: inline-block;
-            padding: 12px 45px;
-            border: 2px solid var(--gold);
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: bold;
-            transition: 0.3s;
-            background: rgba(184, 134, 11, 0.1);
+            margin-top: 40px; display: inline-block; padding: 12px 45px; border: 2px solid var(--gold);
+            color: white; text-decoration: none; border-radius: 30px; font-weight: bold; transition: 0.3s;
+            background: rgba(184, 134, 11, 0.1); position: relative; z-index: 101;
         }
         .home-btn:hover { background: var(--gold); color: black; }
-        /* تنسيق خاص ببطاقة الاستكشاف ونقاط البدء */
-.tag-foundation { 
-    color: #27ae60; 
-    border: 1px solid #27ae60; 
-    background: rgba(39, 174, 96, 0.1); 
-}
-.card-exploration {
-    border: 2px solid #27ae60 !important;
-    box-shadow: 0 0 20px rgba(39, 174, 96, 0.2);
-}
-.card-exploration:hover {
-    box-shadow: 0 15px 40px rgba(39, 174, 96, 0.4) !important;
-}
-
     </style>
 </head>
 <body>
@@ -139,26 +87,30 @@
         <h1>The Great Prime Problems</h1>
         <p style="font-size: 1.3rem; opacity: 0.9; letter-spacing: 2px; color: #cbd5e1;">Part II: Deterministic Structural Proofs</p>
     </div>
-<!-- بطاقة الاستكشاف ونقاط البدء -->
-<a href="exploration_lab.html" class="proof-card card-active card-exploration">
-    <div class="status-tag tag-ready tag-foundation">● FOUNDATIONAL TOOL</div>
-    <h3 style="color: #27ae60; font-size: 1.5rem;">Starting Points & Convergence</h3>
-    <p style="color: #e2e8f0;">Exploring the deterministic emergence of primes and twin pairs through column convergence.</p>
-    <div style="margin-top: 15px; font-size: 0.8rem; color: #27ae60; font-weight: bold;">Step 1: Explore Convergence →</div>
-</a>
 
     <div class="proofs-grid">
-        <!-- استخدام وسم الرابط كغلاف خارجي كامل -->
-        <a href="legendre_lab.html" class="card-link">
-            <div class="proof-card card-active">
-                <div class="status-tag tag-ready">● INTERACTIVE LAB READY</div>
-                <h3 style="color: var(--gold); font-size: 1.6rem;">Legendre's Conjecture</h3>
-                <p style="color: #e2e8f0;">Full deterministic proof of prime existence between consecutive squares (n² to (n+1)²).</p>
-                <div style="margin-top: 15px; font-size: 0.8rem; color: var(--gold); font-weight: bold;">Click to enter the Lab →</div>
+        
+        <!-- 1. بطاقة الاستكشاف (الخضراء) -->
+        <a href="exploration_lab.html" class="proof-card card-active card-exploration">
+            <div>
+                <div class="status-tag tag-foundation">● FOUNDATIONAL TOOL</div>
+                <h3 style="color: #27ae60; font-size: 1.5rem;">Starting Points & Convergence</h3>
+                <p style="color: #e2e8f0;">The deterministic emergence of primes and twin pairs through column convergence.</p>
             </div>
+            <div style="margin-top: 15px; font-size: 0.8rem; color: #27ae60; font-weight: bold;">Step 1: Explore Convergence →</div>
         </a>
 
-        <!-- باقي البطاقات تظل كما هي كمعاينة -->
+        <!-- 2. بطاقة لوجاندر (الذهبية) -->
+        <a href="legendre_lab.html" class="proof-card card-active card-legendre">
+            <div>
+                <div class="status-tag tag-ready">● INTERACTIVE LAB READY</div>
+                <h3 style="color: var(--gold); font-size: 1.6rem;">Legendre's Conjecture</h3>
+                <p style="color: #e2e8f0;">Full deterministic proof of prime existence between consecutive squares.</p>
+            </div>
+            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--gold); font-weight: bold;">Step 2: Enter the Lab →</div>
+        </a>
+
+        <!-- باقي البطاقات -->
         <div class="proof-card">
             <div class="status-tag tag-dev">IN DEVELOPMENT</div>
             <h3>Goldbach's Conjecture</h3>
@@ -174,14 +126,15 @@
         <div class="proof-card">
             <div class="status-tag tag-dev">IN DEVELOPMENT</div>
             <h3>Riemann Hypothesis</h3>
-            <p style="color: #cbd5e1;">Structural Integration: Linking Geometric Symmetry, Primorial Determinism, and Zero Statistical Error.</p>
+            <p style="color: #cbd5e1;">Structural Integration: Geometric Symmetry and Zero Statistical Error.</p>
         </div>
+
     </div>
 
-    <a href="index.html" class="home-btn" style="position: relative; z-index: 101;">🏠 Back to Atlas Home</a>
+    <a href="index.html" class="home-btn">🏠 Back to Atlas Home</a>
 
-    <footer style="margin-top: 100px; padding-bottom: 40px; opacity: 0.6; font-size: 0.9rem; letter-spacing: 1px; position: relative; z-index: 101;">
-        Albaba & Baba Research | Phase II: The Architecture of Certainty
+    <footer style="margin-top: 80px; padding-bottom: 40px; opacity: 0.6; font-size: 0.9rem;">
+        Albaba & Baba Research | Phase II
     </footer>
 </body>
 </html>
