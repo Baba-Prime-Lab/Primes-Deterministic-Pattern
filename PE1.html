@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PE1: Prime Emergence Multiples Lab</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .controls { 
+            margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+            max-width: 1000px; background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .btn { 
+            padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; 
+            font-weight: bold; transition: 0.3s; color: white; font-size: 0.75rem;
+            display: flex; flex-direction: column; align-items: center; min-width: 85px;
+        }
+        .btn span { font-size: 0.6rem; opacity: 0.8; margin-top: 2px; }
+        
+        .btn-zero { background: #e74c3c; } .btn-7 { background: #8e44ad; }
+        .btn-11 { background: #2980b9; } .btn-13 { background: #16a085; }
+        .btn-17 { background: #d35400; } .btn-19 { background: #27ae60; }
+        .btn-23 { background: #c0392b; } .btn-29 { background: #2c3e50; }
+        .btn-31 { background: #7f8c8d; } .btn-all { background: #000; box-shadow: 0 0 10px gold; }
+
+        .grid-container { display: grid; grid-template-columns: repeat(30, 35px); background: #fff; border: 2px solid #2c3e50; }
+        .cell {
+            width: 35px; height: 32px; border: 0.1px solid #f0f0f0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; color: #bbb; transition: 0.3s;
+        }
+        
+        .glow-zero { background: #ff0000 !important; color: #fff !important; animation: pulse 1.2s infinite; font-weight: bold; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 15px red; } 100% { transform: scale(1); } }
+        
+        .offset-highlight { background: #f1c40f !important; color: #000 !important; font-weight: bold; border: 1.5px solid #000 !important; z-index: 2; }
+        
+        .zero-center { background-color: #ecf0f1; color: #7f8c8d; }
+        .column-head { background-color: rgba(0, 123, 255, 0.1); color: #007bff; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <button class="btn btn-zero" onclick="handleZero()">0 <span>المضاعف العام</span></button>
+        <button class="btn btn-7" onclick="handlePrime(7, ['-2','28','5','35'], '#8e44ad')">7 <span>مضاعفات</span></button>
+        <button class="btn btn-11" onclick="handlePrime(11, ['-8','22','3','33'], '#2980b9')">11 <span>مضاعفات</span></button>
+        <button class="btn btn-13" onclick="handlePrime(13, ['-4','26','9','39'], '#16a085')">13 <span>مضاعفات</span></button>
+        <button class="btn btn-17" onclick="handlePrime(17, ['-13','17','4','34'], '#d35400')">17 <span>مضاعفات</span></button>
+        <button class="btn btn-19" onclick="handlePrime(19, ['-11','19','8','38'], '#27ae60')">19 <span>مضاعفات</span></button>
+        <button class="btn btn-23" onclick="handlePrime(23, ['-7','23'], '#c0392b')">23 <span>مضاعفات</span></button>
+        <button class="btn btn-29" onclick="handlePrime(29, ['-1','29'], '#2c3e50')">29 <span>مضاعفات</span></button>
+        <button class="btn btn-31" onclick="handlePrime(31, ['1','31'], '#7f8c8d')">31 <span>مضاعفات</span></button>
+        <button class="btn btn-all" onclick="handleAll()">All <span>تفعيل الكل</span></button>
+    </div>
+
+    <div class="grid-container" id="grid"></div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const colHeads = [1, 7, 11, 13, 17, 19, 23, 29];
+        const rows = 32;
+        const primesData = [
+            {p: 7, color: '#8e44ad'}, {p: 11, color: '#2980b9'}, {p: 13, color: '#16a085'},
+            {p: 17, color: '#d35400'}, {p: 19, color: '#27ae60'}, {p: 23, color: '#c0392b'},
+            {p: 29, color: '#2c3e50'}, {p: 31, color: '#7f8c8d'}
+        ];
+
+        function initGrid() {
+            grid.innerHTML = "";
+            for (let r = 0; r < rows; r++) {
+                let centerPoint = r * 30;
+                for (let i = -14; i <= 15; i++) {
+                    const currentNum = centerPoint + i;
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.innerText = currentNum;
+                    cell.id = `cell-${currentNum}`;
+                    
+                    if (i === 0) cell.classList.add('zero-center');
+                    
+                    let cv = ((currentNum % 30) + 30) % 30;
+                    if (cv === 0 && currentNum !== 0) cv = 30;
+                    if (colHeads.includes(cv)) cell.classList.add('column-head');
+                    
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        function clearVisuals() {
+            document.querySelectorAll('.cell').forEach(c => {
+                c.classList.remove('glow-zero', 'offset-highlight');
+                c.style.backgroundColor = "";
+                c.style.color = "";
+                c.style.animation = "";
+            });
+        }
+
+        function handleZero() { 
+            clearVisuals(); 
+            const zero = document.getElementById('cell-0');
+            if(zero) zero.classList.add('glow-zero');
+        }
+
+        function handlePrime(p, offsets, color) {
+            clearVisuals();
+            offsets.forEach(id => {
+                const el = document.getElementById(`cell-${id}`);
+                if(el) el.classList.add('offset-highlight');
+            });
+
+            setTimeout(() => {
+                clearVisuals();
+                document.querySelectorAll('.cell').forEach(c => {
+                    let val = parseInt(c.innerText);
+                    if (val !== 0 && val % p === 0) {
+                        c.style.backgroundColor = color;
+                        c.style.color = "white";
+                    }
+                });
+            }, 2500);
+        }
+
+function handleAll() {
+    clearVisuals();
+    document.querySelectorAll('.cell').forEach(c => {
+        let val = parseInt(c.innerText);
+        if (val === 0) return;
+
+        let isMultiple = false;
+        // 1. فحص هل العدد مضاعف لأحد الأوليات
+        for (let item of primesData) {
+            if (val !== item.p && val % item.p === 0) { // شرط ألا يكون العدد هو الأولي نفسه
+                c.style.backgroundColor = item.color;
+                c.style.color = "white";
+                isMultiple = true;
+                break; 
+            }
+        }
+
+        // 2. إذا لم يكن مضاعفاً وهو في الأعمدة النشطة (فهو أولي حتمي)
+        if (!isMultiple) {
+            let cv = ((val % 30) + 30) % 30;
+            if (cv === 0 && val !== 0) cv = 30;
+            
+            if (colHeads.includes(cv) && val > 1) { 
+                c.style.backgroundColor = "#ffd700"; // لون ذهبي
+                c.style.color = "#000";
+                c.style.fontWeight = "bold";
+                c.style.boxShadow = "0 0 15px #ffd700"; // توهج ذهبي
+                c.style.border = "1px solid #fff";
+            }
+        }
+    });
+}
+
+        initGrid();
+    </script>
+</body>
+</html>
