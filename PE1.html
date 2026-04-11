@@ -20,7 +20,17 @@
         .btn-11 { background: #2980b9; } .btn-13 { background: #16a085; }
         .btn-17 { background: #d35400; } .btn-19 { background: #27ae60; }
         .btn-23 { background: #c0392b; } .btn-29 { background: #2c3e50; }
-        .btn-31 { background: #7f8c8d; } .btn-all { background: #000; box-shadow: 0 0 10px gold; }
+        .btn-31 { background: #7f8c8d; } .btn-primes { 
+    background: linear-gradient(145deg, #ffd700, #b8860b) !important; 
+    color: #000 !important; 
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    border: 1px solid #fff !important;
+}
+.btn-primes:hover {
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+    transform: translateY(-2px);
+}
+
 
         .grid-container { display: grid; grid-template-columns: repeat(30, 35px); background: #fff; border: 2px solid #2c3e50; }
         .cell {
@@ -160,9 +170,8 @@ function handleAll() {
         if (val === 0) return;
 
         let isMultiple = false;
-        // 1. فحص هل العدد مضاعف لأحد الأوليات
         for (let item of primesData) {
-            if (val !== item.p && val % item.p === 0) { // شرط ألا يكون العدد هو الأولي نفسه
+            if (val !== item.p && val % item.p === 0) {
                 c.style.backgroundColor = item.color;
                 c.style.color = "white";
                 isMultiple = true;
@@ -170,17 +179,19 @@ function handleAll() {
             }
         }
 
-        // 2. إذا لم يكن مضاعفاً وهو في الأعمدة النشطة (فهو أولي حتمي)
+        // إضافة تأخير بسيط لظهور الذهب (تأثير كشف الكنز)
         if (!isMultiple) {
             let cv = ((val % 30) + 30) % 30;
             if (cv === 0 && val !== 0) cv = 30;
-            
             if (colHeads.includes(cv) && val > 1) { 
-                c.style.backgroundColor = "#ffd700"; // لون ذهبي
-                c.style.color = "#000";
-                c.style.fontWeight = "bold";
-                c.style.boxShadow = "0 0 15px #ffd700"; // توهج ذهبي
-                c.style.border = "1px solid #fff";
+                setTimeout(() => {
+                    c.style.backgroundColor = "#ffd700";
+                    c.style.color = "#000";
+                    c.style.fontWeight = "bold";
+                    c.style.boxShadow = "0 0 15px #ffd700";
+                    c.style.border = "1px solid #fff";
+                    c.style.zIndex = "10";
+                }, 500); 
             }
         }
     });
