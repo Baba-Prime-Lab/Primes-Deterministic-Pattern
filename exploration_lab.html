@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BaBa-LnX | Exploration & Starting Points</title>
+    <style>
+        :root { --green-accent: #27ae60; --dark-bg: #050a14; --gold: #b8860b; }
+        body { 
+            margin: 0; font-family: 'Segoe UI', sans-serif; 
+            background: var(--dark-bg); color: white; text-align: center; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* الخلفية الأصلية للجدول 2310 */
+        .hero-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(5, 10, 20, 0.85), rgba(5, 10, 20, 0.92)),
+                        url('https://i.postimg.cc/g2XM5nvK/2310.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: -1;
+        }
+
+        .nav-bar { 
+            background: rgba(15, 23, 42, 0.9); padding: 20px; 
+            border-bottom: 2px solid var(--green-accent);
+            display: flex; justify-content: space-between; align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px; max-width: 1100px; margin: 40px auto; padding: 20px;
+            flex-grow: 1;
+        }
+
+        .explore-card {
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(39, 174, 96, 0.4);
+            padding: 40px 20px; border-radius: 15px;
+            transition: 0.5s ease; cursor: pointer; text-decoration: none; color: white;
+            backdrop-filter: blur(8px);
+        }
+
+        .explore-card:hover {
+            transform: translateY(-12px);
+            background: rgba(39, 174, 96, 0.15);
+            border-color: var(--green-accent);
+            box-shadow: 0 15px 40px rgba(39, 174, 96, 0.3);
+        }
+
+        .icon { font-size: 3.5rem; margin-bottom: 20px; display: block; }
+        h3 { color: var(--green-accent); margin-bottom: 15px; font-size: 1.4rem; }
+        p { font-size: 0.95rem; color: #e2e8f0; line-height: 1.7; }
+
+        .back-btn {
+            padding: 10px 25px; border: 1px solid #e74c3c; color: #e74c3c;
+            text-decoration: none; border-radius: 5px; font-weight: bold; transition: 0.3s;
+        }
+        .back-btn:hover { background: #e74c3c; color: white; }
+
+        h1 { font-size: 2.8rem; text-shadow: 0 4px 12px rgba(0,0,0,0.8); margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="hero-bg"></div>
+
+    <div class="nav-bar">
+        <div style="font-weight: bold; color: var(--green-accent); letter-spacing: 2px;">BABA EXPLORATION UNIT</div>
+        <a href="proofs_hub.html" class="back-btn">← Back to Hub</a>
+    </div>
+
+    <div style="margin-top: 50px; padding: 0 20px;">
+        <h1>Starting Points & Vertical Exploration</h1>
+        <p style="opacity: 0.9; font-size: 1.1rem; color: #cbd5e1;">Structural convergence and the architecture of prime emergence</p>
+    </div>
+
+    <div class="hub-grid">
+        <!-- المدخل الأول: مضاعفات الثلاثيني -->
+        <a href="multiples_p30.html" class="explore-card">
+            <span class="icon">📊</span>
+            <h3>Primorial Multiples (p#30)</h3>
+            <p>A visual study of composite patterns from 7 to 31 within the deterministic 30-column framework.</p>
+        </a>
+
+        <!-- المدخل الثاني: نقاط البدء -->
+        <a href="starting_points.html" class="explore-card">
+            <span class="icon">📍</span>
+            <h3>Column Starting Points</h3>
+            <p>Deciphering the geometric laws of prime emergence and pair convergence in primorial columns.</p>
+        </a>
+
+        <!-- المدخل الثالث: خوارزمية بابا -->
+        <a href="baba_vertical_scanner.html" class="explore-card" style="border-color: var(--gold);">
+            <span class="icon" style="text-shadow: 0 0 15px gold;">⚡</span>
+            <h3 style="color: var(--gold);">BaBa Vertical Scanner</h3>
+            <p>Advanced Vertical Exploration Algorithm: Seamlessly scanning from p#210 to p#510510.</p>
+        </a>
+    </div>
+
+    <footer style="padding: 40px; opacity: 0.6; font-size: 0.9rem; letter-spacing: 1px;">
+        Part II: Deterministic Architecture | Phase II
+    </footer>
+</body>
+</html>
