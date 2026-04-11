@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PE1: The Grand Symmetry & Periodicity</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .controls { margin-bottom: 20px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; max-width: 1100px; }
+        .btn-logic { padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s; font-size: 0.85rem; }
+        
+        .btn-1 { background: #2c3e50; color: white; }
+        .btn-2 { background: #8e44ad; color: white; }
+        .btn-3 { background: #e74c3c; color: white; border: 2px solid #c0392b; }
+        .btn-4 { background: #3498db; color: white; }
+        .btn-5 { background: #e67e22; color: white; }
+
+        .grid-wrapper { position: relative; background: #fff; border: 2px solid #2c3e50; }
+        .grid-container { display: grid; grid-template-columns: repeat(30, 42px); position: relative; z-index: 1; }
+        .cell { width: 42px; height: 35px; border: 0.1px solid #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: #ccc; transition: 0.3s; text-align: center; line-height: 1; }
+        
+        .zero-center { background-color: #ecf0f1 !important; color: #2c3e50 !important; font-weight: bold; }
+        .active-col-highlight { background-color: rgba(0, 123, 255, 0.08) !important; color: #007bff !important; }
+        .starting-offsets { background: #ffd700 !important; color: #000 !important; font-weight: bold; }
+        .multi-7 { background: rgba(142, 68, 173, 0.1); color: #8e44ad; font-weight: bold; }
+
+        #svg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; }
+        .path-line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 4000; stroke-dashoffset: 4000; animation: draw 4s forwards; }
+        @keyframes draw { to { stroke-dashoffset: 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <button class="btn-logic btn-1" onclick="actionOne()">1. Horizontal (-2 & +5)</button>
+        <button class="btn-logic btn-2" onclick="actionTwo()">2. Full 12-Stair Network</button>
+        <button class="btn-logic btn-3" onclick="actionThree()">3. نقاط بدء مضاعفات 7</button>
+        <button class="btn-logic btn-4" onclick="actionFour()">4. Complementary (7-k)</button>
+        <button class="btn-logic btn-5" onclick="actionFive()">5. Infinite Cycles (P=7)</button>
+    </div>
+    
+    <div class="grid-wrapper">
+        <div class="grid-container" id="grid"></div>
+        <svg id="svg-layer"></svg>
+    </div>
+
+<script>
+    const grid = document.getElementById('grid'), svg = document.getElementById('svg-layer');
+    const rows = 32, activeCols = [1, 7, 11, 13, -1, -7, -11, -13];
+    
+    const p7Groups = [
+        { p: {n:91, k:3},  n: {n:119, k:4}, color: '#3498db' }, // أزرق
+        { p: {n:7, k:0},   n: {n:-7, k:7},  color: '#9b59b6' }, // بنفسجي
+        { p: {n:161, k:5}, n: {n:49, k:2},  color: '#e67e22' }, // برتقالي
+        { p: {n:133, k:4}, n: {n:77, k:3},  color: '#16a085' }  // تركواز
+    ];
+
+    for (let r = 0; r < rows; r++) {
+        let cp = r * 30;
+        for (let i = -14; i <= 15; i++) {
+            const num = cp + i, cell = document.createElement('div');
+            cell.className = 'cell';
+            if (i === 0) cell.classList.add('zero-center');
+            if (activeCols.includes(i)) cell.classList.add('active-col-highlight');
+            if (num !== 0 && num % 7 === 0) { cell.classList.add('multi-7'); cell.style.zIndex = "5"; }
+            if (num === -2 || num === 5) cell.classList.add('starting-offsets');
+            cell.innerText = num; cell.id = `c-${num}`; grid.appendChild(cell);
+        }
+    }
+
+    function getCenter(n) { const e = document.getElementById(`c-${n}`); return e ? { x: e.offsetLeft + 21, y: e.offsetTop + 17.5 } : null; }
+    
+    function wipe() { 
+        svg.innerHTML = ""; 
+        document.querySelectorAll('.cell').forEach(c => { 
+            c.innerText = c.id.replace('c-', '');
+            c.style.background = ""; c.style.color = ""; c.style.boxShadow = ""; c.style.fontSize = "0.75rem"; c.style.border = "";
+        });
+    }
+
+    function actionOne() {
+        wipe(); let s = getCenter(0); if(!s) return;
+        let pL = `M ${s.x} ${s.y}`, pR = `M ${s.x} ${s.y}`, curL = 0, curR = 0;
+        for (let i=1; i<=7; i++) { let v=curL+30, t=v-2, pV=getCenter(v), pT=getCenter(t); if(pV && pT) { pL+=`V ${pV.y} H ${pT.x}`; curL=t; } }
+        for (let i=1; i<=3; i++) { let v=curR+30, t=v+5, pV=getCenter(v), pT=getCenter(t); if(pV && pT) { pR+=`V ${pV.y} H ${pT.x}`; curR=t; } }
+        svg.innerHTML += `<path d="${pL}" class="path-line" stroke="#e74c3c" stroke-width="2.5" />`;
+        svg.innerHTML += `<path d="${pR}" class="path-line" stroke="#27ae60" stroke-width="2.5" />`;
+    }
+
+    function actionTwo() {
+        wipe();
+        const main = [{s:0, c:'#d4af37'}, {s:-14, c:'#3498db'}, {s:-7, c:'#e67e22'}, {s:7, c:'#9b59b6'}];
+        const extra = [-12, -10, -5, -3, 2, 9, 4, 11];
+        main.forEach(m => drawStair(m.s, 0, m.c, 2.5, "solid"));
+        extra.forEach(s => drawStair(s, (s===-12||s===-5||s===2||s===9?2:1), "#2ecc71", 1.5, "dashed"));
+    }
+
+    function actionThree() {
+        wipe();
+        p7Groups.forEach(g => {
+            [g.p.n, g.n.n].forEach(num => {
+                let el = document.getElementById(`c-${num}`);
+                if(el) { el.style.background = "#ff0000"; el.style.color = "#fff"; el.style.boxShadow = "0 0 15px #ff0000"; el.style.zIndex = "20"; }
+            });
+        });
+    }
+
+    function actionFour() {
+        wipe();
+        p7Groups.forEach(g => {
+            let elP = document.getElementById(`c-${g.p.n}`);
+            if(elP) { 
+                elP.style.backgroundColor = g.color; elP.style.color = "white"; 
+                elP.style.boxShadow = "0 0 10px " + g.color; elP.style.zIndex = "25";
+                elP.innerText = `k=${g.p.k}`; elP.style.fontSize = "0.7rem"; 
+            }
+            let elN = document.getElementById(`c-${g.n.n}`);
+            if(elN) { 
+                elN.style.backgroundColor = g.color; elN.style.color = "white"; 
+                elN.style.boxShadow = "0 0 10px " + g.color; elN.style.zIndex = "25";
+                let kOrig = 7 - g.n.k;
+                elN.innerText = `7-${kOrig}=${g.n.k}`; elN.style.fontSize = "0.6rem";
+            }
+        });
+    }
+
+    function actionFive() {
+        wipe();
+        actionThree();
+        p7Groups.forEach(g => {
+            [g.p.n, g.n.n].forEach(startNum => {
+                let current = startNum + 210;
+                while(current < 960) {
+                    let el = document.getElementById(`c-${current}`);
+                    if(el) {
+                        el.style.backgroundColor = "#e67e22"; el.style.color = "#fff"; el.style.boxShadow = "0 0 8px #e67e22";
+                        let p1 = getCenter(current - 210), p2 = getCenter(current);
+                        if(p1 && p2) svg.innerHTML += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.5" />`;
+                    }
+                    current += 210;
+                }
+            });
+        });
+    }
+
+    function drawStair(start, drop, color, width, style) {
+        let cur = start, sPos = getCenter(start); if(!sPos) return;
+        let d = `M ${sPos.x} ${sPos.y}`;
+        if(drop > 0) {
+            let v = cur + (drop * 30), t = v + 1;
+            let pV = getCenter(v), pT = getCenter(t);
+            if(pV && pT) { d += `V ${pV.y} H ${pT.x}`; cur = t; }
+        }
+        while (true) {
+            let v = cur + 90, t = v + 1;
+            let pV = getCenter(v), pT = getCenter(t);
+            if (pV && pT && (Math.abs((t % 30) > 15 ? (t % 30) - 30 : (t % 30)) <= 14)) { d += `V ${pV.y} H ${pT.x}`; cur = t; } else break;
+        }
+        svg.innerHTML += `<path d="${d}" class="path-line" stroke="${color}" stroke-width="${width}" ${style==='dashed'?'stroke-dasharray="4,2"':''} />`;
+    }
+
+    window.onload = () => { svg.setAttribute('width', grid.offsetWidth); svg.setAttribute('height', grid.offsetHeight); };
+</script>
+
+
+
+</body>
+</html>
