@@ -46,19 +46,44 @@
         <span>Back to Exploration Lab</span>
     </a>
 </div>
+<div class="controls">
+    <!-- زر الصفر: المرجعية العامة -->
+    <button class="btn btn-zero" onclick="handleZero()">
+        0 <span>Global Ref.</span>
+    </button>
+    
+    <!-- أزرار المضاعفات: تم تغيير الكلمة إلى Multiples -->
+    <button class="btn btn-7" onclick="handlePrime(7, ['-2','28','5','35'], '#8e44ad')">
+        7 <span>Multiples</span>
+    </button>
+    <button class="btn btn-11" onclick="handlePrime(11, ['-8','22','3','33'], '#2980b9')">
+        11 <span>Multiples</span>
+    </button>
+    <button class="btn btn-13" onclick="handlePrime(13, ['-4','26','9','39'], '#16a085')">
+        13 <span>Multiples</span>
+    </button>
+    <button class="btn btn-17" onclick="handlePrime(17, ['-13','17','4','34'], '#d35400')">
+        17 <span>Multiples</span>
+    </button>
+    <button class="btn btn-19" onclick="handlePrime(19, ['-11','19','8','38'], '#27ae60')">
+        19 <span>Multiples</span>
+    </button>
+    <button class="btn btn-23" onclick="handlePrime(23, ['-7','23'], '#c0392b')">
+        23 <span>Multiples</span>
+    </button>
+    <button class="btn btn-29" onclick="handlePrime(29, ['-1','29'], '#2c3e50')">
+        29 <span>Multiples</span>
+    </button>
+    <button class="btn btn-31" onclick="handlePrime(31, ['1','31'], '#7f8c8d')">
+        31 <span>Multiples</span>
+    </button>
+    
+    <!-- زر الكنز الذهبي -->
+    <button class="btn btn-primes" onclick="handleAll()">
+        GOLDEN PRIMES <span>Show Emergence</span>
+    </button>
+</div>
 
-    <div class="controls">
-        <button class="btn btn-zero" onclick="handleZero()">0 <span>المضاعف العام</span></button>
-        <button class="btn btn-7" onclick="handlePrime(7, ['-2','28','5','35'], '#8e44ad')">7 <span>مضاعفات</span></button>
-        <button class="btn btn-11" onclick="handlePrime(11, ['-8','22','3','33'], '#2980b9')">11 <span>مضاعفات</span></button>
-        <button class="btn btn-13" onclick="handlePrime(13, ['-4','26','9','39'], '#16a085')">13 <span>مضاعفات</span></button>
-        <button class="btn btn-17" onclick="handlePrime(17, ['-13','17','4','34'], '#d35400')">17 <span>مضاعفات</span></button>
-        <button class="btn btn-19" onclick="handlePrime(19, ['-11','19','8','38'], '#27ae60')">19 <span>مضاعفات</span></button>
-        <button class="btn btn-23" onclick="handlePrime(23, ['-7','23'], '#c0392b')">23 <span>مضاعفات</span></button>
-        <button class="btn btn-29" onclick="handlePrime(29, ['-1','29'], '#2c3e50')">29 <span>مضاعفات</span></button>
-        <button class="btn btn-31" onclick="handlePrime(31, ['1','31'], '#7f8c8d')">31 <span>مضاعفات</span></button>
-        <button class="btn btn-all" onclick="handleAll()">All <span>تفعيل الكل</span></button>
-    </div>
 
     <div class="grid-container" id="grid"></div>
 
