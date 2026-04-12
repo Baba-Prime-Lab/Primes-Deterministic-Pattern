@@ -2,41 +2,33 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>PE3: Primorial 17# Explorer</title>
+    <title>PE3: Exploring Primes and Twins in the 510,510 ± 1 Columns</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        .controls { margin-bottom: 20px; display: flex; gap: 10px; position: sticky; top: 10px; z-index: 100; background: #0f172a; padding: 10px; border-radius: 12px; }
+        .page-title { color: #27ae60; margin-bottom: 5px; text-align: center; }
+        .back-link { width: 100%; max-width: 1100px; margin-bottom: 15px; text-align: left; }
+        .back-link a { text-decoration: none; display: inline-flex; align-items: center; color: #7f8c8d; font-weight: bold; font-size: 0.9rem; transition: 0.3s; }
+        .back-link a:hover { color: #27ae60; }
+        
+        .controls { margin-bottom: 20px; display: flex; gap: 10px; position: sticky; top: 10px; z-index: 100; background: rgba(15, 23, 42, 0.9); padding: 15px; border-radius: 12px; border: 1px solid #334155; }
         .btn-logic { padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; color: white; }
         
-        .btn-1 { background: #e74c3c; } /* أحمر */
-        .btn-2 { background: #27ae60; } /* أخضر */
-        .btn-3 { background: #d4af37; color: #000; } /* ذهبي */
-        .btn-4 { background: #8e44ad; } /* بنفسجي */
-        .btn-reset { background: #334155; } /* رمادي للضبط */
+        .btn-1 { background: #e74c3c; } 
+        .btn-2 { background: #27ae60; } 
+        .btn-3 { background: #d4af37; color: #000; } 
+        .btn-4 { background: #8e44ad; } 
+        .btn-reset { background: #334155; } 
 
-        .grid-container { 
-            display: grid; grid-template-columns: repeat(20, auto); gap: 15px; 
-            background: #1e293b; padding: 20px; border-radius: 12px; overflow-x: auto; max-width: 98vw;
-        }
+        .grid-container { display: grid; grid-template-columns: repeat(20, auto); gap: 15px; background: #1e293b; padding: 20px; border-radius: 12px; overflow-x: auto; max-width: 98vw; }
         .column-pair { display: flex; gap: 4px; border-left: 1px solid #334155; padding-left: 8px; }
         .column { display: flex; flex-direction: column; }
-        .cell { 
-            width: 95px; height: 28px; border: 0.1px solid #334155; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 0.6rem; color: #64748b; transition: 0.5s;
-        }
-        .header-cell { background: #0f172a; color: #27ae60; font-weight: bold; font-size: 0.65rem; height: 35px; border-bottom: 2px solid #27ae60; }
+        .cell { width: 95px; height: 28px; border: 0.1px solid #334155; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: #64748b; transition: 0.5s; }
+        .header-cell { background: #0f172a; color: #27ae60; font-weight: bold; font-size: 0.65rem; height: 35px; border-bottom: 2px solid #27ae60; text-align: center; }
         
-        /* حالات التلوين */
         .is-start { background: #e74c3c !important; color: white !important; }
         .is-multiple { background: #27ae60 !important; color: white !important; opacity: 0.4; }
         .is-prime { background: #d4af37 !important; color: #000 !important; font-weight: bold; box-shadow: inset 0 0 5px #fff; }
         .is-twin { background: #8e44ad !important; color: white !important; box-shadow: 0 0 10px #8e44ad; z-index: 5; }
-        
-        /* زر العودة */
-        .back-link { width: 100%; max-width: 1100px; margin-bottom: 15px; text-align: left; }
-        .back-link a { text-decoration: none; display: inline-flex; align-items: center; color: #7f8c8d; font-weight: bold; font-size: 0.9rem; transition: 0.3s; }
-        .back-link a:hover { color: #27ae60; }
     </style>
 </head>
 <body>
@@ -47,6 +39,9 @@
             <span style="margin-right: 8px;">←</span> <span>Back to Exploration Lab</span>
         </a>
     </div>
+
+    <!-- العنوان الجديد --><h1 class="page-title">Exploring Primes and Twins in the 510,510 ± 1 Columns</h1>
+<p style="margin-bottom: 20px; color: #94a3b8;">800 Levels | Using 2278 Primes (from 19 to 20,201) for Exploration</p>
 
     <div class="controls">
         <button class="btn-logic btn-1" onclick="actionOne()">1. نقاط البدء</button>
@@ -63,7 +58,6 @@
         const P17 = 510510;
         const rows = 800;
 
-        // 1. توليد الأوليات من 19 إلى 20201
         function getPrimes(max) {
             let s = new Uint8Array(max + 1), p = [];
             for (let i = 2; i <= max; i++) {
@@ -76,14 +70,13 @@
         }
         const targetPrimes = getPrimes(20201);
 
-        // 2. بناء الجدول
         for (let b = 0; b < 20; b++) {
             const pairDiv = document.createElement('div');
             pairDiv.className = 'column-pair';
             const colM = document.createElement('div'); colM.className = 'column';
             const colP = document.createElement('div'); colP.className = 'column';
-            colM.innerHTML = `<div class="cell header-cell">B${b+1} (n-1)</div>`;
-            colP.innerHTML = `<div class="cell header-cell">B${b+1} (n+1)</div>`;
+            colM.innerHTML = `<div class="cell header-cell">B${b+1}<br>(n-1)</div>`;
+            colP.innerHTML = `<div class="cell header-cell">B${b+1}<br>(n+1)</div>`;
 
             for (let l = 1; l <= 40; l++) {
                 const lvl = (b * 40) + l;
@@ -98,7 +91,6 @@
 
         let data = { m: {}, p: {} };
 
-        // وظيفة إعادة الضبط (Reset)
         function resetField() {
             data.m = {}; data.p = {};
             document.querySelectorAll('.cell').forEach(c => {
@@ -106,49 +98,29 @@
             });
         }
 
-        // الزر 1: نقاط البدء (يمسح الكل لضمان البداية الصحيحة)
         function actionOne() {
             resetField();
             targetPrimes.forEach(pr => {
                 for (let n = 1; n < pr; n++) {
                     let rem = (n * (P17 % pr)) % pr;
-                    if (rem === 1 && n <= rows) { 
-                        document.getElementById(`m-${n}`).classList.add('is-start'); 
-                        data.m[n] = true; 
-                    }
-                    if (rem === (pr - 1) && n <= rows) { 
-                        document.getElementById(`p-${n}`).classList.add('is-start'); 
-                        data.p[n] = true; 
-                    }
+                    if (rem === 1 && n <= rows) { document.getElementById(`m-${n}`).classList.add('is-start'); data.m[n] = true; }
+                    if (rem === (pr - 1) && n <= rows) { document.getElementById(`p-${n}`).classList.add('is-start'); data.p[n] = true; }
                 }
             });
         }
 
-        // الزر 2: مضاعفات نقاط البدء
         function actionTwo() {
             targetPrimes.forEach(pr => {
                 for (let n = 1; n < pr; n++) {
                     let rem = (n * (P17 % pr)) % pr;
                     let startM = (rem === 1) ? n : -1;
                     let startP = (rem === (pr - 1)) ? n : -1;
-                    
-                    if (startM !== -1) {
-                        for (let k = startM + pr; k <= rows; k += pr) {
-                            document.getElementById(`m-${k}`).classList.add('is-multiple');
-                            data.m[k] = true;
-                        }
-                    }
-                    if (startP !== -1) {
-                        for (let k = startP + pr; k <= rows; k += pr) {
-                            document.getElementById(`p-${k}`).classList.add('is-multiple');
-                            data.p[k] = true;
-                        }
-                    }
+                    if (startM !== -1) { for (let k = startM + pr; k <= rows; k += pr) { document.getElementById(`m-${k}`).classList.add('is-multiple'); data.m[k] = true; } }
+                    if (startP !== -1) { for (let k = startP + pr; k <= rows; k += pr) { document.getElementById(`p-${k}`).classList.add('is-multiple'); data.p[k] = true; } }
                 }
             });
         }
 
-        // الزر 3: الأوليات الناتجة (يمسح الذهبي والبنفسجي قبل الحساب)
         function actionThree() {
             document.querySelectorAll('.is-prime, .is-twin').forEach(el => el.classList.remove('is-prime', 'is-twin'));
             for (let i = 1; i <= rows; i++) {
@@ -157,7 +129,6 @@
             }
         }
 
-        // الزر 4: التوائم المتجاورة (يمسح البنفسجي فقط قبل الحساب)
         function actionFour() {
             document.querySelectorAll('.is-twin').forEach(el => el.classList.remove('is-twin'));
             for (let i = 1; i <= rows; i++) {
