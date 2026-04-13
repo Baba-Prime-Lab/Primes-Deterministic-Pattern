@@ -10,14 +10,19 @@
         }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #fff; display: flex; flex-direction: column; align-items: center; padding: 20px; margin: 0; }
         
+        /* تنسيق الهيدر وزر العودة */
+        .nav-header { width: 100%; display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin-bottom: 20px; }
+        .back-btn { text-decoration: none; color: var(--glow-2); border: 1px solid var(--glow-2); padding: 8px 15px; border-radius: 6px; font-weight: bold; transition: 0.3s; font-size: 0.9rem; }
+        .back-btn:hover { background: var(--glow-2); color: #000; box-shadow: 0 0 10px var(--glow-2); }
+
         .controls { margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; background: rgba(15, 23, 42, 0.9); padding: 15px; border-radius: 12px; border: 1px solid #1e293b; position: sticky; top: 10px; z-index: 1000; }
         .btn-p { padding: 10px 18px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; background: #1e293b; color: #94a3b8; border: 1px solid #334155; transition: 0.3s; }
         .btn-p:hover { border-color: var(--glow-2); color: #fff; }
-        .active-btn { background: var(--glow-2) !important; color: #000 !important; box-shadow: 0 0 15px var(--glow-2); }
+        .active-btn { background: var(--glow-2) !important; color: #000 !important; box-shadow: 0 0 15px var(--glow-2); border-color: #fff !important; }
 
         .grid-wrapper { 
             background: #000; border: 3px solid #1e293b; border-radius: 8px; 
-            overflow: auto; width: 95vw; height: 75vh;
+            overflow: auto; width: 95vw; height: 70vh;
         }
         .grid-container { display: grid; text-align: center; width: max-content; margin: 0 auto; }
         .cell { border: 0.1px solid #1e293b; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: bold; min-width: 65px; height: 45px; }
@@ -35,7 +40,11 @@
 </head>
 <body>
 
-    <h2 style="color: var(--glow-2);">GPTC2: Eternal Midpoint Symmetry</h2>
+    <div class="nav-header">
+        <a href="index.html" class="back-btn">← Back to Hub</a>
+        <h2 style="color: var(--glow-2); margin: 0;">GPTC2: Eternal Midpoint Symmetry</h2>
+    </div>
+
     <div class="label-top">التمييز للأعمدة المتناظرة حول $P\#/2$</div>
 
     <div class="controls">
@@ -57,18 +66,19 @@
             const wrapper = document.getElementById('wrapper');
             grid.innerHTML = "";
             
+            // إصلاح مشكلة تداخل إضاءة الأزرار
             document.querySelectorAll('.btn-p').forEach(b => {
                 b.classList.remove('active-btn');
-                if(b.innerText.includes(p + "#")) b.classList.add('active-btn');
+                // نتحقق من أن النص داخل الزر يطابق الرقم متبوعاً بـ # بدقة
+                if(b.innerText === (p + "#")) b.classList.add('active-btn');
             });
 
             let midVal = p / 2;
-            let displayCols = (p > 30) ? 41 : p; // نافذة عرض مركزية للجداول الضخمة
+            let displayCols = (p > 30) ? 41 : p; 
             let rows = 40;
 
             grid.style.gridTemplateColumns = `repeat(${displayCols}, 1fr)`;
 
-            // حساب المدى لعرض الأعمدة حول المنتصف
             let colStart = (p <= 30) ? 1 : midVal - 20;
             let colEnd = (p <= 30) ? p : midVal + 20;
 
@@ -81,19 +91,15 @@
                     cell.className = 'cell';
                     cell.innerText = currentNum;
 
-                    // منطق التمييز بناءً على قيمة العمود (الرأس) v
                     if (v === midVal) {
                         cell.classList.add('mid-point');
                     } 
-                    // الفجوة 2: حول 15 هي 13 و 17 (أي mid-2 و mid+2)
                     else if (v === midVal - 2 || v === midVal + 2) {
                         cell.classList.add('diff-2');
                     }
-                    // الفجوة 4: حول 15 هي 11 و 19 (أي mid-4 و mid+4)
                     else if (p > 6 && (v === midVal - 4 || v === midVal + 4)) {
                         cell.classList.add('diff-4');
                     }
-                    // الفجوة 8: حول 15 هي 7 و 23 (أي mid-8 و mid+8)
                     else if (p > 6 && (v === midVal - 8 || v === midVal + 8)) {
                         cell.classList.add('diff-8');
                     }
