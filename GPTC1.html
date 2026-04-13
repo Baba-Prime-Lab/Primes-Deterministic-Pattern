@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GPTC1: Eternal Twin Prime Conjecture</title>
+    <style>
+        :root { --blue-glow: #3498db; --gold: #ffd700; --bg: #050a14; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #fff; display: flex; flex-direction: column; align-items: center; padding: 20px; margin: 0; }
+        
+        .controls { margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; background: rgba(15, 23, 42, 0.9); padding: 15px; border-radius: 12px; border: 1px solid var(--blue-glow); position: sticky; top: 10px; z-index: 1000; }
+        .btn-p { padding: 10px 18px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; background: #1e293b; color: var(--blue-glow); border: 1px solid var(--blue-glow); transition: 0.3s; }
+        .btn-p:hover { background: var(--blue-glow); color: #fff; box-shadow: 0 0 15px var(--blue-glow); }
+        
+        .grid-wrapper { 
+            background: #fff; color: #000; 
+            border: 3px solid var(--blue-glow); border-radius: 8px; 
+            overflow: auto; max-width: 95vw; height: 70vh;
+            scroll-behavior: smooth;
+        }
+        .grid-container { display: grid; text-align: center; width: max-content; }
+        .cell { border: 0.1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; min-width: 60px; height: 40px; }
+        
+        @keyframes twin-pulse {
+            from { background-color: rgba(52, 152, 219, 0.2); }
+            to { background-color: rgba(52, 152, 219, 0.7); color: #fff; }
+        }
+        .twin-column { animation: twin-pulse 0.8s infinite alternate; z-index: 10; }
+        .prob-column { background-color: rgba(46, 204, 113, 0.15); color: #27ae60; }
+        .zero-center { background-color: #000 !important; color: var(--gold) !important; font-weight: 900; }
+        
+        .back-btn { margin-top: 20px; text-decoration: none; color: var(--blue-glow); font-weight: bold; border: 1px solid var(--blue-glow); padding: 8px 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <h2 style="color: var(--blue-glow);">GPTC1: Eternal Symmetry (P# ± 1)</h2>
+
+    <div class="controls">
+        <button class="btn-p" onclick="buildGrid(3)">3# (6)</button>
+        <button class="btn-p" onclick="buildGrid(5)">5# (30)</button>
+        <button class="btn-p" onclick="buildGrid(7)">7# (210)</button>
+        <button class="btn-p" onclick="buildGrid(11)">11# (2310)</button>
+        <button class="btn-p" onclick="buildGrid(13)">13# (30030)</button>
+    </div>
+
+    <div class="grid-wrapper" id="wrapper">
+        <div id="grid" class="grid-container"></div>
+    </div>
+
+    <a href="gap-proof.html" class="back-btn">← Back to Gaps Hub</a>
+
+    <script>
+        function buildGrid(p) {
+            const grid = document.getElementById('grid');
+            const wrapper = document.getElementById('wrapper');
+            grid.innerHTML = "";
+            
+            let cols, step, start, rows = 30;
+            let probCols = [];
+
+            // إعدادات المضروبات
+            if(p === 3) { cols = 6; start = -2; step = 6; probCols = [1, -1]; }
+            else if(p === 5) { cols = 30; start = -14; step = 30; probCols = [1, 7, 11, 13, -1, -7, -11, -13]; }
+            else { 
+                // للمضروبات الكبيرة: نعرض نافذة مركزية فقط لضمان الأداء
+                cols = 101; start = -50; 
+                step = (p === 7) ? 210 : (p === 11) ? 2310 : 30030;
+                probCols = [1, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, -1, -13, -17, -19, -23, -29, -31, -37, -41, -43, -47];
+            }
+
+            grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+            for (let r = 0; r < rows; r++) {
+                let rowBase = r * step;
+                for (let c = 0; c < cols; c++) {
+                    let offset = start + c;
+                    let val = rowBase + offset;
+                    
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.innerText = val;
+
+                    // تمييز الأعمدة
+                    if (offset === 0) cell.classList.add('zero-center');
+                    if (Math.abs(offset) === 1) cell.classList.add('twin-column');
+                    if (probCols.includes(offset)) cell.classList.add('prob-column');
+
+                    grid.appendChild(cell);
+                }
+            }
+
+            // التوسط التلقائي
+            setTimeout(() => {
+                const centerCells = document.querySelectorAll('.zero-center');
+                if (centerCells.length > 0) {
+                    const firstCenter = centerCells[0];
+                    wrapper.scrollLeft = firstCenter.offsetLeft - (wrapper.offsetWidth / 2) + (firstCenter.offsetWidth / 2);
+                }
+            }, 50);
+        }
+
+        window.onload = () => buildGrid(5);
+    </script>
+</body>
+</html>
