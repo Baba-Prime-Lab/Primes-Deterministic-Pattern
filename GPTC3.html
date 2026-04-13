@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GPTC3: Eternal Iteration of Eternal Columns</title>
+    <style>
+        :root { 
+            --bg: #020617; --blue-glow: #00f2ff; --gold: #ffd700;
+            --pink: #ff007a; --green: #adff2f; --dim: #111827;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #fff; display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 0; }
+        
+        .nav-header { width: 100%; display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin-bottom: 10px; }
+        .back-btn { text-decoration: none; color: var(--blue-glow); border: 1px solid var(--blue-glow); padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+
+        .controls { display: flex; gap: 15px; background: rgba(15, 23, 42, 0.9); padding: 15px; border-radius: 10px; border: 1px solid #1e293b; margin-bottom: 10px; }
+        .btn-logic { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; background: #0f172a; color: #fff; border: 1px solid #334155; transition: 0.2s; }
+        .btn-logic:hover { border-color: var(--gold); }
+        .active-btn { border-color: var(--gold) !important; background: #1e293b; color: var(--gold); }
+
+        .grid-wrapper { background: #000; border: 1px solid #1e293b; border-radius: 8px; overflow: auto; width: 98vw; height: 75vh; }
+        .grid-container { display: grid; text-align: center; width: max-content; margin: 0 auto; }
+        
+        .col-30 { min-width: 42px; height: 32px; font-size: 0.75rem; }
+        .col-210 { min-width: 12px; height: 22px; font-size: 0.45rem; border: none !important; }
+        
+        .cell { border: 0.1px solid #111827; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
+        @keyframes pulse { from { opacity: 0.6; } to { opacity: 1; } }
+        .glow-blue { color: var(--blue-glow); text-shadow: 0 0 8px var(--blue-glow); animation: pulse 0.5s infinite alternate; }
+        .glow-pink { color: var(--pink); text-shadow: 0 0 8px var(--pink); animation: pulse 0.7s infinite alternate; }
+        .glow-green { color: var(--green); text-shadow: 0 0 8px var(--green); animation: pulse 0.9s infinite alternate; }
+        
+        .dimmed { color: #1e293b !important; text-decoration: line-through; opacity: 0.2; background: #05070a !important; }
+        .mid-gray { background: #475569 !important; color: #fff; }
+    </style>
+</head>
+<body>
+
+    <div class="nav-header">
+        <a href="gap-proof.html" class="back-btn">← Back to Hub</a>
+        <h3 style="color: var(--gold); margin: 0;">Eternal Iteration of Eternal Columns</h3>
+    </div>
+
+    <div class="controls">
+        <button class="btn-logic" id="btn1" onclick="renderLogic('6to30')">Sieve Evolution: 6# ⇐ 30#</button>
+        <button class="btn-logic" id="btn2" onclick="renderLogic('30to210')">Eternal Symmetry: 30# ⇐ 210#</button>
+    </div>
+
+    <div class="grid-wrapper">
+        <div id="grid" class="grid-container"></div>
+    </div>
+
+    <script>
+        function renderLogic(mode) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = "";
+            document.querySelectorAll('.btn-logic').forEach(b => b.classList.remove('active-btn'));
+
+            if (mode === '6to30') {
+                document.getElementById('btn1').classList.add('active-btn');
+                grid.style.gridTemplateColumns = `repeat(30, 1fr)`;
+                
+                const blue = [1, 13, 17, 29]; 
+                const pink = [11, 19];
+                const green = [7, 23];
+                const killedBy5 = [5, 25];
+
+                for (let r = 0; r < 25; r++) {
+                    let base = r * 30;
+                    for (let v = 1; v <= 30; v++) {
+                        let num = base + v;
+                        const cell = document.createElement('div');
+                        cell.className = 'cell col-30';
+                        cell.innerText = num;
+
+                        if (blue.includes(v)) cell.classList.add('glow-blue');
+                        if (pink.includes(v)) cell.classList.add('glow-pink');
+                        if (green.includes(v)) cell.classList.add('glow-green');
+
+                        if (killedBy5.includes(v)) {
+                            cell.classList.remove('glow-blue', 'glow-pink', 'glow-green');
+                            cell.classList.add('dimmed');
+                        }
+                        grid.appendChild(cell);
+                    }
+                }
+            } else {
+                document.getElementById('btn2').classList.add('active-btn');
+                grid.style.gridTemplateColumns = `repeat(210, 1fr)`;
+                const killers7 = [7, 49, 77, 91, 119, 133, 161, 203];
+
+                for (let r = 0; r < 30; r++) {
+                    let base = r * 210;
+                    for (let v = 1; v <= 210; v++) {
+                        let num = base + v;
+                        const cell = document.createElement('div');
+                        cell.className = 'cell col-210';
+                        let isGlow = false;
+
+                        let subPos = v % 30; if (subPos === 0) subPos = 30;
+
+                        if ([1, 29, 13, 17].includes(subPos)) { cell.classList.add('glow-blue'); isGlow = true; }
+                        if ([11, 19].includes(subPos)) { cell.classList.add('glow-pink'); isGlow = true; }
+                        if ([7, 23].includes(subPos)) { cell.classList.add('glow-green'); isGlow = true; }
+
+                        if (v === 105) cell.classList.add('mid-gray');
+
+                        if (killers7.includes(v)) {
+                            cell.classList.remove('glow-blue', 'glow-pink', 'glow-green');
+                            cell.classList.add('dimmed');
+                        }
+
+                        if (isGlow) cell.innerText = num; 
+                        grid.appendChild(cell);
+                    }
+                }
+            }
+        }
+        window.onload = () => renderLogic('6to30');
+    </script>
+</body>
+</html>
