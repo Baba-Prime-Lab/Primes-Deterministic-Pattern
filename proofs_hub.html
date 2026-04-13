@@ -64,7 +64,18 @@
         .card-exploration { border: 2px solid #27ae60 !important; box-shadow: 0 0 20px rgba(39, 174, 96, 0.2); }
         .card-exploration:hover { box-shadow: 0 15px 40px rgba(39, 174, 96, 0.4) !important; }
         .tag-foundation { color: #fff; border: 1px solid #27ae60; background: rgba(39, 174, 96, 0.3); }
-
+<!-- أضف هذا الستايل في قسم الـ <style> ليعطي التشعشع المطلوب -->
+<style>
+    .card-eternal-gaps { 
+        border: 2px solid #3498db !important; 
+        box-shadow: 0 0 20px rgba(52, 152, 219, 0.4); 
+        animation: glow-pulse 2s infinite alternate;
+    }
+    @keyframes glow-pulse {
+        from { box-shadow: 0 0 10px rgba(52, 152, 219, 0.4); }
+        to { box-shadow: 0 0 30px rgba(52, 152, 219, 0.8); }
+    }
+</style>
         /* تنسيقات البطاقة الذهبية (لوجاندر) */
         .card-legendre { border: 2px solid var(--gold) !important; box-shadow: 0 0 20px rgba(184, 134, 11, 0.3); }
         .card-legendre:hover { box-shadow: 0 15px 40px rgba(184, 134, 11, 0.4) !important; }
@@ -120,11 +131,17 @@
             <p style="color: #cbd5e1;">Structural symmetry proof: Every even integer as a sum of two primes.</p>
         </div>
 
-        <div class="proof-card">
-            <div class="status-tag tag-dev">IN DEVELOPMENT</div>
-            <h3>Twin Prime Conjecture</h3>
-            <p style="color: #cbd5e1;">Infinitude proof via the Eternal Prime Pattern recurrence.</p>
-        </div>
+     <!-- البطاقة الرابعة: التوائم الأبدية (تم تشعشعها للافتتاح) -->
+<a href="gap-proof.html" class="proof-card card-active card-eternal-gaps">
+    <div>
+        <div class="status-tag tag-ready">● NEW PROOF OPEN</div>
+        <h3 style="color: #3498db; font-size: 1.5rem; line-height: 1.3;">Twin Prime Conjecture</h3>
+        <p style="color: #e2e8f0; font-size: 0.95rem; margin-top: 8px;">
+            The definitive infinitude proof via the <span style="color: #3498db; font-weight: bold;">Eternal Prime Pattern</span> recurrence.
+        </p>
+    </div>
+    <div style="margin-top: 15px; font-size: 0.8rem; color: #3498db; font-weight: bold;">Step 3: Discover Infinity →</div>
+</a>
 
         <div class="proof-card">
             <div class="status-tag tag-dev">IN DEVELOPMENT</div>
