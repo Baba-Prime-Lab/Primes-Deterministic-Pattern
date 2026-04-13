@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Small Gaps In Primes | BaBa-LnX Proofs</title>
+    <style>
+        :root { --primary: #050a14; --gold: #b8860b; --accent: #3498db; }
+        body { 
+            margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--primary); color: white; text-align: center;
+        }
+        
+        /* الخلفية الخاصة بالأعمدة التي اخترتها */
+        .column-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://i.postimg.cc/g2XM5nvK/2310.png') no-repeat center center;
+            background-size: cover; opacity: 0.2; z-index: -1;
+        }
+
+        .header { padding: 50px 20px; }
+        .header h1 { font-size: 3rem; color: #fff; text-shadow: 0 0 20px rgba(52, 152, 219, 0.5); }
+
+        .proofs-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; max-width: 1100px; margin: 0 auto; padding: 20px;
+        }
+
+        .proof-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            padding: 30px; border-radius: 12px; transition: 0.4s;
+            text-decoration: none; color: white; display: flex; flex-direction: column;
+            text-align: left; border-top: 4px solid var(--accent);
+        }
+        .proof-card:hover { transform: translateY(-10px); border-top-color: #fff; background: rgba(15, 23, 42, 0.95); }
+
+        .back-btn {
+            margin-top: 30px; display: inline-block; padding: 10px 30px;
+            border: 1px solid #7f8c8d; color: #7f8c8d; text-decoration: none;
+            border-radius: 5px; transition: 0.3s;
+        }
+        .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        h3 { margin-top: 0; color: var(--accent); }
+        p { font-size: 0.9rem; line-height: 1.5; opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <div class="column-bg"></div>
+
+    <div class="header">
+        <h1>Small Gaps in the Eternal Pattern</h1>
+        <p>Mathematical Proofs of Bounded Gaps and Perpetual Recurrence</p>
+    </div>
+
+    <div class="proofs-grid">
+        <!-- المدخل الأول -->
+        <a href="eternal_twins.html" class="proof-card">
+            <h3>Eternal Twins P# ± 1</h3>
+            <p>Proof of the infinitude of twin primes through the deterministic emergence around primorial centers.</p>
+        </a>
+
+        <!-- المدخل الثاني -->
+        <a href="middle_columns.html" class="proof-card">
+            <h3>Eternal Middle Columns</h3>
+            <p>Analysis of P# / 2 ± (2, 4, 8) and the stable emergence of prime clusters in mid-primorial zones.</p>
+        </a>
+
+        <!-- المدخل الثالث -->
+        <a href="perpetual_recurrence.html" class="proof-card">
+            <h3>Eternal Columns & Recurrence</h3>
+            <p>The geometric laws governing the perpetual repetition of prime structures across higher primorials.</p>
+        </a>
+
+        <!-- المدخل الرابع -->
+        <a href="small_gaps_proof.html" class="proof-card">
+            <h3>Bounded Small Gaps</h3>
+            <p>Formalizing the "Small Gaps" proof within the eternal pattern, ensuring primes never disappear.</p>
+        </a>
+    </div>
+
+    <a href="proofs_main.html" class="back-btn">← Back to Proofs Hub</a>
+
+    <footer style="margin-top: 50px; opacity: 0.5;">BaBa-LnX Research</footer>
+</body>
+</html>
