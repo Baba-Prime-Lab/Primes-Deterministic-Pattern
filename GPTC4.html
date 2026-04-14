@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPTC4: Eternal Gap Proof Hub</title>
+    <style>
+        :root {
+            --bg: #050a14; --gold: #ffd700; --blue: #00d2ff; --text: #f1f5f9;
+        }
+        body {
+            background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif;
+            margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center;
+        }
+        .container { max-width: 950px; padding: 30px 20px; text-align: center; }
+        
+        /* قسم الأزرار في الأعلى */
+        .nav-section { margin-bottom: 40px; width: 100%; }
+        .nav-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px; margin-top: 20px;
+        }
+        .nav-btn {
+            background: #0f172a; border: 1px solid var(--blue); color: var(--blue);
+            padding: 15px 10px; border-radius: 8px; text-decoration: none; font-weight: bold;
+            transition: 0.3s; font-size: 1rem; display: flex; flex-direction: column; align-items: center;
+        }
+        .nav-btn:hover { background: var(--blue); color: #000; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3); }
+        .nav-btn span { font-size: 0.75rem; opacity: 0.8; margin-top: 4px; }
+        
+        .back-btn {
+            display: inline-block; margin-bottom: 20px; text-decoration: none;
+            color: var(--gold); border: 1px solid var(--gold); padding: 8px 20px;
+            border-radius: 50px; font-weight: bold; transition: 0.3s;
+        }
+        .back-btn:hover { background: var(--gold); color: #000; }
+
+        /* قسم الشرح أسفل الأزرار */
+        .concept-card {
+            background: rgba(15, 23, 42, 0.6); border: 1px solid #1e293b;
+            border-radius: 15px; padding: 30px; text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .lang-block { margin-bottom: 30px; line-height: 1.7; }
+        .lang-title { font-weight: bold; color: var(--gold); margin-bottom: 8px; display: block; font-size: 1.1rem; }
+        
+        .en { color: #cbd5e1; direction: ltr; }
+        .ar { color: #f1f5f9; direction: rtl; text-align: right; font-size: 1.25rem; border-right: 4px solid var(--blue); padding-right: 15px; }
+        .fr { color: #94a3b8; direction: ltr; font-size: 0.95rem; }
+        
+        h1 { color: var(--gold); margin-bottom: 10px; }
+        .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--blue), transparent); margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-btn">← Back to Atlas Hub</a>
+    <h1>GPTC4: Gap Pattern Logic</h1>
+    
+    <!-- الأزرار في الأعلى -->
+    <div class="nav-section">
+        <div class="nav-grid">
+            <a href="GPTC41.html" class="nav-btn">2# Logic<span>The Odd Baseline</span></a>
+            <a href="GPTC42.html" class="nav-btn">3# Logic<span>Hexagonal Symmetry</span></a>
+            <a href="GPTC43.html" class="nav-btn">5# Logic<span>The 30# Sieve</span></a>
+            <a href="GPTC44.html" class="nav-btn">7# Logic<span>The 210# Architect</span></a>
+            <a href="GPTC45.html" class="nav-btn">11# Logic<span>Eternal Patterns</span></a>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- الشرح في الأسفل -->
+    <div class="concept-card">
+        <!-- English First -->
+        <div class="lang-block en">
+            <span class="lang-title">Proof Concept:</span>
+            The space between any two prime squares in an iterative table inherits more twins and smaller gaps than its predecessor. Starting from the Hexagonal table (6#) and beyond, the quantity grows by a factor of (Previous Quantity * New P). When filtered in the new table, the reduction in total growth does not exceed 1/P. For example, in 7#, the probability columns of 5# repeat 7 times (8 * 7 = 56), and the sieve only removes 1/7th of them (8), leaving 48 survivor columns. This makes it impossible for the new prime sieve to eliminate their existence.
+        </div>
+
+        <!-- Arabic Second -->
+        <div class="lang-block ar">
+            <span class="lang-title">فكرة البرهان:</span>
+            إن المساحة بين كل مربعي أوليات في جدول متكرر عن سابقه يرث توائم أكثر من سابقه وكذلك من الفجوات الصغرى، بداية من الجدول السداسي فصاعداً، بواقع (الكمية السابقة * p الجديد). هذه الفجوات عندما تُحسم في الجدول الجديد لا يقل نقص الزيادة العامة عن 1/p؛ فعلى سبيل المثال، تكرار أعمدة الاحتمالات في 5# سبع مرات داخل جدول 7# يعطي 56 عموداً، ولا ينقص منها إلا سُبعها (8 أعمدة) لتصبح أعمدة الاحتمالات في 7# تساوي 48 عموداً. ومن المستحيل على الشفرة الجديدة أن تنهي وجودها.
+        </div>
+
+        <!-- French Third -->
+        <div class="lang-block fr">
+            <span class="lang-title">Concept de la Preuve:</span>
+            L'espace entre deux carrés de nombres premiers dans un tableau itératif hérite de plus de jumeaux et d'écarts mineurs que le précédent. À partir du tableau hexagonal (6#), la quantité croît par un facteur de (Quantité Précédente * Nouveau P). Lors du filtrage, la réduction de la croissance totale ne dépasse pas 1/P. Par exemple, dans 7#, les colonnes de probabilité de 5# se répètent 7 fois (8 * 7 = 56), et le crible n'en retire que 1/7ème (8), laissant 48 colonnes survivantes. Cela rend impossible pour le nouveau crible d'éliminer leur existence.
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
