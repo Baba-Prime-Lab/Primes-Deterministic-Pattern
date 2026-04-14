@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <title>BaBa-LnX | The Great Prime Problems</title>
     <style>
-        :root { --primary: #050a14; --gold: #b8860b; --white-glow: #ffffff; --blue-glow: #3498db; }
+        :root { 
+            --primary: #050a14; 
+            --gold: #b8860b; 
+            --silver: #c0c0c0; /* لون فضي لجولدباخ */
+            --white-glow: #ffffff; 
+            --blue-glow: #3498db; 
+        }
         body { 
             margin: 0; 
             font-family: 'Segoe UI', Tahoma, sans-serif; 
@@ -40,7 +46,7 @@
 
         .proof-card {
             background: rgba(15, 23, 42, 0.7);
-            border: 1px solid rgba(184, 134, 11, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 35px;
             border-radius: 15px;
             transition: 0.5s ease;
@@ -60,28 +66,34 @@
             display: inline-block; margin-bottom: 20px; font-weight: bold; letter-spacing: 1px;
         }
 
-        /* تنسيقات البطاقة الخضراء */
-        .card-exploration { border: 2px solid #27ae60 !important; box-shadow: 0 0 20px rgba(39, 174, 96, 0.2); }
-        .card-exploration:hover { box-shadow: 0 15px 40px rgba(39, 174, 96, 0.4) !important; }
+        /* 1. الاستكشاف (أخضر) */
+        .card-exploration { border: 2px solid #27ae60 !important; }
         .tag-foundation { color: #fff; border: 1px solid #27ae60; background: rgba(39, 174, 96, 0.3); }
 
-        /* تنسيقات البطاقة الذهبية */
-        .card-legendre { border: 2px solid var(--gold) !important; box-shadow: 0 0 20px rgba(184, 134, 11, 0.3); }
-        .card-legendre:hover { box-shadow: 0 15px 40px rgba(184, 134, 11, 0.4) !important; }
+        /* 2. لوجاندر (ذهبي) */
+        .card-legendre { border: 2px solid var(--gold) !important; }
+        .tag-ready { color: #fff; border: 1px solid var(--gold); background: rgba(184, 134, 11, 0.3); }
 
-        /* تنسيقات البطاقة الزرقاء (المشعشعة) */
+        /* 3. جولدباخ (فضي مشع) */
+        .card-goldbach { 
+            border: 2px solid var(--silver) !important; 
+            box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
+        }
+        .card-goldbach:hover { box-shadow: 0 0 30px rgba(192, 192, 192, 0.6); }
+        .tag-silver { color: #fff; border: 1px solid var(--silver); background: rgba(192, 192, 192, 0.2); }
+
+        /* 4. التوائم (أزرق مشعشع) */
         .card-eternal-gaps { 
             border: 2px solid var(--blue-glow) !important; 
-            box-shadow: 0 0 20px rgba(52, 152, 219, 0.4); 
             animation: glow-pulse 2s infinite alternate;
         }
+        .tag-blue { color: #fff; border: 1px solid var(--blue-glow); background: rgba(52, 152, 219, 0.3); }
+
         @keyframes glow-pulse {
             from { box-shadow: 0 0 10px rgba(52, 152, 219, 0.4); }
             to { box-shadow: 0 0 30px rgba(52, 152, 219, 0.8); }
         }
 
-        .tag-ready { color: #fff; border: 1px solid var(--gold); background: rgba(184, 134, 11, 0.3); }
-        .tag-blue { color: #fff; border: 1px solid var(--blue-glow); background: rgba(52, 152, 219, 0.3); }
         .tag-dev { color: #aaa; border: 1px solid #555; background: rgba(255,255,255,0.05); }
 
         .home-btn {
@@ -106,10 +118,10 @@
         <a href="exploration_lab.html" class="proof-card card-active card-exploration">
             <div>
                 <div class="status-tag tag-foundation">● FOUNDATIONAL TOOL</div>
-                <h3 style="color: #27ae60; font-size: 1.5rem; line-height: 1.3;">Starting Points & Vertical Exploration</h3>
-                <p style="color: #e2e8f0; font-size: 0.95rem; margin-top: 8px;">Structural convergence and the architecture of prime emergence</p>
+                <h3 style="color: #27ae60; font-size: 1.5rem;">Vertical Exploration</h3>
+                <p style="color: #e2e8f0; font-size: 0.95rem;">Architecture of prime emergence & structural convergence.</p>
             </div>
-            <div style="margin-top: 15px; font-size: 0.8rem; color: #27ae60; font-weight: bold;">Step 1: Explore Convergence →</div>
+            <div style="margin-top: 15px; font-size: 0.8rem; color: #27ae60; font-weight: bold;">Step 1: Explore →</div>
         </a>
 
         <!-- 2. بطاقة لوجاندر -->
@@ -117,35 +129,36 @@
             <div>
                 <div class="status-tag tag-ready">● INTERACTIVE LAB READY</div>
                 <h3 style="color: var(--gold); font-size: 1.6rem;">Legendre's Conjecture</h3>
-                <p style="color: #e2e8f0;">Full deterministic proof of prime existence between consecutive squares.</p>
+                <p style="color: #e2e8f0;">Deterministic proof of prime existence between squares.</p>
             </div>
-            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--gold); font-weight: bold;">Step 2: Enter the Lab →</div>
+            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--gold); font-weight: bold;">Step 2: Enter Lab →</div>
         </a>
 
-        <!-- 3. جولدباخ -->
-        <div class="proof-card">
-            <div class="status-tag tag-dev">IN DEVELOPMENT</div>
-            <h3>Goldbach's Conjecture</h3>
-            <p style="color: #cbd5e1;">Structural symmetry proof: Every even integer as a sum of two primes.</p>
-        </div>
-
-        <!-- 4. التوائم الأبدية (البطاقة المشعشعة) -->
+        <!-- 3. التوائم الأبدية -->
         <a href="gap-proof.html" class="proof-card card-active card-eternal-gaps">
             <div>
                 <div class="status-tag tag-blue">● NEW PROOF OPEN</div>
-                <h3 style="color: var(--blue-glow); font-size: 1.5rem; line-height: 1.3;">Twin Prime Conjecture</h3>
-                <p style="color: #e2e8f0; font-size: 0.95rem; margin-top: 8px;">
-                    The definitive infinitude proof via the <span style="color: var(--blue-glow); font-weight: bold;">Eternal Prime Pattern</span> recurrence.
-                </p>
+                <h3 style="color: var(--blue-glow); font-size: 1.5rem;">Twin Prime Conjecture</h3>
+                <p style="color: #e2e8f0; font-size: 0.95rem;">Infinitude proof via Eternal Prime Pattern recurrence.</p>
             </div>
-            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--blue-glow); font-weight: bold;">Step 3: Discover Infinity →</div>
+            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--blue-glow); font-weight: bold;">Step 3: Discover →</div>
+        </a>
+
+        <!-- 4. جولدباخ العزيز (الفضية) -->
+        <a href="GOLD.hub.html" class="proof-card card-active card-goldbach">
+            <div>
+                <div class="status-tag tag-silver">● THE SILVER LIGHT</div>
+                <h3 style="color: var(--silver); font-size: 1.6rem;">Goldbach's Conjecture</h3>
+                <p style="color: #cbd5e1;">Structural symmetry: Every even integer as a sum of two primes.</p>
+            </div>
+            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--silver); font-weight: bold;">Step 4: The Final Light →</div>
         </a>
 
         <!-- 5. ريمان -->
         <div class="proof-card">
             <div class="status-tag tag-dev">IN DEVELOPMENT</div>
             <h3>Riemann Hypothesis</h3>
-            <p style="color: #cbd5e1;">Structural Integration: Geometric Symmetry and Zero Statistical Error.</p>
+            <p style="color: #cbd5e1;">Structural Integration: Geometric Symmetry and Zero Error.</p>
         </div>
 
     </div>
