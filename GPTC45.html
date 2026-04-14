@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GPTC45: 11# Logic - The Eternal Patterns</title>
+    <style>
+        :root { 
+            --bg: #ffffff; --zero-blade: #ff5722; --prob: #00bcd4; 
+            --prime-confirmed: #1a237e; --glow-blue: #00f2ff; --faded: #f1f5f9;
+        }
+        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 5px; margin: 0; }
+        
+        .header-section { text-align: center; background: white; width: 100%; padding: 15px; border-bottom: 3px solid #2c3e50; margin-bottom: 20px; }
+        .controls { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+        
+        .btn-p { padding: 10px 25px; cursor: pointer; background: #0f172a; color: white; border: none; border-radius: 4px; font-weight: bold; transition: 0.3s; }
+        .active-btn { background: #8e44ad !important; transform: scale(1.05); box-shadow: 0 0 15px rgba(142, 68, 173, 0.5); }
+
+        .grid-wrapper { width: 99vw; overflow-x: auto; background: white; padding: 10px 0; display: flex; justify-content: center; }
+        #grid-container { display: flex; flex-direction: column; gap: 1px; width: fit-content; }
+        .row-wrapper { display: flex; gap: 0; height: 13px; }
+        
+        .cell { width: 5.4px; height: 11px; background: #fff; border: none; margin: 0; padding: 0; transition: 0.3s; position: relative; }
+        
+        .zero-blade { background: var(--zero-blade) !important; z-index: 5; }
+        .is-prob { background: var(--prob) !important; }
+        .confirmed { background: var(--prime-confirmed) !important; }
+        .faded { background: var(--faded) !important; opacity: 0.15 !important; }
+        
+        @keyframes twin-radiate { 
+            0% { box-shadow: 0 0 2px var(--glow-blue); transform: scale(1.2); } 
+            100% { box-shadow: 0 0 15px var(--glow-blue); transform: scale(2.8); background: var(--glow-blue); z-index: 100; } 
+        }
+        .twin-glow { animation: twin-radiate 0.5s infinite alternate; z-index: 100; border-radius: 1px; }
+    </style>
+</head>
+<body>
+
+    <div class="header-section">
+        <h3 style="margin:0;">GPTC4.5: 11# Logic (Eternal Patterns & Deep Jumps)</h3>
+        <div class="controls">
+            <button class="btn-p" id="b11" onclick="execute()">Activate Deep 11# Logic</button>
+            <a href="GPTC4.html" style="background:#64748b; color:white; text-decoration:none; padding:10px 20px; border-radius:4px; font-weight:bold;">← Back to Hub</a>
+        </div>
+    </div>
+
+    <div class="grid-wrapper"><div id="grid-container"></div></div>
+
+    <script>
+        const container = document.getElementById('grid-container');
+        const rows = 20;
+        const cols = 210;
+
+        function execute() {
+            container.innerHTML = ""; 
+            document.getElementById('b11').classList.add('active-btn');
+
+            const blades = [2, 3, 5, 7, 11];
+            // الأوليات المؤكدة (الهادئة)
+            const silentPrimes = [13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 163, 167];
+            // التوائم المشعشعة المطلوبة (137-139 و 149-151)
+            const glowTwins = [137, 139, 149, 151];
+
+            for (let r = 0; r < rows; r++) {
+                const rowWrapper = document.createElement('div');
+                rowWrapper.className = 'row-wrapper';
+                
+                let base = (r === 0) ? 0 : 2311 + ((r - 1) * 2310);
+
+                for (let c = 1; c <= cols; c++) {
+                    let num = base + (r > 0 ? c - 1 : c);
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+
+                    if (blades.includes(num)) {
+                        cell.classList.add('zero-blade');
+                    }
+                    // الحسم: استبعاد مضاعفات 2, 3, 5, 7, 11
+                    else if (num % 2 !== 0 && num % 3 !== 0 && num % 5 !== 0 && num % 7 !== 0 && num % 11 !== 0) {
+                        cell.classList.add('is-prob');
+                    } else {
+                        cell.classList.add('faded');
+                    }
+
+                    // تلوين الأوليات الهادئة
+                    if (silentPrimes.includes(num)) {
+                        cell.classList.remove('is-prob', 'faded');
+                        cell.classList.add('confirmed');
+                    }
+
+                    // تلوين وشعشعة التوائم المطلوبة
+                    if (glowTwins.includes(num)) {
+                        cell.classList.remove('is-prob', 'faded');
+                        cell.classList.add('confirmed', 'twin-glow');
+                    }
+
+                    rowWrapper.appendChild(cell);
+                }
+                container.appendChild(rowWrapper);
+            }
+        }
+
+        window.onload = () => {
+            container.innerHTML = "";
+            for (let r = 0; r < 15; r++) {
+                const row = document.createElement('div');
+                row.className = 'row-wrapper';
+                for (let c = 0; c < 210; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    row.appendChild(cell);
+                }
+                container.appendChild(row);
+            }
+        };
+    </script>
+</body>
+</html>
