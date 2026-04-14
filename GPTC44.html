@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GPTC44: 7# Matrix - The 210# Architect</title>
+    <style>
+        :root { 
+            --bg: #ffffff; --zero-blade: #ff5722; --prob: #00bcd4; 
+            --prime-confirmed: #1a237e; --glow-blue: #00f2ff; --faded: #f1f5f9;
+        }
+        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 5px; margin: 0; }
+        
+        .header-section { text-align: center; background: white; width: 100%; padding: 15px; border-bottom: 3px solid #2c3e50; margin-bottom: 20px; }
+        .controls { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+        
+        .btn-p { padding: 10px 25px; cursor: pointer; background: #0f172a; color: white; border: none; border-radius: 4px; font-weight: bold; transition: 0.3s; }
+        .active-btn { background: #27ae60 !important; transform: scale(1.05); box-shadow: 0 0 10px rgba(39, 174, 96, 0.4); }
+
+        .grid-wrapper { width: 99vw; overflow-x: auto; background: white; padding: 10px 0; display: flex; justify-content: center; }
+        #grid-container { display: flex; flex-direction: column; gap: 1px; width: fit-content; }
+        .row-wrapper { display: flex; gap: 0; height: 13px; }
+        
+        .cell { width: 5.4px; height: 11px; background: #fff; border: none; margin: 0; padding: 0; transition: 0.3s; }
+        .zero-blade { background: var(--zero-blade) !important; z-index: 5; }
+        .is-prob { background: var(--prob) !important; }
+        .confirmed { background: var(--prime-confirmed) !important; }
+        .faded { background: var(--faded) !important; opacity: 0.15 !important; }
+        
+        @keyframes twin-radiate { 
+            0% { box-shadow: 0 0 2px var(--glow-blue); transform: scale(1); } 
+            100% { box-shadow: 0 0 10px var(--glow-blue); transform: scale(2.5); background: var(--glow-blue); z-index: 100; } 
+        }
+        .twin-glow { animation: twin-radiate 0.5s infinite alternate; z-index: 10; border-radius: 1px; }
+    </style>
+</head>
+<body>
+
+    <div class="header-section">
+        <h3 style="margin:0;">GPTC4.4: 7# Matrix (The 210# Architect)</h3>
+        <div class="controls">
+            <button class="btn-p" id="b7" onclick="execute(7)">Activate 7# Logic</button>
+            <a href="GPTC4.html" style="background:#64748b; color:white; text-decoration:none; padding:10px 20px; border-radius:4px; font-weight:bold;">← Back to Hub</a>
+        </div>
+    </div>
+
+    <div class="grid-wrapper"><div id="grid-container"></div></div>
+
+    <script>
+        const container = document.getElementById('grid-container');
+        const rows = 15;
+        const cols = 210;
+
+        function buildInitialGrid() {
+            container.innerHTML = "";
+            for (let r = 0; r < rows; r++) {
+                const row = document.createElement('div');
+                row.className = 'row-wrapper';
+                for (let c = 1; c <= cols; c++) {
+                    const num = (r * cols) + c;
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.id = `cell-${num}`;
+                    row.appendChild(cell);
+                }
+                container.appendChild(row);
+            }
+        }
+
+        function execute(pNum) {
+            buildInitialGrid();
+            document.getElementById('b7').classList.add('active-btn');
+
+            const blades = [2, 3, 5, 7];
+            const oldPrimes = [11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
+            // المواليد الجدد (التوائم حتى 113)
+            const newGlowTwins = [59, 61, 71, 73, 101, 103, 107, 109];
+            const newSilentPrimes = [53, 67, 79, 83, 89, 97, 113];
+
+            for (let n = 1; n <= rows * cols; n++) {
+                const cell = document.getElementById(`cell-${n}`);
+                if (!cell) continue;
+
+                // 1. الشفرات الحاكمة
+                if (blades.includes(n)) {
+                    cell.className = 'cell zero-blade';
+                }
+                // 2. حسم الـ 210 (استبعاد مضاعفات 2، 3، 5، 7)
+                else if (n % 2 !== 0 && n % 3 !== 0 && n % 5 !== 0 && n % 7 !== 0) {
+                    cell.classList.add('is-prob');
+                }
+                else {
+                    cell.classList.add('faded');
+                }
+
+                // 3. تثبيت القدامى والجدد الهادئين
+                if (oldPrimes.includes(n) || newSilentPrimes.includes(n)) {
+                    cell.classList.remove('is-prob', 'faded');
+                    cell.classList.add('confirmed');
+                }
+
+                // 4. شعشعة التوائم الجديدة في هذا النطاق
+                if (newGlowTwins.includes(n)) {
+                    cell.classList.remove('is-prob', 'faded');
+                    cell.classList.add('confirmed', 'twin-glow');
+                }
+            }
+        }
+
+        window.onload = buildInitialGrid;
+    </script>
+</body>
+</html>
