@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GOLD2: Goldbach - Primorial Alignment</title>
+    <style>
+        :root { 
+            --bg: #ffffff; --text: #0f172a; --gold: #b8860b; 
+            --silver: #94a3b8; --prime-glow: #3498db; 
+            --match-glow: #ff5722; --lonely: #a855f7;
+        }
+        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: flex-start; padding: 20px; margin: 0; color: var(--text); }
+        .header-section { width: 100%; max-width: 1200px; padding-bottom: 20px; border-bottom: 2px solid var(--silver); margin-bottom: 30px; }
+        .controls { display: flex; gap: 15px; margin: 20px 0; }
+        .btn-logic { padding: 12px 24px; cursor: pointer; background: #f1f5f9; color: #1e293b; border: 2px solid var(--silver); border-radius: 8px; font-weight: bold; transition: 0.3s; }
+        .active-btn { background: #0f172a !important; color: white !important; }
+        .matrix-container { display: flex; flex-direction: column; gap: 40px; width: 100%; }
+        .even-block { background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; width: fit-content; }
+        .even-title { color: var(--gold); font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; border-left: 5px solid var(--gold); padding-left: 10px; }
+        .row-wrapper { display: flex; gap: 1px; margin-bottom: 1px; }
+        .cell { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; background: #fff; border: 0.1px solid #f1f5f9; transition: 0.1s; flex-shrink: 0; }
+        .small-font { font-size: 0.55rem !important; }
+        
+        @keyframes pair-glow { 
+            0% { background: #fff; transform: scale(1); } 
+            100% { background: var(--match-glow); color: #fff; transform: scale(1.1); box-shadow: 0 0 10px var(--match-glow); z-index: 10; } 
+        }
+        .matched { animation: pair-glow 0.8s infinite alternate !important; border-color: transparent !important; }
+        .lonely { background: rgba(168, 85, 247, 0.15) !important; color: var(--lonely) !important; border: 1px solid var(--lonely) !important; }
+        .seg-divider { margin-top: 15px; border-top: 1px dashed var(--silver); padding-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="header-section">
+        <h2 style="margin:0;">Goldbach Phase II: Primorial Density (P#)</h2>
+        <div class="controls">
+            <button class="btn-logic" id="btn-none" onclick="render('none')">Numbers Only</button>
+            <button class="btn-logic" id="btn-pot" onclick="render('pot')">Potential (6k±1)</button>
+            <button class="btn-logic" id="btn-true" onclick="render('true')">True Prime Pairs</button>
+            <a href="GOLD.hub.html" style="text-decoration:none; padding:12px 24px; background:var(--gold); color:white; border-radius:8px; font-weight:bold;">← Hub</a>
+        </div>
+    </div>
+
+    <div id="main-display" class="matrix-container"></div>
+
+    <script>
+        const evens = [6, 12, 18, 24, 30, 60, 90, 120, 150, 180, 210];
+
+        // دالة سريعة جداً لفحص الأولية
+        function isP(n) {
+            if (n < 2) return false;
+            if (n === 2 || n === 3) return true;
+            if (n % 2 === 0 || n % 3 === 0) return false;
+            for (let i = 5; i * i <= n; i += 6) {
+                if (n % i === 0 || n % (i + 2) === 0) return false;
+            }
+            return true;
+        }
+
+        function isPot(n) {
+            if (n === 2 || n === 3) return true;
+            return (n % 6 === 1 || n % 6 === 5);
+        }
+
+        function render(mode) {
+            const display = document.getElementById('main-display');
+            display.innerHTML = "";
+            document.querySelectorAll('.btn-logic').forEach(b => b.classList.remove('active-btn'));
+            document.getElementById('btn-' + mode).classList.add('active-btn');
+
+            const checkFunc = (mode === 'true') ? isP : isPot;
+
+            // 1. المضروبات من 6 إلى 210
+            evens.forEach(E => {
+                const block = document.createElement('div');
+                block.className = 'even-block';
+                block.innerHTML = `<div class="even-title">P# Factor: ${E}</div>`;
+                const mid = E / 2;
+
+                for (let r = 0; r < 2; r++) {
+                    const row = document.createElement('div');
+                    row.className = 'row-wrapper';
+                    for (let x = 0; x <= Math.floor(mid); x++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        let val = (r === 0) ? x : (E - x);
+                        if (val >= 100) cell.classList.add('small-font');
+                        cell.innerText = val;
+
+                        if (mode !== 'none') {
+                            if (checkFunc(val)) {
+                                if (checkFunc(E - val)) cell.classList.add('matched');
+                                else cell.classList.add('lonely');
+                            }
+                        }
+                        row.appendChild(cell);
+                    }
+                    block.appendChild(row);
+                }
+                display.appendChild(block);
+            });
+
+            // 2. معجزة الـ 2310
+            const block2310 = document.createElement('div');
+            block2310.className = 'even-block';
+            block2310.innerHTML = `<div class="even-title">2310 Architecture</div>`;
+            
+            const ranges = [
+                {s:0, e:105, v1:0, v2:2310}, {s:106, e:210, v1:106, v2:2204}, {s:211, e:315, v1:211, v2:2099},
+                {s:316, e:420, v1:316, v2:1994}, {s:421, e:525, v1:421, v2:1889}, {s:526, e:630, v1:526, v2:1784},
+                {s:631, e:735, v1:631, v2:1679}, {s:736, e:840, v1:736, v2:1574}, {s:841, e:945, v1:841, v2:1469},
+                {s:946, e:1050, v1:946, v2:1364}, {s:1051, e:1155, v1:1051, v2:1259}
+            ];
+
+            ranges.forEach(rng => {
+                const seg = document.createElement('div');
+                seg.className = 'seg-divider';
+                const r1 = document.createElement('div'); r1.className = 'row-wrapper';
+                const r2 = document.createElement('div'); r2.className = 'row-wrapper';
+
+                for (let i = 0; i <= (rng.e - rng.s); i++) {
+                    const c1 = document.createElement('div'); c1.className = 'cell small-font';
+                    const c2 = document.createElement('div'); c2.className = 'cell small-font';
+                    let val1 = rng.v1 + i;
+                    let val2 = rng.v2 - i;
+                    c1.innerText = val1;
+                    c2.innerText = val2;
+
+                    if (mode !== 'none') {
+                        // منطق التزاوج للخلية الأولى
+                        if (checkFunc(val1)) {
+                            if (checkFunc(2310 - val1)) c1.classList.add('matched');
+                            else c1.classList.add('lonely');
+                        }
+                        // منطق التزاوج للخلية الثانية
+                        if (checkFunc(val2)) {
+                            if (checkFunc(2310 - val2)) c2.classList.add('matched');
+                            else c2.classList.add('lonely');
+                        }
+                    }
+                    r1.appendChild(c1); r2.appendChild(c2);
+                }
+                seg.appendChild(r1); seg.appendChild(r2);
+                block2310.appendChild(seg);
+            });
+            display.appendChild(block2310);
+        }
+
+        window.onload = () => render('none');
+    </script>
+</body>
+</html>

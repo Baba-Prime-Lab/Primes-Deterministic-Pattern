@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GOLD1: Goldbach Architecture - Form Logic</title>
+    <style>
+        :root { 
+            --bg: #ffffff; --text: #0f172a; --gold: #b8860b; 
+            --silver: #94a3b8; --prime-glow: #3498db; --match-glow: #ff5722;
+        }
+        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; margin: 0; color: var(--text); }
+        
+        .header-section { text-align: center; width: 100%; max-width: 1100px; padding-bottom: 20px; border-bottom: 2px solid var(--silver); margin-bottom: 30px; }
+        .controls { display: flex; gap: 15px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+        
+        .btn-logic { padding: 12px 24px; cursor: pointer; background: #f1f5f9; color: #1e293b; border: 2px solid var(--silver); border-radius: 8px; font-weight: bold; transition: 0.3s; }
+        .active-btn { background: #0f172a !important; color: white !important; border-color: var(--gold) !important; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+        .matrix-container { display: flex; flex-direction: column; gap: 40px; width: 100%; max-width: 1300px; padding: 10px; }
+        .even-block { background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); overflow-x: auto; }
+        .even-title { color: var(--gold); font-weight: bold; font-size: 1.3rem; margin-bottom: 20px; text-align: left; }
+
+        .row-wrapper { display: flex; gap: 2px; justify-content: center; margin-bottom: 2px; min-width: max-content; }
+        
+        /* تثبيت عرض الخلية لمنع التوسع */
+        .cell { 
+            width: 36px; height: 36px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 0.85rem; font-weight: bold; 
+            border-radius: 4px; background: #f8fafc; border: 0.1px solid #eee; 
+            transition: 0.2s; color: #94a3b8;
+            flex-shrink: 0; /* منع انكماش الخلية */
+        }
+        
+        /* تصغير الخط للأرقام الكبيرة */
+        .small-font { font-size: 0.65rem !important; }
+
+        .p-pos { background: rgba(52, 152, 219, 0.1); color: var(--prime-glow); border: 1px solid var(--prime-glow); }
+        
+        @keyframes pair-glow { 
+            0% { background: #fff; transform: scale(1); }
+            100% { background: var(--match-glow); color: #fff; transform: scale(1.08); box-shadow: 0 0 12px var(--match-glow); z-index: 10; border-color: transparent; }
+        }
+        .matched { animation: pair-glow 0.8s infinite alternate !important; }
+    </style>
+</head>
+<body>
+
+    <div class="header-section">
+        <h2 style="margin:0;">Goldbach Phase I: Form Architecture</h2>
+        <div class="controls">
+            <button class="btn-logic" id="btn-0" onclick="render(0)">Pairs Form: 6k</button>
+            <button class="btn-logic" id="btn-m2" onclick="render(-2)">Pairs Form: 6k - 2</button>
+            <button class="btn-logic" id="btn-p2" onclick="render(2)">Pairs Form: 6k + 2</button>
+            <a href="GOLD.hub.html" style="text-decoration:none; padding:12px 24px; background:var(--gold); color:white; border-radius:8px; font-weight:bold;">← Hub</a>
+        </div>
+    </div>
+
+    <div id="main-display" class="matrix-container"></div>
+
+    <script>
+        const baseNumbers = [90, 96, 102, 108, 114, 120];
+
+        function isP(n) {
+            if (n < 2) return false;
+            if (n === 2 || n === 3) return true;
+            return (n % 6 === 1 || n % 6 === 5);
+        }
+
+        function render(offset) {
+            const display = document.getElementById('main-display');
+            display.innerHTML = "";
+            
+            document.querySelectorAll('.btn-logic').forEach(b => b.classList.remove('active-btn'));
+            const btnId = offset === 0 ? 'btn-0' : offset === 2 ? 'btn-p2' : 'btn-m2';
+            document.getElementById(btnId).classList.add('active-btn');
+
+            baseNumbers.forEach(base => {
+                const E = base + offset;
+                const mid = E / 2;
+                const block = document.createElement('div');
+                block.className = 'even-block';
+                block.innerHTML = `<div class="even-title">Even Number: ${E} (Form: 6k ${offset === 0 ? '' : offset > 0 ? '+ 2' : '- 2'})</div>`;
+
+                for (let r = 1; r <= 4; r++) {
+                    const row = document.createElement('div');
+                    row.className = 'row-wrapper';
+                    
+                    for (let x = 0; x <= Math.floor(mid); x++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        
+                        let val = (r <= 2) ? x : (E - x);
+                        
+                        // تصغير الخط إذا كان الرقم 100 فأكثر
+                        if (val >= 100) cell.classList.add('small-font');
+
+                        const isPrimaryP = isP(val);
+                        const isCounterP = isP(E - val);
+
+                        if (r === 1 || r === 4) {
+                            if (isPrimaryP) {
+                                cell.classList.add('p-pos');
+                                cell.innerText = (val === 2 || val === 3) ? "P" : (val % 6 === 1 ? "+1" : "-1");
+                                if (isCounterP) cell.classList.add('matched');
+                            }
+                        } else {
+                            cell.innerText = val;
+                            if (isPrimaryP) {
+                                cell.classList.add('p-pos');
+                                if (isCounterP) cell.classList.add('matched');
+                            }
+                        }
+                        row.appendChild(cell);
+                    }
+                    block.appendChild(row);
+                }
+                display.appendChild(block);
+            });
+        }
+
+        window.onload = () => render(0);
+    </script>
+</body>
+</html>
