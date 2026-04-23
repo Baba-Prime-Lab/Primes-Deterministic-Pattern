@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GOLD2: Primorial Alignment & Difference</title>
+    <style>
+        :root { 
+            --bg: #ffffff; --text: #0f172a; --gold: #b8860b; 
+            --silver: #94a3b8; --prime-glow: #3498db; 
+            --match-glow: #10b981; --lonely: #a855f7;
+            --navy-loss: #1e3a8a; /* Navy: Loss in 2nd row */
+            --red-gain: #e11d48;  /* Red: Gain in 2nd row */
+        }
+        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: flex-start; padding: 20px; margin: 0; color: var(--text); }
+        .header-section { width: 100%; max-width: 1200px; padding-bottom: 20px; border-bottom: 2px solid var(--silver); margin-bottom: 30px; }
+        .controls { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+        
+        .btn-logic { padding: 12px 20px; cursor: pointer; background: #f1f5f9; color: #1e293b; border: 2px solid var(--silver); border-radius: 8px; font-weight: bold; transition: 0.3s; text-transform: uppercase; font-size: 0.85rem; }
+        .active-btn { background: #0f172a !important; color: white !important; }
+        .btn-back { padding: 12px 20px; cursor: pointer; background: var(--gold); color: white; border: none; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 0.85rem; }
+        
+        .matrix-container { display: flex; flex-direction: column; gap: 40px; width: 100%; }
+        .even-block { background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; width: fit-content; }
+        .even-title { color: var(--gold); font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; border-left: 5px solid var(--gold); padding-left: 10px; }
+        .row-wrapper { display: flex; gap: 1px; margin-bottom: 1px; }
+        .cell { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; background: #fff; border: 0.1px solid #f1f5f9; flex-shrink: 0; }
+        .small-font { font-size: 0.55rem !important; }
+        
+        .matched { background: var(--match-glow) !important; color: white !important; }
+        .lonely { background: rgba(168, 85, 247, 0.1) !important; color: var(--lonely) !important; }
+        .navy-cell { background: var(--navy-loss) !important; color: white !important; }
+        .red-cell { background: var(--red-gain) !important; color: white !important; }
+    </style>
+</head>
+<body>
+
+    <div class="header-section">
+        <h2 style="margin:0;">Goldbach Phase II: Primorial Density</h2>
+        <div class="controls">
+            <button class="btn-logic" id="btn-none" onclick="render('none')">Numbers Only</button>
+            <button class="btn-logic" id="btn-pot" onclick="render('pot')">Potential (6k±1)</button>
+            <button class="btn-logic" id="btn-true" onclick="render('true')">True Prime Pairs</button>
+            <button class="btn-logic" id="btn-diff" onclick="render('diff')">Row Primes Difference</button>
+            <a href="GOLD.hub.html" class="btn-back">← Back to Hub</a>
+        </div>
+    </div>
+
+    <div id="main-display" class="matrix-container"></div>
+
+    <script>
+        const evens = [6, 12, 18, 24, 30, 60, 90, 120, 150, 180, 210];
+
+        function isP(n) {
+            if (n < 2) return false;
+            if (n === 2 || n === 3) return true;
+            if (n % 2 === 0 || n % 3 === 0) return false;
+            for (let i = 5; i * i <= n; i += 6) {
+                if (n % i === 0 || n % (i + 2) === 0) return false;
+            }
+            return true;
+        }
+
+        function isPot(n) {
+            if (n === 1 || n === 2 || n === 3) return true;
+            return (n % 6 === 1 || n % 6 === 5);
+        }
+
+        function render(mode) {
+            const display = document.getElementById('main-display');
+            display.innerHTML = "";
+            document.querySelectorAll('.btn-logic').forEach(b => b.classList.remove('active-btn'));
+            document.getElementById('btn-' + mode).classList.add('active-btn');
+
+            evens.forEach(E => {
+                const block = document.createElement('div');
+                block.className = 'even-block';
+                block.innerHTML = `<div class="even-title">P# Factor: ${E}</div>`;
+                const mid = Math.floor(E / 2);
+
+                const row1Values = [];
+                const row2Values = [];
+                for(let x=0; x<=mid; x++) {
+                    row1Values.push(x);
+                    row2Values.push(E-x);
+                }
+
+                [row1Values, row2Values].forEach((rowArray, rowIndex) => {
+                    const rowDiv = document.createElement('div');
+                    rowDiv.className = 'row-wrapper';
+                    
+                    rowArray.forEach((val, colIndex) => {
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        if (val >= 100) cell.classList.add('small-font');
+                        cell.innerText = val;
+
+                        const v1 = row1Values[colIndex];
+                        const v2 = row2Values[colIndex];
+                        const p1 = isP(v1);
+                        const p2 = isP(v2);
+
+                        if (mode === 'pot') {
+                            if (isPot(v1) && isPot(v2)) cell.classList.add('matched');
+                            else if ((rowIndex === 0 && isPot(v1)) || (rowIndex === 1 && isPot(v2))) cell.classList.add('lonely');
+                        } 
+                        else if (mode === 'true') {
+                            if (p1 && p2) cell.classList.add('matched');
+                            else if ((rowIndex === 0 && p1) || (rowIndex === 1 && p2)) cell.classList.add('lonely');
+                        } 
+                        else if (mode === 'diff') {
+                            if (p1 && p2) {
+                                cell.classList.add('matched');
+                            } else if (p1 && !p2 && rowIndex === 1) {
+                                cell.classList.add('navy-cell');
+                            } else if (!p1 && p2 && rowIndex === 0) {
+                                cell.classList.add('red-cell');
+                            }
+                        }
+                        rowDiv.appendChild(cell);
+                    });
+                    block.appendChild(rowDiv);
+                });
+                display.appendChild(block);
+            });
+        }
+
+        render('none');
+    </script>
+</body>
+</html>
