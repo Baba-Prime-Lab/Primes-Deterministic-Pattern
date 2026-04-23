@@ -2,46 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GOLD2: Primorial Alignment & Difference</title>
+    <title>GOLD2: Progressive Reveal</title>
     <style>
         :root { 
             --bg: #ffffff; --text: #0f172a; --gold: #b8860b; 
-            --silver: #94a3b8; --prime-glow: #3498db; 
-            --match-glow: #10b981; --lonely: #a855f7;
-            --navy-loss: #1e3a8a; /* Navy: Loss in 2nd row */
-            --red-gain: #e11d48;  /* Red: Gain in 2nd row */
+            --silver: #94a3b8; --match-glow: #10b981; 
+            --navy-loss: #1e3a8a; --red-gain: #e11d48;
         }
-        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: flex-start; padding: 20px; margin: 0; color: var(--text); }
-        .header-section { width: 100%; max-width: 1200px; padding-bottom: 20px; border-bottom: 2px solid var(--silver); margin-bottom: 30px; }
-        .controls { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; padding: 20px; color: var(--text); }
+        .header-section { width: 100%; border-bottom: 2px solid var(--silver); margin-bottom: 20px; }
+        .controls { display: flex; gap: 10px; margin: 15px 0; }
+        .btn-logic { padding: 10px 15px; cursor: pointer; border-radius: 8px; font-weight: bold; border: 2px solid var(--silver); text-transform: uppercase; font-size: 0.8rem; transition: 0.3s; }
+        .active-btn { background: #0f172a !important; color: white !important; border-color: #0f172a; }
         
-        .btn-logic { padding: 12px 20px; cursor: pointer; background: #f1f5f9; color: #1e293b; border: 2px solid var(--silver); border-radius: 8px; font-weight: bold; transition: 0.3s; text-transform: uppercase; font-size: 0.85rem; }
-        .active-btn { background: #0f172a !important; color: white !important; }
-        .btn-back { padding: 12px 20px; cursor: pointer; background: var(--gold); color: white; border: none; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 0.85rem; }
+        .matrix-container { display: flex; flex-direction: column; gap: 30px; }
+        .even-block { background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; overflow-x: auto; }
         
-        .matrix-container { display: flex; flex-direction: column; gap: 40px; width: 100%; }
-        .even-block { background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; width: fit-content; }
-        .even-title { color: var(--gold); font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; border-left: 5px solid var(--gold); padding-left: 10px; }
-        .row-wrapper { display: flex; gap: 1px; margin-bottom: 1px; }
-        .cell { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; background: #fff; border: 0.1px solid #f1f5f9; flex-shrink: 0; }
-        .small-font { font-size: 0.55rem !important; }
-        
-        .matched { background: var(--match-glow) !important; color: white !important; }
-        .lonely { background: rgba(168, 85, 247, 0.1) !important; color: var(--lonely) !important; }
-        .navy-cell { background: var(--navy-loss) !important; color: white !important; }
-        .red-cell { background: var(--red-gain) !important; color: white !important; }
+        .counter-bar { 
+            display: flex; gap: 15px; margin-bottom: 10px; font-size: 0.85rem; 
+            background: #f8fafc; padding: 8px; border-radius: 6px; border: 1px dashed var(--silver);
+            white-space: nowrap; animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .stat { font-weight: bold; }
+        .stat-navy { color: var(--navy-loss); }
+        .stat-red { color: var(--red-gain); }
+        .stat-match { color: var(--match-glow); }
+
+        .row-wrapper { display: flex; gap: 0; margin-bottom: 0; }
+        .cell { 
+            width: 32px; height: 32px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 0.75rem; font-weight: bold; 
+            border: 0.5px solid #e2e8f0; 
+            box-sizing: border-box; 
+            flex-shrink: 0; 
+            transition: 0.3s;
+        }
+        .long-num { font-size: 0.55rem !important; }
+
+        .matched { background: var(--match-glow) !important; color: white; border-color: transparent; }
+        .navy-cell { background: var(--navy-loss) !important; color: white; border-color: transparent; }
+        .red-cell { background: var(--red-gain) !important; color: white; border-color: transparent; }
     </style>
 </head>
 <body>
 
     <div class="header-section">
-        <h2 style="margin:0;">Goldbach Phase II: Primorial Density</h2>
+        <h2 style="margin:0;">Goldbach Phase II: Progressive Symmetry Analysis</h2>
         <div class="controls">
             <button class="btn-logic" id="btn-none" onclick="render('none')">Numbers Only</button>
-            <button class="btn-logic" id="btn-pot" onclick="render('pot')">Potential (6k±1)</button>
-            <button class="btn-logic" id="btn-true" onclick="render('true')">True Prime Pairs</button>
             <button class="btn-logic" id="btn-diff" onclick="render('diff')">Row Primes Difference</button>
-            <a href="GOLD.hub.html" class="btn-back">← Back to Hub</a>
+            <a href="GOLD.hub.html" style="text-decoration:none; padding:10px 15px; background:var(--gold); color:white; border-radius:8px; font-weight:bold; font-size:0.8rem;">← HUB</a>
         </div>
     </div>
 
@@ -60,70 +73,73 @@
             return true;
         }
 
-        function isPot(n) {
-            if (n === 1 || n === 2 || n === 3) return true;
-            return (n % 6 === 1 || n % 6 === 5);
+        function createCell(val) {
+            const c = document.createElement('div');
+            c.className = 'cell';
+            if (val >= 100) c.classList.add('long-num');
+            c.innerText = val;
+            return c;
         }
 
         function render(mode) {
             const display = document.getElementById('main-display');
             display.innerHTML = "";
+            
+            // تحديث حالة الأزرار
             document.querySelectorAll('.btn-logic').forEach(b => b.classList.remove('active-btn'));
             document.getElementById('btn-' + mode).classList.add('active-btn');
-
+            
             evens.forEach(E => {
+                let countNavy = 0, countRed = 0, countPairs = 0;
                 const block = document.createElement('div');
                 block.className = 'even-block';
-                block.innerHTML = `<div class="even-title">P# Factor: ${E}</div>`;
                 const mid = Math.floor(E / 2);
 
-                const row1Values = [];
-                const row2Values = [];
-                for(let x=0; x<=mid; x++) {
-                    row1Values.push(x);
-                    row2Values.push(E-x);
+                const r1 = document.createElement('div'); r1.className = 'row-wrapper';
+                const r2 = document.createElement('div'); r2.className = 'row-wrapper';
+
+                for (let x = 0; x <= mid; x++) {
+                    const v1 = x, v2 = E - x;
+                    const c1 = createCell(v1);
+                    const c2 = createCell(v2);
+
+                    if (mode === 'diff') {
+                        const p1 = isP(v1), p2 = isP(v2);
+                        if (p1 && p2) {
+                            c1.classList.add('matched'); c2.classList.add('matched');
+                            countPairs++;
+                        } else if (p1 && !p2) {
+                            c2.classList.add('navy-cell');
+                            countNavy++;
+                        } else if (!p1 && p2) {
+                            c1.classList.add('red-cell');
+                            countRed++;
+                        }
+                    }
+                    r1.appendChild(c1); r2.appendChild(c2);
                 }
 
-                [row1Values, row2Values].forEach((rowArray, rowIndex) => {
-                    const rowDiv = document.createElement('div');
-                    rowDiv.className = 'row-wrapper';
-                    
-                    rowArray.forEach((val, colIndex) => {
-                        const cell = document.createElement('div');
-                        cell.className = 'cell';
-                        if (val >= 100) cell.classList.add('small-font');
-                        cell.innerText = val;
+                // العداد يظهر فقط في وضع Diff
+                let headerContent = `<div class="stat" style="margin-bottom:10px;">Factor: ${E}</div>`;
+                if (mode === 'diff') {
+                    headerContent = `
+                    <div class="counter-bar">
+                        <span class="stat">E: ${E}</span> |
+                        <span class="stat stat-match">Pairs: ${countPairs}</span> |
+                        <span class="stat stat-navy">Navy Loss (-): ${countNavy}</span> |
+                        <span class="stat stat-red">Red Gain (+): ${countRed}</span> |
+                        <span class="stat" style="color:var(--gold)">Net Surplus: ${countPairs + countRed - countNavy}</span>
+                    </div>`;
+                }
 
-                        const v1 = row1Values[colIndex];
-                        const v2 = row2Values[colIndex];
-                        const p1 = isP(v1);
-                        const p2 = isP(v2);
-
-                        if (mode === 'pot') {
-                            if (isPot(v1) && isPot(v2)) cell.classList.add('matched');
-                            else if ((rowIndex === 0 && isPot(v1)) || (rowIndex === 1 && isPot(v2))) cell.classList.add('lonely');
-                        } 
-                        else if (mode === 'true') {
-                            if (p1 && p2) cell.classList.add('matched');
-                            else if ((rowIndex === 0 && p1) || (rowIndex === 1 && p2)) cell.classList.add('lonely');
-                        } 
-                        else if (mode === 'diff') {
-                            if (p1 && p2) {
-                                cell.classList.add('matched');
-                            } else if (p1 && !p2 && rowIndex === 1) {
-                                cell.classList.add('navy-cell');
-                            } else if (!p1 && p2 && rowIndex === 0) {
-                                cell.classList.add('red-cell');
-                            }
-                        }
-                        rowDiv.appendChild(cell);
-                    });
-                    block.appendChild(rowDiv);
-                });
+                block.innerHTML = headerContent;
+                block.appendChild(r1);
+                block.appendChild(r2);
                 display.appendChild(block);
             });
         }
 
+        // البدء بالأرقام فقط للتشويق
         render('none');
     </script>
 </body>
