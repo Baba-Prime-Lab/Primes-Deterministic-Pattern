@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr"> <!-- تم تغيير الاتجاه العام هنا ليستقيم الترتيب -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +14,6 @@
             display: flex; flex-direction: column; align-items: center;
         }
         
-        /* الخلفية التي تعبر عن تزاوج الأوليات */
         .goldbach-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://i.postimg.cc/cJD5Gdv3/GOLD-fig.png') no-repeat center center;
@@ -23,10 +22,12 @@
 
         .container { max-width: 1000px; padding: 40px 20px; text-align: center; }
         
+        /* جعل رابط العودة يبدأ من اليسار */
+        .back-nav { width: 100%; text-align: left; margin-bottom: 20px; }
         .back-link {
             text-decoration: none; color: var(--silver); border: 1px solid var(--silver);
             padding: 8px 20px; border-radius: 50px; font-weight: bold; transition: 0.3s;
-            display: inline-block; margin-bottom: 30px;
+            display: inline-block;
         }
         .back-link:hover { background: var(--silver); color: #000; }
 
@@ -35,17 +36,20 @@
             text-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
         }
 
-        /* شبكة الأزرار */
+    /* شبكة الأزرار: تبدأ من اليسار وتتوسط الصناديق */
         .nav-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px; margin-bottom: 40px; width: 100%;
+            gap: 20px; margin-bottom: 40px; width: 100%; direction: ltr;
         }
         .nav-btn {
             background: rgba(15, 23, 42, 0.8); border: 1px solid var(--silver);
             color: var(--silver); padding: 25px 15px; border-radius: 12px;
             text-decoration: none; font-weight: bold; transition: 0.4s;
             backdrop-filter: blur(10px); display: flex; flex-direction: column;
-            justify-content: center; height: 120px; font-size: 1.1rem;
+            justify-content: center; 
+            align-items: center; /* تتوسط أفقياً */
+            text-align: center;  /* تتوسط النصوص */
+            height: 120px; font-size: 1.1rem;
         }
         .nav-btn:hover {
             border-color: var(--gold); color: var(--gold);
@@ -53,7 +57,6 @@
         }
         .nav-btn span { font-size: 0.8rem; opacity: 0.7; margin-top: 8px; }
 
-        /* صندوق الشرح اللغوي */
         .concept-card {
             background: rgba(15, 23, 42, 0.85); border-radius: 20px; padding: 35px;
             border: 1px solid rgba(255, 255, 255, 0.1); text-align: left;
@@ -63,6 +66,7 @@
         .lang-title { font-weight: bold; color: var(--gold); display: block; font-size: 1.2rem; margin-bottom: 10px; }
         
         .en { direction: ltr; color: #cbd5e1; }
+        /* الحفاظ على العربي من اليمين لليسار داخل البطاقة فقط */
         .ar { direction: rtl; text-align: right; color: #f1f5f9; font-size: 1.25rem; border-right: 4px solid var(--silver); padding-right: 15px; }
         .fr { direction: ltr; color: #94a3b8; font-size: 1rem; border-left: 3px solid var(--gold); padding-left: 15px; }
     </style>
@@ -72,11 +76,13 @@
 <div class="goldbach-bg"></div>
 
 <div class="container">
-    <a href="proofs_hub.html" class="back-link">← Back to Proofs Hub</a>
+    <div class="back-nav">
+        <a href="proofs_hub.html" class="back-link">← Back to Proofs Hub</a>
+    </div>
+    
     <h1>Goldbach's Symmetry</h1>
     <p style="color: var(--gold); letter-spacing: 2px; margin-bottom: 40px; font-weight: bold;">Structural Mechanism of Even Integer Decomposition</p>
 
-    <!-- أزرار الإقلاع -->
     <div class="nav-grid">
         <a href="GOLD1.html" class="nav-btn">Form Logic<span>6k & 6k ± 2 Architecture</span></a>
         <a href="GOLD2.html" class="nav-btn">P# Efficiency<span>Peak Prime-Pairing Density</span></a>
@@ -84,30 +90,20 @@
         <a href="GOLD4.html" class="nav-btn">Iteration Surplus<span>Surviving Sieve Elimination</span></a>
     </div>
 
-    <!-- آلية البرهان اللغوية المحدثة -->
     <div class="concept-card">
-        <!-- English -->
         <div class="lang-block en">
             <span class="lang-title">Proof Mechanism:</span>
-            Any even integer follows one of three forms: 6k, 6k+2, or 6k-2. It consists of two rows: the first from 0 to half the integer, and the second from the midpoint to the integer itself. 
-            In the 6k form, primes in the first row are distributed across both 6k±1 forms, matching primes in the second row at the same points. In 6k+2, matches occur only in the 6k+1 form, while in 6k-2, they occur only in 6k-1.
-            For any Primorial P#, the quantity of prime pairs is at its maximum around that area. Iterations from Hexagonal to Primorial tables prove that the increase in potential pairs exceeds the losses caused by new sieve signatures, establishing that the number of pairs always exceeds the difference in distribution between the two rows.
+            Any even integer follows one of three forms: 6k, 6k+2, or 6k-2. In 6k form, primes in the first row match primes in the second row at the same points. For any Primorial P#, iterations prove that the increase in potential pairs exceeds the losses, ensuring the number of pairs always exceeds the distributional difference.
         </div>
 
-        <!-- Arabic -->
         <div class="lang-block ar">
             <span class="lang-title">آلية البرهان:</span>
-            أي عدد زوجي له صورة من ثلاثة: 6k أو 6k+2 أو 6k-2، ويتكون من صفين؛ الأول من صفر إلى نصف الزوجي، والثاني من نصف الزوجي إلى الزوجي. 
-            في الصورة 6k، تكون الأوليات في الصف الأول موزعة على الصورتين 6k±1، تقابلها في الصف الثاني الأوليات الموزعة في نفس النقاط. في 6k+2، تتقابل الأوليات على الصورة 6k+1 فقط، وفي 6k-2 تتقابل على الصورة 6k-1 فقط.
-            في أي P#، تكون كمية أزواج الأوليات أكبر ما يمكن حول تلك المساحة. وتثبت تكرارات الجداول (السداسي، الثلاثيني، إلخ) أن زيادة الأزواج المحتملة أكبر من المفقود بفعل شفرات الزيرو المستجدة، مما يضع قاعدة بأن كمية الأزواج تزيد دائماً عن فرق التوزيع بين الصفين.
+            أي عدد زوجي له صورة من ثلاثة: 6k أو 6k+2 أو 6k-2. في الصورة 6k، تكون الأوليات في الصف الأول موزعة على الصورتين 6k±1، تقابلها في الصف الثاني الأوليات الموزعة في نفس النقاط. وتثبت تكرارات الجداول أن زيادة الأزواج المحتملة أكبر من المفقود المستجد، مما يضمن تفوق عدد الأزواج دائماً.
         </div>
 
-        <!-- French -->
         <div class="lang-block fr">
             <span class="lang-title">Mécanisme de la Preuve:</span>
-            Tout entier pair suit l'une des trois formes: 6k, 6k+2 ou 6k-2, composé de deux rangées: de 0 à la moitié, et de la moitié à l'entier.
-            Pour la forme 6k, les nombres premiers de la première rangée (6k±1) correspondent à ceux de la seconde aux mêmes points. Pour 6k+2, la correspondance se fait uniquement sur 6k+1, et pour 6k-2 uniquement sur 6k-1.
-            Pour tout Primorial P#, la quantité de paires de nombres premiers est maximale autour de cette zone. Les itérations prouvent que l'augmentation des paires dépasse les pertes dues aux nouveaux cribles, établissant que le nombre de paires reste supérieur à la différence structurelle entre les deux rangées.
+            Tout entier pair suit l'une des trois formes: 6k, 6k+2 ou 6k-2. Les itérations prouvent que l'augmentation des paires dépasse les pertes dues aux nouveaux cribles, établissant que le nombre de paires reste supérieur à la différence structurelle.
         </div>
     </div>
 </div>
