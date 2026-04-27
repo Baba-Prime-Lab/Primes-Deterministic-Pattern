@@ -8,7 +8,8 @@
         :root {
             --primary: #2c3e50;
             --accent: #c0392b;
-            --gold: #b8860b; /* لون ذهبي للبحث */
+            --gold: #b8860b; 
+            --binance: #f3ba2f; /* لون دعم خاص */
             --light: #f8f9fa;
         }
         body {
@@ -43,7 +44,6 @@
         }
         .ar-title { font-size: 2.1rem; margin-bottom: 20px; opacity: 0.95; }
         
-        /* تنسيق زر البحث الذهبي */
         .zenodo-section {
             margin: 30px 0 50px 0;
         }
@@ -63,27 +63,28 @@
         .btn-zenodo:hover {
             background: #966d09;
             transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(184, 134, 11, 0.6);
         }
 
         .subtitle { font-size: 1.25rem; margin-bottom: 40px; opacity: 0.9; }
         
         .lang-buttons {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
         }
         .lang-btn {
-            padding: 15px 30px;
-            font-size: 1.1rem;
+            padding: 12px 25px;
+            font-size: 1.05rem;
             font-weight: bold;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.4s ease;
-            min-width: 220px;
+            min-width: 200px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            text-decoration: none;
+            display: inline-block;
         }
         .lang-btn:hover {
             transform: translateY(-5px);
@@ -93,6 +94,8 @@
         .btn-ar { background: #c0392b; color: white; }
         .btn-fr { background: #27ae60; color: white; }
         .btn-cal { background: #3465ba; color: white; }
+        .btn-proofs { background: #8e44ad; color: white; }
+        .btn-support { background: var(--binance); color: #000; border: 2px solid #fff; }
 
         footer {
             padding: 35px 20px;
@@ -108,7 +111,6 @@
             <h1>Probability Columns</h1>
             <p class="ar-title">أعمدة الإحتمالات</p>
             
-            <!-- زر البحث الرسمي على زينودو -->
             <div class="zenodo-section">
                 <a href="https://zenodo.org/records/19437516" target="_blank" class="btn-zenodo">
                     📖 Read the Official Research (Zenodo v2.0)
@@ -121,15 +123,13 @@
             </p>
             
             <div class="lang-buttons">
-                <a href="baba-precision-p2.html"><button class="lang-btn btn-en">English Lab</button></a>
-                <a href="index_ar.html"><button class="lang-btn btn-ar">المختبر العربي</button></a>
-                <a href="index_fr.html"><button class="lang-btn btn-fr">Labo Français</button></a>
-                <a href="R1.html"><button class="lang-btn btn-cal">BaBa Ln x Calculator</button></a>
-                <a href="proofs_hub.html">
-    <button class="lang-btn" style="background: #8e44ad; color: white;">
-        Proofs: The Great Prime Problems (Part II)
-    </button>
-</a>
+                <a href="baba-precision-p2.html" class="lang-btn btn-en">English Lab</a>
+                <a href="index_ar.html" class="lang-btn btn-ar">المختبر العربي</a>
+                <a href="index_fr.html" class="lang-btn btn-fr">Labo Français</a>
+                <a href="R1.html" class="lang-btn btn-cal">BaBa Ln x Calculator</a>
+                <a href="proofs_hub.html" class="lang-btn btn-proofs">Proofs: Part II</a>
+                <!-- زر الدعم المضاف -->
+                <a href="support.html" class="lang-btn btn-support">☕ Support the Lab / ادعم المختبر</a>
             </div>
 
             <p style="margin-top: 60px; font-size: 1.1rem; opacity: 0.8;">
