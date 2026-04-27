@@ -17,6 +17,25 @@
             flex-shrink: 0;
             transition: margin-right 0.3s ease; 
         }
+.support-btn {
+    display: block;
+    width: 100%;
+    background: #f3ba2f; /* اللون الذهبي */
+    color: #000;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: none;
+    cursor: pointer;
+}
+.support-btn:hover {
+    background: #d4a017;
+}
 
         /* حالة الإغلاق للعربي */
         #left-sidebar.closed { margin-right: -340px; }
@@ -72,6 +91,7 @@
     <div id="left-sidebar">
         <!-- 1. عناوين المجموعات والأزرار -->
         <a href="index.html" class="home-btn">🏠 العودة للرئيسية</a>
+        <a href="support.html" class="support-btn">☕ ادعم استمرار المختبر</a>
         <h3 style="margin-top:40px;" class="menu-title">نماذج أعمدة الاحتمالات</h3>
         <button class="branch-btn" onclick="updateView('1')">1. نموذج الترتيب التسلسلي</button>
         <button class="branch-btn" onclick="updateView('2')">2. المتعرج العكسي الكامل</button>
