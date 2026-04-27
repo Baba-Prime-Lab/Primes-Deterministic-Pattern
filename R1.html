@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <title>BaBa-Prime Final Proof Lab (10^17)</title>
     <style>
-        :root { --primary: #2c3e50; --accent: #c0392b; --success: #27ae60; --bg: #f4f7f6; }
+        :root { --primary: #2c3e50; --accent: #c0392b; --success: #27ae60; --bg: #f4f7f6; --binance: #f3ba2f; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); margin: 0; color: #000; }
         
-        /* تنسيق زر العودة الجديد */
+        /* شريط التنقل العلوي المحدث */
         .nav-header { 
             width: 100%; 
             background: white; 
@@ -15,6 +15,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
             display: flex; 
             justify-content: flex-start; 
+            gap: 10px; /* مسافة بين الأزرار */
             box-sizing: border-box;
             position: sticky;
             top: 0;
@@ -32,6 +33,20 @@
         }
         .home-btn:hover { background: #a93226; transform: translateY(-1px); }
 
+        /* تنسيق زر الدعم الذهبي */
+        .support-btn { 
+            text-decoration: none; 
+            background: var(--binance); 
+            color: black; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            transition: 0.3s; 
+            border: 1px solid #d4a017;
+        }
+        .support-btn:hover { background: #d4a017; transform: translateY(-1px); }
+
         .container { max-width: 1300px; margin: 20px auto; padding: 0 20px; }
         .lab-ui { max-width: 900px; margin: auto; border: 2px solid #ddd; padding: 40px; border-radius: 15px; text-align: center; background: white; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
         input { width: 85%; padding: 15px; font-size: 1.8rem; border: 3px solid var(--primary); border-radius: 10px; text-align: center; font-weight: bold; margin: 20px 0; color: #c0392b; }
@@ -47,12 +62,14 @@
 </head>
 <body>
 
-<!-- إضافة شريط العودة في أعلى الصفحة -->
 <div class="nav-header">
     <a href="index.html" class="home-btn">🏠 Back to Home</a>
+    <!-- إضافة زر الدعم بجوار زر العودة -->
+    <a href="support.html" class="support-btn">☕ Support Research</a>
 </div>
 
 <div class="container">
+    <!-- بقية محتوى الصفحة كما هو -->
     <div class="scientific-note">
         <div style="font-size: 1.2rem; margin-bottom: 8px;"><strong>Scientific Insight:</strong></div>
         This system provides a <b>Deterministic Model</b> for <b>Zero Statistical Error</b> at maturity marks (powers of 10). 
@@ -100,6 +117,7 @@
 </div>
 
 <script>
+    // بقية كود الجافاسكريبت كما هو دون تغيير
     const M_LIST = {
         1:1.075, 2:0.868, 3:0.863095238, 4:0.88364524, 5:0.905546289, 6:0.922087187,
         7:0.933554927, 8:0.942241326, 9:0.949012434, 10:0.954383223,
