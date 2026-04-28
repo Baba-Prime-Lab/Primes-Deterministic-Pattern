@@ -28,25 +28,26 @@
         <p><strong>FR:</strong> Votre soutien finance la recherche scientifique indépendante à Gaza. Aidez-nous à progresser dans l'étude de la symétrie des nombres premiers.</p>
     </div>
 
-    <!-- Method 1: Credit Card -->
+    <!-- Method 1: Credit Card (Smart MoonPay Link) -->
     <div class="method">
         <span class="lang-tag">EN: Option 1 - Credit/Debit Card</span>
         <span class="lang-tag" dir="rtl">AR: الخيار 1 - البطاقات البنكية</span>
         <span class="lang-tag">FR: Option 1 - Carte Bancaire</span>
         
+        <!-- الرابط الذكي الجديد الموجه لمحفظتك مباشرة -->
         <a href="https://moonpay.com" target="_blank" class="btn-card">💳 Pay with Card (via MoonPay)</a>
     </div>
 
-    <!-- Method 2: Direct Crypto -->
+    <!-- Method 2: Direct Crypto (Your New Address) -->
     <div class="method">
         <span class="lang-tag">EN: Option 2 - Direct Crypto Transfer (On-Chain)</span>
         <span class="lang-tag" dir="rtl">AR: الخيار 2 - تحويل كريبتو مباشر (عبر السلسلة)</span>
         <span class="lang-tag">FR: Option 2 - Transfert Crypto Direct (On-Chain)</span>
         
-        <img src="qr-code.png" alt="QR Code" style="width: 180px; margin: 15px 0; border: 1px solid #ddd; padding: 5px; border-radius: 8px;">
+        <img src="qr-code.png" alt="Your New QR Code" style="width: 180px; margin: 15px 0; border: 1px solid #ddd; padding: 5px; border-radius: 8px;">
         
         <div class="address-box">
-            <span id="wallet">TDgnV2PVpGzyjQ5BCpzhACcWuqczFX6KVo</span>
+            <span id="wallet">TPymN3NwgASSHR98qaMhgSQFcMebQ4rADt</span>
             <button class="copy-btn" onclick="copyAddr()">COPY</button>
         </div>
         <small style="color: #888; font-size: 11px; margin-top: 5px; display: block;">Network: TRON (TRC20)</small>
@@ -58,7 +59,7 @@
 <script>
     function copyAddr() {
         const el = document.createElement('textarea');
-        el.value = "TDgnV2PVpGzyjQ5BCpzhACcWuqczFX6KVo";
+        el.value = "TPymN3NwgASSHR98qaMhgSQFcMebQ4rADt";
         document.body.appendChild(el);
         el.select();
         document.execCommand('copy');
