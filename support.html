@@ -5,59 +5,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Support Baba-Prime Lab</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
-        .card { background: white; max-width: 500px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 30px; text-align: center; border-top: 5px solid #F3BA2F; }
-        h2 { color: #333; margin-bottom: 10px; }
-        .intro { font-size: 14px; color: #666; margin-bottom: 25px; line-height: 1.6; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-        .method { margin-bottom: 30px; padding: 15px; border: 1px solid #eee; border-radius: 15px; background: #fafafa; }
-        .btn-card { display: block; background: #7D00FF; color: white; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold; margin-top: 10px; transition: 0.3s; }
-        .btn-card:hover { background: #5a00b5; transform: scale(1.02); }
-        .address-box { background: #eee; padding: 10px; border-radius: 8px; word-break: break-all; margin-top: 10px; font-family: monospace; font-size: 13px; display: flex; align-items: center; justify-content: space-between; }
-        .copy-btn { background: #F3BA2F; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 11px; margin-left: 5px; }
-        .lang-tag { font-size: 10px; font-weight: bold; color: #999; text-transform: uppercase; margin-top: 5px; display: block; }
+        :root {
+            --primary-color: #F3BA2F; 
+            --secondary-color: #7D00FF; 
+            --bg-color: #f8fafc;
+            --text-main: #1e293b;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-color); display: flex; justify-content: center; padding: 20px; color: var(--text-main); line-height: 1.6; direction: ltr; }
+        .card { background: white; max-width: 500px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); padding: 35px; text-align: center; border-top: 6px solid var(--primary-color); }
+        
+        h2 { color: #000; margin-bottom: 15px; font-size: 24px; }
+        .intro { font-size: 15px; color: #475569; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #f1f5f9; }
+        .intro p { margin: 8px 0; }
+
+        .ar-text { direction: rtl; display: block; font-weight: bold; color: #1e293b; margin: 10px 0; }
+        .fr-text { color: #94a3b8; font-size: 13px; display: block; }
+
+        .method-box { 
+            background: #ffffff; 
+            border: 2px solid #f1f5f9; 
+            border-radius: 20px; 
+            padding: 20px; 
+            margin-bottom: 25px;
+            transition: 0.3s;
+        }
+        .method-box:hover { border-color: var(--secondary-color); }
+
+        .redot-badge {
+            background: var(--secondary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .address-container {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .address-text {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            word-break: break-all;
+            flex-grow: 1;
+            font-weight: 600;
+        }
+        .copy-btn {
+            background: var(--primary-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .network-info {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #64748b;
+        }
+
+        .footer-link { color: #64748b; text-decoration: none; font-size: 14px; display: inline-block; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Baba-Prime Lab Support</h2>
+    <h2>Support Baba-Prime Lab</h2>
     
     <div class="intro">
-        <p><strong>EN:</strong> Your support fuels independent scientific research from Gaza. Help us advance the study of Prime Number Symmetry.</p>
-        <p dir="rtl"><strong>AR:</strong> دعمكم يغذي البحث العلمي المستقل من غزة. ساهموا معنا في تطوير دراسات تناظر الأعداد الأولية.</p>
-        <p><strong>FR:</strong> Votre soutien finance la recherche scientifique indépendante à Gaza. Aidez-nous à progresser dans l'étude de la symétrie des nombres premiers.</p>
+        <p><strong>Your support fuels independent scientific research from Gaza. Help us advance the study of Prime Number Symmetry.</strong></p>
+        <p class="ar-text">دعمكم يغذي البحث العلمي المستقل من غزة. ساهموا معنا في تطوير دراسات تناظر الأعداد الأولية.</p>
+        <p class="fr-text">Votre soutien finance la recherche scientifique à Gaza. Aidez-nous à progresser dans l'étude des nombres premiers.</p>
     </div>
 
-    <!-- الطريقة الأولى: الدفع بالبطاقة عبر الرابط الذكي لمون باي -->
-    <div class="method">
-        <span class="lang-tag">EN: Option 1 - Credit/Debit Card</span>
-        <span class="lang-tag" dir="rtl">AR: الخيار 1 - البطاقات البنكية</span>
-        <span class="lang-tag">FR: Option 1 - Carte Bancaire</span>
+    <div class="method-box">
+        <div class="redot-badge">RedotPay / Crypto Transfer</div>
         
- <a href="https://buy.moonpay.com/?currencyCode=USDT&baseCurrencyCode=USD&amount=10" target="_blank" class="btn-card" style="background: #4ade80; color: #000; text-decoration: none; display: block; padding: 10px; border-radius: 10px; font-weight: bold; text-align: center;"> 💳 Pay with Card (via Moon Pay)</a>
-    </div>
-
-    <!-- الطريقة الثانية: تحويل كريبتو مباشر لمحفظتك في ريدوت باي -->
-    <div class="method">
-        <span class="lang-tag">EN: Option 2 - Direct Crypto Transfer (On-Chain)</span>
-        <span class="lang-tag" dir="rtl">AR: الخيار 2 - تحويل كريبتو مباشر (عبر السلسلة)</span>
-        <span class="lang-tag">FR: Option 2 - Transfert Crypto Direct (On-Chain)</span>
-        
-        <img src="qr-code.png" alt="Your RedotPay QR Code" style="width: 180px; margin: 15px 0; border: 1px solid #ddd; padding: 5px; border-radius: 8px;">
-        
-        <div class="address-box">
-            <span id="wallet">TPymN3NwgASSHR98qaMhgSQFcMebQ4rADt</span>
-            <button class="copy-btn" onclick="copyAddr()">COPY</button>
+        <div style="margin-bottom: 15px;">
+            <div style="font-weight: bold;">Send USDT via TRON Network</div>
+            <div class="ar-text" style="font-size: 14px; margin: 5px 0;">أرسل USDT عبر شبكة TRON (TRC20)</div>
+            <div class="fr-text">Envoyez USDT via le réseau TRON</div>
         </div>
-        <small style="color: #888; font-size: 11px; margin-top: 5px; display: block;">Network: TRON (TRC20)</small>
+
+        <!-- QR Code Image -->
+        <img src="qr-code.png" alt="Wallet QR" style="width: 190px; height: 190px; margin: 10px 0; border-radius: 10px; border: 1px solid #eee;">
+
+        <div class="address-container">
+            <span class="address-text" id="walletAddr">TPymN3NwgASSHR98qaMhgSQFcMebQ4rADt</span>
+            <button class="copy-btn" onclick="copyAddress()">COPY</button>
+        </div>
+
+        <div class="network-info">
+            <span>NETWORK: TRC20</span>
+            <span>|</span>
+            <span>USDT</span>
+        </div>
     </div>
 
-    <a href="index.html" style="color: #007bff; text-decoration: none; font-size: 14px; font-weight: bold;">← Back to Lab / العودة للمختبر</a>
+    <a href="index.html" class="footer-link">← Back to Lab / العودة للمختبر</a>
 </div>
 
 <script>
-    function copyAddr() {
-        const addr = "TPymN3NwgASSHR98qaMhgSQFcMebQ4rADt";
+    function copyAddress() {
+        const addr = document.getElementById('walletAddr').innerText;
         navigator.clipboard.writeText(addr).then(() => {
             alert("Address copied! / تم نسخ العنوان / Adresse copiée !");
         });
