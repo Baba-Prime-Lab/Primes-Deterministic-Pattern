@@ -19,14 +19,12 @@
         }
         .hinge-col { background-color: #f9f9f9 !important; color: #333 !important; font-weight: bold; border: 1px solid #ddd; }
         
-        /* الرؤوس الفردية: أزرق ثابت */
         .column-head-stable { background-color: #007bff !important; color: white !important; font-weight: bold; }
 
-        /* الرؤوس الزوجية: وميض للإيحاء بالشطب */
         @keyframes blinkEffect {
-            0% { opacity: 1; filter: grayscale(0); }
-            50% { opacity: 0.2; filter: grayscale(1); } 
-            100% { opacity: 1; filter: grayscale(0); }
+            0% { opacity: 1; }
+            50% { opacity: 0.2; } 
+            100% { opacity: 1; }
         }
         .column-head-removable { 
             animation: blinkEffect 2s infinite ease-in-out;
@@ -44,8 +42,8 @@
     <div id="grid" class="grid-container"></div>
     <script>
         const grid = document.getElementById('grid');
-        const oddHeads = [1, 5, 11, 13, 17, 19];   // ثابتة
-        const evenHeads = [2, 4, 8, 10, 16, 20]; // تومض بالكامل
+        const oddHeads = [1, 5, 11, 13, 17, 19];   
+        const evenHeads = [2, 4, 8, 10, 16, 20]; 
         const zeroBlades = [3, 7];
         const rows = 10;
         const pLimit = 21;
@@ -55,7 +53,6 @@
             let startVal = r * pLimit;
             let endVal = (r + 1) * pLimit;
 
-            // توليد الأرقام (متعرج)
             if (r % 2 === 0) {
                 for (let i = startVal; i <= endVal; i++) rowData.push(i);
             } else {
@@ -67,33 +64,25 @@
                 cell.className = 'cell';
                 cell.innerText = num;
 
-                /* 
-                   السر هنا: 
-                   في CSS Grid، الأعمدة تترتب من 0 إلى 21 دائماً.
-                   الـ 'index' يمثل ترتيب الخلية في الصف الحالي.
-                */
-                let visualColumn = index; 
+                // التصحيح الجوهري: 
+                // نحسب "موقع العمود" بناءً على باقي القسمة على 21 (موقع الرقم الأصلي في الدورة)
+                // وليس بناءً على موقع الخلية البصري في الصف المعكوس.
+                let logicPos = num % pLimit;
+                if (logicPos === 0 && num !== 0) logicPos = pLimit;
 
-                // 1. تلوين المفاصل (أول وآخر خلية في كل صف)
+                // 1. تلوين المفاصل
                 if (index === 0 || index === pLimit) {
                     cell.classList.add('hinge-col');
                 }
-                
-                // 2. تلوين شفرات زيرو (3 و 7 الأصلية فقط)
+                // 2. شفرات زيرو (3 و 7)
                 else if (num <= 7 && zeroBlades.includes(num)) {
                     cell.classList.add('zero-blade');
                 }
-
-                /* 
-                   3. تلوين الأعمدة عمودياً:
-                   بما أن الشبكة 22 عمود، فإن 'index' هو الذي يحدد العمود البصري.
-                   لكن في الصفوف المقلوبة (r%2 !== 0)، العمود البصري رقم 1 يحتوي على نهاية الصف.
-                   لجعل الوميض "عمودياً مستقيماً" نطبق الشرط على visualColumn:
-                */
-                else if (oddHeads.includes(visualColumn)) {
+                // 3. التلوين العمودي المستند إلى موقع الرقم في الدورة (logicPos)
+                else if (oddHeads.includes(logicPos)) {
                     cell.classList.add('column-head-stable');
                 } 
-                else if (evenHeads.includes(visualColumn)) {
+                else if (evenHeads.includes(logicPos)) {
                     cell.classList.add('column-head-removable');
                 }
 
@@ -101,6 +90,5 @@
             });
         }
     </script>
-
 </body>
 </html>
