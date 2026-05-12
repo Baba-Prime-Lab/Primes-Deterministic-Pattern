@@ -43,50 +43,57 @@
     <h2 style="color:#2c3e50;">5. المتعرج الانتقائي (الفردي 21)</h2>
     <div id="grid" class="grid-container"></div>
 
-    <script>
-        const grid = document.getElementById('grid');
-        const oddHeads = [1, 5, 11, 13, 17, 19]; // الفردية: تبقى ثابتة
-        const evenHeads = [2, 4, 8, 10, 16, 20]; // الزوجية: تومض للشطب
-        const zeroBlades = [3, 7];
-        const rows = 10;
-        const pLimit = 21;
+   <script>
+    const grid = document.getElementById('grid');
+    const oddHeads = [1, 5, 11, 13, 17, 19]; // أعمدة ثابتة
+    const evenHeads = [2, 4, 8, 10, 16, 20]; // أعمدة تومض (العمود بالكامل)
+    const zeroBlades = [3, 7];
+    const rows = 10;
+    const pLimit = 21;
 
-        for (let r = 0; r < rows; r++) {
-            let rowData = [];
-            let startVal = r * pLimit;
-            let endVal = (r + 1) * pLimit;
+    for (let r = 0; r < rows; r++) {
+        let rowData = [];
+        let startVal = r * pLimit;
+        let endVal = (r + 1) * pLimit;
 
-            if (r % 2 === 0) {
-                for (let i = startVal; i <= endVal; i++) rowData.push(i);
-            } else {
-                for (let i = endVal; i >= startVal; i--) rowData.push(i);
+        if (r % 2 === 0) {
+            for (let i = startVal; i <= endVal; i++) rowData.push(i);
+        } else {
+            for (let i = endVal; i >= startVal; i--) rowData.push(i);
+        }
+
+        rowData.forEach((num, index) => {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.innerText = num;
+
+            // تحديد موقع العمود الفعلي (من 0 إلى 21)
+            let colPos = (r % 2 === 0) ? index : (pLimit - index);
+
+            // 1. تلوين المفاصل (الحواف)
+            if (index === 0 || index === pLimit) {
+                cell.classList.add('hinge-col');
+            }
+            
+            // 2. تلوين شفرات زيرو (القيم الأصلية 3 و 7 فقط)
+            if (num <= 7 && zeroBlades.includes(num)) {
+                cell.classList.add('zero-blade');
+            } 
+            
+            // 3. المنطق الجديد: تلوين العمود كاملاً بناءً على موقع الرأس (colPos)
+            // إذا كان العمود يتبع رأساً فردياً
+            else if (oddHeads.includes(colPos)) {
+                cell.classList.add('column-head-stable');
+            } 
+            // إذا كان العمود يتبع رأساً زوجياً (سيومض العمود بالكامل)
+            else if (evenHeads.includes(colPos)) {
+                cell.classList.add('column-head-removable');
             }
 
-            rowData.forEach((num, index) => {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                cell.innerText = num;
+            grid.appendChild(cell);
+        });
+    }
+</script>
 
-                let colPos = (r % 2 === 0) ? index : (pLimit - index);
-
-                if (index === 0 || index === pLimit) {
-                    cell.classList.add('hinge-col');
-                }
-                
-                if (num <= 7 && zeroBlades.includes(num)) {
-                    cell.classList.add('zero-blade');
-                } 
-                // التحقق من نوع رأس العمود لتحديد شكل الحركة
-                else if (oddHeads.includes(colPos)) {
-                    cell.classList.add('column-head-stable');
-                } 
-                else if (evenHeads.includes(colPos)) {
-                    cell.classList.add('column-head-removable');
-                }
-
-                grid.appendChild(cell);
-            });
-        }
-    </script>
 </body>
 </html>
