@@ -42,58 +42,65 @@
 
     <h2 style="color:#2c3e50;">5. المتعرج الانتقائي (الفردي 21)</h2>
     <div id="grid" class="grid-container"></div>
+    <script>
+        const grid = document.getElementById('grid');
+        const oddHeads = [1, 5, 11, 13, 17, 19];   // ثابتة
+        const evenHeads = [2, 4, 8, 10, 16, 20]; // تومض بالكامل
+        const zeroBlades = [3, 7];
+        const rows = 10;
+        const pLimit = 21;
 
-   <script>
-    const grid = document.getElementById('grid');
-    const oddHeads = [1, 5, 11, 13, 17, 19]; // أعمدة ثابتة
-    const evenHeads = [2, 4, 8, 10, 16, 20]; // أعمدة تومض (العمود بالكامل)
-    const zeroBlades = [3, 7];
-    const rows = 10;
-    const pLimit = 21;
+        for (let r = 0; r < rows; r++) {
+            let rowData = [];
+            let startVal = r * pLimit;
+            let endVal = (r + 1) * pLimit;
 
-    for (let r = 0; r < rows; r++) {
-        let rowData = [];
-        let startVal = r * pLimit;
-        let endVal = (r + 1) * pLimit;
+            // توليد الأرقام (متعرج)
+            if (r % 2 === 0) {
+                for (let i = startVal; i <= endVal; i++) rowData.push(i);
+            } else {
+                for (let i = endVal; i >= startVal; i--) rowData.push(i);
+            }
 
-        if (r % 2 === 0) {
-            for (let i = startVal; i <= endVal; i++) rowData.push(i);
-        } else {
-            for (let i = endVal; i >= startVal; i--) rowData.push(i);
+            rowData.forEach((num, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.innerText = num;
+
+                /* 
+                   السر هنا: 
+                   في CSS Grid، الأعمدة تترتب من 0 إلى 21 دائماً.
+                   الـ 'index' يمثل ترتيب الخلية في الصف الحالي.
+                */
+                let visualColumn = index; 
+
+                // 1. تلوين المفاصل (أول وآخر خلية في كل صف)
+                if (index === 0 || index === pLimit) {
+                    cell.classList.add('hinge-col');
+                }
+                
+                // 2. تلوين شفرات زيرو (3 و 7 الأصلية فقط)
+                else if (num <= 7 && zeroBlades.includes(num)) {
+                    cell.classList.add('zero-blade');
+                }
+
+                /* 
+                   3. تلوين الأعمدة عمودياً:
+                   بما أن الشبكة 22 عمود، فإن 'index' هو الذي يحدد العمود البصري.
+                   لكن في الصفوف المقلوبة (r%2 !== 0)، العمود البصري رقم 1 يحتوي على نهاية الصف.
+                   لجعل الوميض "عمودياً مستقيماً" نطبق الشرط على visualColumn:
+                */
+                else if (oddHeads.includes(visualColumn)) {
+                    cell.classList.add('column-head-stable');
+                } 
+                else if (evenHeads.includes(visualColumn)) {
+                    cell.classList.add('column-head-removable');
+                }
+
+                grid.appendChild(cell);
+            });
         }
-
-        rowData.forEach((num, index) => {
-            const cell = document.createElement('div');
-            cell.className = 'cell';
-            cell.innerText = num;
-
-            // تحديد موقع العمود الفعلي (من 0 إلى 21)
-            let colPos = (r % 2 === 0) ? index : (pLimit - index);
-
-            // 1. تلوين المفاصل (الحواف)
-            if (index === 0 || index === pLimit) {
-                cell.classList.add('hinge-col');
-            }
-            
-            // 2. تلوين شفرات زيرو (القيم الأصلية 3 و 7 فقط)
-            if (num <= 7 && zeroBlades.includes(num)) {
-                cell.classList.add('zero-blade');
-            } 
-            
-            // 3. المنطق الجديد: تلوين العمود كاملاً بناءً على موقع الرأس (colPos)
-            // إذا كان العمود يتبع رأساً فردياً
-            else if (oddHeads.includes(colPos)) {
-                cell.classList.add('column-head-stable');
-            } 
-            // إذا كان العمود يتبع رأساً زوجياً (سيومض العمود بالكامل)
-            else if (evenHeads.includes(colPos)) {
-                cell.classList.add('column-head-removable');
-            }
-
-            grid.appendChild(cell);
-        });
-    }
-</script>
+    </script>
 
 </body>
 </html>
