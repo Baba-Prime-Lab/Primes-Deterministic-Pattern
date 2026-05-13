@@ -1,14 +1,13 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Model 5: Corrected Odd Zigzag (3*7=21)</title>
+    <title>Model 5: Selective Zigzag (Odd 21)</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(22, 42px); /* 22 Columns total */
+            grid-template-columns: repeat(22, 42px); 
             background: #fff;
             border: 2px solid #2c3e50;
         }
@@ -19,18 +18,31 @@
             font-size: 0.85rem; color: #bbb;
         }
         .hinge-col { background-color: #f9f9f9 !important; color: #333 !important; font-weight: bold; border: 1px solid #ddd; }
-        .column-head { background-color: #007bff !important; color: white !important; font-weight: bold; }
+        
+        .column-head-stable { background-color: #007bff !important; color: white !important; font-weight: bold; }
+
+        @keyframes blinkEffect {
+            0% { opacity: 1; }
+            50% { opacity: 0.2; } 
+            100% { opacity: 1; }
+        }
+        .column-head-removable { 
+            animation: blinkEffect 2s infinite ease-in-out;
+            background-color: #007bff !important; 
+            color: white !important; 
+            font-weight: bold; 
+        }
+
         .zero-blade { background-color: #000080 !important; color: #fff !important; font-weight: 900; border: 1.5px solid #d4af37; }
     </style>
 </head>
 <body>
 
-    <h2 style="color:#2c3e50;">5. Selective Zigzag (Odd 3*7=21)</h2>
+    <h2 style="color:#2c3e50;">5. المتعرج الانتقائي (الفردي 21)</h2>
     <div id="grid" class="grid-container"></div>
-
-    <script>
+   
+ <script>
         const grid = document.getElementById('grid');
-        const colHeads = [1, 2, 4, 5, 8, 10, 11, 13, 16, 17, 19, 20]; // Potential for p=21
         const zeroBlades = [3, 7];
         const rows = 10;
         const pLimit = 21;
@@ -40,10 +52,10 @@
             let startVal = r * pLimit;
             let endVal = (r + 1) * pLimit;
 
-            // توليد أرقام الصف بناءً على الاتجاه
-            if (r % 2 === 0) { // صف فردي: من اليسار لليمين (0 -> 21)
+            // توليد الأرقام (متعرج)
+            if (r % 2 === 0) {
                 for (let i = startVal; i <= endVal; i++) rowData.push(i);
-            } else { // صف زوجي: من اليمين لليسار (42 -> 21)
+            } else {
                 for (let i = endVal; i >= startVal; i--) rowData.push(i);
             }
 
@@ -52,23 +64,39 @@
                 cell.className = 'cell';
                 cell.innerText = num;
 
-                // تحديد رقم العمود (0 to 21)
-                // في الصفوف المعكوسة، نحتاج لحساب الموقع الأصلي للرقم لضمان التراصف
-                let colPos = (r % 2 === 0) ? index : (pLimit - index);
-
-                // تلوين المفاصل (العمود الأول والأخير)
+                // 1. تلوين المفاصل (أول وآخر عمود بصرياً في الجدول)
                 if (index === 0 || index === pLimit) {
                     cell.classList.add('hinge-col');
                 }
                 
-                // تلوين الشفرات ورؤوس الأعمدة
-                let checkVal = num % pLimit;
-                if (checkVal === 0 && num !== 0) checkVal = pLimit;
-
-                if (num <= 7 && zeroBlades.includes(num)) {
+                // 2. تلوين شفرات زيرو (3 و 7 الأصلية في الصف الأول)
+                else if (num <= 7 && zeroBlades.includes(num)) {
                     cell.classList.add('zero-blade');
-                } else if (colHeads.includes(colPos)) {
-                    cell.classList.add('column-head');
+                }
+
+                /* 
+                   3. تطبيق منطق الشطب الذكي المبني على طبيعة العدد:
+                   - إذا كان العدد زوجياً (يقبل القسمة على 2)
+                   - و بشرط ألا يكون 0 (لأن الصفر يظهر في أول الجدول)
+                   - و لا يقبل القسمة على 3
+                   - و لا يقبل القسمة على 7
+                */
+                else if (num !== 0 && num % 2 === 0 && num % 3 !== 0 && num % 7 !== 0) {
+                    cell.classList.add('column-head-removable'); // يومض للإلغاء
+                }
+                
+                // 4. بقية الأعداد الفردية (الأزرق الثابت)
+                else {
+                    // نتحقق أن العدد ليس من الأعداد الباهتة الافتراضية، بل يقع ضمن المسارات
+                    // نحدد له اللون الأزرق الثابت
+                    let checkVal = num % pLimit;
+                    if (checkVal === 0 && num !== 0) checkVal = pLimit;
+                    
+                    // مصفوفة الرؤوس المطلوبة لإعطائها الأزرق الثابت
+                    const allTargetHeads = [1, 2, 4, 5, 8, 10, 11, 13, 16, 17, 19, 20];
+                    if (allTargetHeads.includes(checkVal)) {
+                        cell.classList.add('column-head-stable');
+                    }
                 }
 
                 grid.appendChild(cell);
