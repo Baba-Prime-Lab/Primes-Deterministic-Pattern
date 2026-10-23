@@ -5,16 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BABA Sieve Counter Engine - Main Research Hub</title>
     <style>
+        :root { 
+            --primary: #2c3e50; 
+            --accent: #c0392b; 
+            --success: #27ae60; 
+            --bg: #f4f7f6; 
+            --binance: #f3ba2f; 
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #0f172a;
             color: #e2e8f0;
-            padding: 40px 20px;
+            margin: 0;
+            padding: 0;
             text-align: center;
         }
+        
+        /* Navigation Header Toolbar */
+        .nav-header { 
+            width: 100%; 
+            background: white; 
+            padding: 10px 20px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            display: flex; 
+            justify-content: flex-start; 
+            gap: 10px; 
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .home-btn { 
+            text-decoration: none; 
+            background: var(--accent); 
+            color: white; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            transition: 0.3s; 
+        }
+        .home-btn:hover { background: #a93226; transform: translateY(-1px); }
+
+        .support-btn { 
+            text-decoration: none; 
+            background: var(--binance); 
+            color: black; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            transition: 0.3s; 
+            border: 1px solid #d4a017;
+        }
+        .support-btn:hover { background: #d4a017; transform: translateY(-1px); }
+
         .hub-container {
             max-width: 1000px;
-            margin: 0 auto;
+            margin: 40px auto;
             background: #1e293b;
             padding: 40px;
             border-radius: 16px;
@@ -101,6 +149,12 @@
 </head>
 <body>
 
+<!-- Consolidated Header Toolbar -->
+<div class="nav-header">
+    <a href="index.html" class="home-btn">🏠 Back to Home</a>
+    <a href="support.html" class="support-btn">☕ Support Research</a>
+</div>
+
 <div class="hub-container">
     <h1>BaBa Sieve Counter Engine</h1>
     <h3>Main Computational Research Hub & Scientific Dashboard</h3>
@@ -115,13 +169,14 @@
             <a href="R1.html" class="btn btn-lnx">Open Engine R1</a>
         </div>
 
-        <!-- Dashboard 2: BaBa Prime Counter -->
+        <!-- Dashboard 2: BaBa Prime Counter (Redirected to the Intermediate Portal) -->
         <div class="card prime">
             <div>
                 <h2>2. BaBa Prime Sieve</h2>
-                <p>Deterministic mechanical engine executing clean prime filtration via periodic recurrence. Scaled and speed-optimized up to 10^9 to generate literal truth values with no analytical approximations.</p>
+                <p>Deterministic mechanical engine executing clean prime filtration via periodic recurrence. Compares exact computational residues against classical forecasting methodologies.</p>
             </div>
-            <a href="R22.html" class="btn btn-prime">Open Engine R22</a>
+            <!-- تم تغيير الرابط هنا ليتجه للصفحة الوسيطة الميثودولوجية -->
+            <a href="PrimeCountersHub.html" class="btn btn-prime">Explore Counters</a>
         </div>
 
         <!-- Dashboard 3: BaBa Twins Counter -->
