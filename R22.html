@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BaBa Sieve Counter Engine - Supercomputing Scale 10^9</title>
+    <style>
+        :root { 
+            --primary: #2c3e50; 
+            --accent: #c0392b; 
+            --success: #27ae60; 
+            --bg: #f4f7f6; 
+            --binance: #f3ba2f; 
+            --sky: #0284c7;
+        }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            color: #000; 
+            text-align: center;
+        }
+        
+        /* Navigation Header */
+        .nav-header { 
+            width: 100%; 
+            background: white; 
+            padding: 10px 20px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            display: flex; 
+            justify-content: flex-start; 
+            gap: 10px; 
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .home-btn { 
+            text-decoration: none; 
+            background: var(--accent); 
+            color: white; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            transition: 0.3s; 
+        }
+        .home-btn:hover { background: #a93226; transform: translateY(-1px); }
+
+        .support-btn { 
+            text-decoration: none; 
+            background: var(--binance); 
+            color: black; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            transition: 0.3s; 
+            border: 1px solid #d4a017;
+        }
+        .support-btn:hover { background: #d4a017; transform: translateY(-1px); }
+
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        .lab-ui { border: 2px solid #ddd; padding: 40px; border-radius: 15px; background: white; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        h1 { color: var(--primary); margin-bottom: 5px; }
+        h3 { color: #64748b; font-weight: normal; margin-top: 5px; margin-bottom: 30px; }
+        
+        input { 
+            width: 85%; 
+            padding: 15px; 
+            font-size: 1.8rem; 
+            border: 3px solid var(--primary); 
+            border-radius: 10px; 
+            text-align: center; 
+            font-weight: bold; 
+            margin: 20px 0; 
+            color: var(--accent); 
+        }
+        button {
+            padding: 15px 35px;
+            background: var(--sky);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3);
+        }
+        button:hover { background: #0369a1; transform: translateY(-1px); }
+        
+        .comparison-box {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: space-around;
+            text-align: left;
+        }
+        .box-col { flex: 1; padding: 0 15px; }
+        .highlight { color: var(--success); font-weight: bold; font-size: 1.5rem; }
+        .notice { font-size: 14px; color: var(--sky); margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="nav-header">
+    <a href="index.html" class="home-btn">🏠 Back to Home</a>
+    <a href="support.html" class="support-btn">☕ Support Research</a>
+</div>
+
+<div class="container">
+    <div class="lab-ui">
+        <h1>BaBa Prime Sieve Engine</h1>
+        <h3>Advanced Deterministic Sieve - Supercomputing Scale up to 10^9</h3>
+        
+        <label style="font-weight:bold; font-size:1.1rem;">Enter Range (X):</label><br>
+        <input type="number" id="inputValue" value="1000000000" max="1000000000"><br>
+        <button onclick="executeBabaSieve()">Compute Deterministically</button>
+
+        <div id="resultsArea"></div>
+    </div>
+</div>
+
+<script>
+function generateCoreBlades(limit) {
+    let sieve = new Uint8Array(limit + 1);
+    sieve.fill(1);
+    sieve[0] = sieve[1] = 0;
+    for (let i = 2; i * i <= limit; i++) {
+        if (sieve[i]) {
+            for (let j = i * i; j <= limit; j += i) sieve[j] = 0;
+        }
+    }
+    let primes = [];
+    for (let i = 2; i <= limit; i++) { if (sieve[i]) primes.push(i); }
+    return primes;
+}
+
+function executeBabaSieve() {
+    const X = parseInt(document.getElementById('inputValue').value);
+    if (isNaN(X) || X < 2) {
+        alert('Please enter an integer greater than 1');
+        return;
+    }
+    document.getElementById('resultsArea').innerHTML = '<p class="notice">⚙️ Mechanical Engine is Crunching Numbers... Please Wait...</p>';
+
+    setTimeout(() => {
+        let startTime = performance.now();
+        let limit = Math.floor(Math.sqrt(X));
+        let blades = generateCoreBlades(limit);
+
+        let isPrime = new Uint8Array(X + 1);
+        isPrime.fill(1);
+        isPrime[0] = isPrime[1] = 0;
+
+        for (let i = 0; i < blades.length; i++) {
+            let p = blades[i];
+            for (let j = p * p; j <= X; j += p) isPrime[j] = 0;
+        }
+
+        let exactPrimesCount = 0;
+        for (let i = 2; i <= X; i++) { if (isPrime[i]) exactPrimesCount++; }
+
+        let endTime = performance.now();
+        let executionTime = ((endTime - startTime) / 1000).toFixed(3);
+        let gaussApprox = (X / Math.log(X)).toFixed(2);
+        let errorMargin = (((gaussApprox - exactPrimesCount) / exactPrimesCount) * 100).toFixed(2);
+
+        document.getElementById('resultsArea').innerHTML = `
+            <div class="comparison-box">
+                <div class="box-col" style="border-right: 2px solid #e2e8f0;">
+                    <p style="color: var(--success); font-weight: bold; margin-bottom: 5px;">⚙️ BaBa Mechanical Sieve:</p>
+                    <p style="font-size:0.9rem; color:#64748b;">Methodology: Net Periodic Recurrence</p>
+                    <p>Deterministic Net Residue: <span class="highlight">${exactPrimesCount.toLocaleString()}</span></p>
+                </div>
+                <div class="box-col">
+                    <p style="color: var(--sky); font-weight: bold; margin-bottom: 5px;">🏛️ Classical Gauss Model:</p>
+                    <p style="font-size:0.9rem; color:#64748b;">Formula: X / ln(X)</p>
+                    <p>Approximated Output: <span class="highlight" style="color: #f59e0b;">${parseFloat(gaussApprox).toLocaleString()}</span></p>
+                </div>
+            </div>
+            <div style="margin-top: 20px; font-size: 0.95rem; color: #475569;">
+                Gauss approximation deviation relative to BaBa certainty: <span style="color:#ef4444; font-weight:bold;">${errorMargin}%</span><br>
+                <small style="color:#64748b;">Computation completed in ${executionTime} seconds.</small>
+            </div>`;
+    }, 50);
+}
+window.onload = executeBabaSieve;
+</script>
+</body>
+</html>
