@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BaBa Sieve Counter Engine - Exact 168 Primes</title>
+    <style>
+        :root { 
+            --primary: #2c3e50; 
+            --accent: #c0392b; 
+            --success: #27ae60; 
+            --bg: #f4f7f6; 
+            --binance: #f3ba2f; 
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        
+        /* Navigation Header Toolbar */
+        .nav-header { 
+            width: 100%; 
+            background: white; 
+            padding: 10px 20px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            display: flex; 
+            justify-content: flex-start; 
+            gap: 10px; 
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .home-btn { 
+            text-decoration: none; 
+            background: var(--accent); 
+            color: white; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            transition: 0.3s; 
+        }
+        .home-btn:hover { background: #a93226; transform: translateY(-1px); }
+
+        .support-btn { 
+            text-decoration: none; 
+            background: var(--binance); 
+            color: black; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            transition: 0.3s; 
+            border: 1px solid #d4a017;
+        }
+        .support-btn:hover { background: #d4a017; transform: translateY(-1px); }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border: 1px solid #38bdf8;
+        }
+        h1 { color: #38bdf8; margin-bottom: 5px; }
+        h3 { color: #94a3b8; font-weight: normal; margin-top: 5px; }
+        .input-group {
+            margin: 25px 0;
+        }
+        input {
+            padding: 12px;
+            width: 40%;
+            border-radius: 6px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        button {
+            padding: 12px 25px;
+            background: #0284c7;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        button:hover { background: #0369a1; }
+        table {
+            width: 100%;
+            margin-top: 25px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #334155;
+            text-align: center;
+        }
+        th { background-color: #0369a1; color: white; }
+        tr:nth-child(even) { background-color: #0f172a; }
+        .highlight { color: #4ade80; font-weight: bold; font-size: 20px; }
+        .comparison-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: #0f172a;
+            border-radius: 8px;
+            border: 1px solid #38bdf8;
+            display: flex;
+            justify-content: space-around;
+            text-align: left;
+        }
+        .box-col { flex: 1; padding: 0 10px; }
+    </style>
+</head>
+<body>
+
+<!-- Consolidated Navigation Bar -->
+<div class="nav-header">
+    <a href="index.html" class="home-btn">🏠 Back to Home</a>
+    <a href="support.html" class="support-btn">☕ Support Research</a>
+</div>
+
+<div class="container">
+    <h1>BaBa Sieve Counter Engine</h1>
+    <h3>Mechanical Sieve for Pure Prime Filtration via Periodic Recurrence (2 to 961)</h3>
+    
+    <div class="input-group">
+        <input type="number" id="inputValue" placeholder="Enter Range (X)" value="1000">
+        <button onclick="executeBabaSieve()">Calculate Deterministically</button>
+    </div>
+
+    <div id="resultsArea"></div>
+</div>
+
+<script>
+const bladesString = "2,3,5,7,11,13,17,19,23,29,31";
+const blades = bladesString.split(",").map(Number);
+
+function executeBabaSieve() {
+    const X = parseInt(document.getElementById('inputValue').value);
+    if (isNaN(X) || X < 2) {
+        alert('Please enter an integer greater than 1');
+        return;
+    }
+
+    let currentResidue = X;
+    let htmlTable = `<table>
+                        <thead>
+                            <tr>
+                                <th>Active Blade (p)</th>
+                                <th>Mechanical Deduction Quantity</th>
+                                <th>Deterministic Net Residue</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+    let drop2 = Math.floor(X / 2);
+    currentResidue -= drop2;
+    htmlTable += `<tr><td><b>2</b></td><td>${drop2}</td><td><b>${currentResidue}</b></td></tr>`;
+
+    let count3 = 0;
+    if (X >= 9) {
+        for (let i = 9; i <= X; i += 6) {
+            count3++;
+        }
+    }
+    currentResidue -= count3;
+    htmlTable += `<tr><td><b>3</b></td><td>${count3}</td><td><b>${currentResidue}</b></td></tr>`;
+
+    let count5 = 0;
+    if (X >= 25) {
+        for (let i = 25; i <= X; i += 10) {
+            if (i % 3 !== 0) {
+                count5++;
+            }
+        }
+    }
+    currentResidue -= count5;
+    htmlTable += `<tr><td><b>5</b></td><td>${count5}</td><td><b>${currentResidue}</b></td></tr>`;
+
+    for (let k = 3; k < blades.length; k++) {
+        let p = blades[k];
+        let p2 = p * p;
+        let countP = 0;
+
+        if (X >= p2) {
+            for (let i = p2; i <= X; i += (2 * p)) {
+                let overlap = false;
+                for (let j = 1; j < k; j++) {
+                    if (i % blades[j] === 0) {
+                        overlap = true;
+                        break;
+                    }
+                }
+                if (!overlap) {
+                    countP++;
+                }
+            }
+        }
+        currentResidue -= countP;
+        htmlTable += `<tr><td><b>${p}</b></td><td>${countP}</td><td><b>${currentResidue}</b></td></tr>`;
+    }
+
+    htmlTable += `</tbody></table>`;
+    
+    let gaussApprox = (X / Math.log(X)).toFixed(4);
+    let errorMargin = (((gaussApprox - currentResidue) / currentResidue) * 100).toFixed(2);
+
+    let summaryHtml = `
+        <div class="comparison-box">
+            <div class="box-col">
+                <p style="color: #4ade80; font-weight: bold; margin-bottom: 5px;">⚙️ BaBa Deterministic Mechanical Sieve:</p>
+                <p>Methodology: <span style="color: #94a3b8;">Net Periodic Recurrence</span></p>
+                <p>Deterministic Net Residue: <span class="highlight">${currentResidue}</span></p>
+            </div>
+            <div class="box-col" style="border-left: 1px solid #334155; padding-left: 20px;">
+                <p style="color: #38bdf8; font-weight: bold; margin-bottom: 5px;">🏛️ Famous Gauss Approximation:</p>
+                <p>Formula: <span style="color: #94a3b8;">X / ln(X)</span></p>
+                <p>Approximated Output: <span class="highlight" style="color: #f59e0b;">${gaussApprox}</span></p>
+            </div>
+        </div>
+        <div style="margin-top: 15px; padding: 10px; background: #1e293b; border-radius: 6px; border: 1px dashed #475569; text-align: center;">
+            <p style="margin: 0; font-size: 14px; color: #94a3b8;">
+                Gauss approximation deviation relative to BaBa certainty: 
+                <span style="color: ${errorMargin >= 0 ? '#ef4444' : '#38bdf8'}; font-weight: bold;">${errorMargin}%</span>
+            </p>
+        </div>`;
+
+    document.getElementById('resultsArea').innerHTML = htmlTable + summaryHtml;
+}
+
+window.onload = executeBabaSieve;
+</script>
+
+</body>
+</html>
