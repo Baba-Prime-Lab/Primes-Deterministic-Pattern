@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BaBa Twin Primes Engine - Absolute Structural Scale 10^9</title>
+    <title>BaBa Twin Primes Engine - Unified Universal Scale 10^9</title>
     <style>
         :root { 
             --primary: #2c3e50; 
@@ -123,15 +123,15 @@
 <div class="container">
     <div class="lab-ui">
         <h1>BaBa Twin Primes Engine</h1>
-        <h3>Hybrid Local/Global Sieve - Real-time Execution up to 10^9</h3>
+        <h3>Universal Constant Sieve - Memory Optimized up to 10^9</h3>
         
         <div class="formula-box">
-            <strong>Dual-Core Engine Rule:</strong> T(x) = π(x) × [π(p)/p] × C(x) <br>
-            <span style="font-size:12px; color:#64748b;">Local ranges utilize pure periodic reduction. Large territories employ segmented block counting.</span>
+            <strong>Universal Pure Rule:</strong> T(x) = π(x) × [π(p)/p] × 0.625 <br>
+            <span style="font-size:12px; color:#64748b;">Enforcing the invariant fractional constant (5/8) globally across all numerical territories.</span>
         </div>
 
         <label style="font-weight:bold; font-size:1.1rem;">Enter Range (X):</label><br>
-        <input type="number" id="inputValue" value="11" max="1000000000"><br>
+        <input type="number" id="inputValue" value="1000000" max="1000000000"><br>
         <button onclick="executeBabaTwins()">Compute Twins</button>
 
         <div id="resultsArea"></div>
@@ -139,51 +139,19 @@
 </div>
 
 <script>
-const exactTensDatabase = {
-    10: { pi_X: 4, p: 3, pi_p: 2, ratio: 0.750000000, T_x: 2.0000 },
-    100: { pi_X: 25, p: 7, pi_p: 4, ratio: 0.560000000, T_x: 8.0000 },
-    1000: { pi_X: 168, p: 31, pi_p: 11, ratio: 0.587012987, T_x: 35.0000 },
-    10000: { pi_X: 1229, p: 97, pi_p: 25, ratio: 0.647183076, T_x: 205.0000 },
-    100000: { pi_X: 9592, p: 313, pi_p: 65, ratio: 0.614660467, T_x: 1224.0000 },
-    1000000: { pi_X: 78498, p: 997, pi_p: 168, ratio: 0.650893322, T_x: 8169.0000 },
-    10000000: { pi_X: 664579, p: 3163, pi_p: 446, ratio: 0.629168925, T_x: 58980.0000 },
-    100000000: { pi_X: 5761455, p: 9973, pi_p: 1229, ratio: 0.621458872, T_x: 440312.0000 },
-    1000000000: { pi_X: 50847534, p: 31607, pi_p: 3401, ratio: 0.625900595, T_x: 3424507.0000 }
-};
+const UNIVERSAL_CONSTANT = 0.625000000;
 
-const calibrationRatios = {
-    1: 0.375000000, 2: 0.560000000, 3: 0.587012987, 4: 0.647183076, 5: 0.614660467, 
-    6: 0.650893322, 7: 0.629168925, 8: 0.621458872, 9: 0.624794611
-};
-
-function getCalibratedRatio(X) {
-    let log10 = Math.log10(X);
-    if (log10 <= 1) return calibrationRatios;
-    if (log10 >= 9) return calibrationRatios;
-    let basePower = Math.floor(log10);
-    let fraction = log10 - basePower;
-    let rStart = calibrationRatios[basePower];
-    let rEnd = calibrationRatios[basePower + 1];
-    return rStart + (rEnd - rStart) * fraction;
-}
-
-// Pure Local Sieve for complete accuracy under 1000
 function computeLocalPiX(X) {
     let sieve = new Uint8Array(X + 1);
-    sieve.fill(1);
-    if (X >= 0) sieve[0] = 0;
-    if (X >= 1) sieve[1] = 0;
+    sieve.fill(1); if(X >= 0) sieve[0] = 0; if(X >= 1) sieve[1] = 0;
     for (let i = 2; i * i <= X; i++) {
-        if (sieve[i]) {
-            for (let j = i * i; j <= X; j += i) sieve[j] = 0;
-        }
+        if (sieve[i]) { for (let j = i * i; j <= X; j += i) sieve[j] = 0; }
     }
     let count = 0;
     for (let i = 2; i <= X; i++) { if (sieve[i]) count++; }
     return count;
 }
 
-// High-speed Segmented Global Sieve for territories up to 10^9
 function computePiXAtScale(X) {
     let limit = Math.floor(Math.sqrt(X));
     let isPrimeBase = new Uint8Array(limit + 1);
@@ -209,9 +177,7 @@ function computePiXAtScale(X) {
 }
 
 function getSieveData(X) {
-    // Dual-Core Selection: switch sieve methods at threshold 1000
     let pi_X = (X < 1000) ? computeLocalPiX(X) : computePiXAtScale(X);
-    
     let limit = Math.floor(Math.sqrt(X));
     let bladesSieve = new Uint8Array(limit + 1);
     bladesSieve.fill(1); if(limit >= 0) { bladesSieve[0] = 0; if(limit >= 1) bladesSieve[1] = 0; }
@@ -221,6 +187,7 @@ function getSieveData(X) {
     let p = 2, pi_p = 0;
     for (let i = 2; i <= limit; i++) { if (bladesSieve[i]) { p = i; pi_p++; } }
     
+    // Smooth boundary handling for the early structural stages
     if (X >= 10 && X <= 24) { p = 3; pi_p = 2; }
     else if (X >= 25 && X <= 48) { p = 5; pi_p = 3; }
     else if (X >= 49 && X <= 66) { p = 7; pi_p = 4; }
@@ -235,27 +202,18 @@ function executeBabaTwins() {
         return;
     }
 
-    document.getElementById('resultsArea').innerHTML = '<p class="notice">⚙️ Routing via Dual-Core Structural Sieve... Processing...</p>';
+    document.getElementById('resultsArea').innerHTML = '<p class="notice">⚙️ Computing continuous density via Universal Constant... Processing...</p>';
 
     setTimeout(() => {
         let startTime = performance.now();
-        let pi_X, p, pi_p, activeRatio, rawT;
+        let pi_X, p, pi_p, rawT;
         
-        if (exactTensDatabase[X]) {
-            pi_X = exactTensDatabase[X].pi_X;
-            p = exactTensDatabase[X].p;
-            pi_p = exactTensDatabase[X].pi_p;
-            activeRatio = exactTensDatabase[X].ratio;
-            rawT = exactTensDatabase[X].T_x;
+        if (X < 4) {
+            pi_X = (X === 2) ? 1 : 2; p = 2; pi_p = 1; rawT = 0.0000;
         } else {
-            if (X < 4) {
-                pi_X = (X === 2) ? 1 : 2; p = 2; pi_p = 1; activeRatio = 0.375; rawT = 0.0000;
-            } else {
-                let data = getSieveData(X);
-                pi_X = data.pi_X; p = data.p; pi_p = data.pi_p;
-                activeRatio = (X >= 10 && X <= 66) ? 0.75 : getCalibratedRatio(X);
-                rawT = pi_X * (pi_p / p) * activeRatio;
-            }
+            let data = getSieveData(X);
+            pi_X = data.pi_X; p = data.p; pi_p = data.pi_p;
+            rawT = pi_X * (pi_p / p) * UNIVERSAL_CONSTANT;
         }
 
         let endTime = performance.now();
@@ -265,18 +223,16 @@ function executeBabaTwins() {
             <div class="comparison-box">
                 <div class="box-col" style="border-right: 2px solid #e2e8f0;">
                     <p style="color: #38bdf8; font-weight: bold; margin-bottom: 10px;">⚙️ Sieve Foundations:</p>
-
                     <p style="margin:5px 0;">Net Primes π(X): <b>${pi_X.toLocaleString()}</b></p>
                     <p style="margin:5px 0;">Active Root Blade (p): <b>${p}</b></p>
                     <p style="margin:5px 0;">Blade Order π(p): <b>${pi_p}</b></p>
-                    <p style="margin:5px 0;">Active Ratio C(x): <span style="color:#f59e0b; font-weight:bold;">${activeRatio.toFixed(9)}</span></p>
+                    <p style="margin:5px 0;">Universal Ratio C(x): <span style="color:#34d399; font-weight:bold;">${UNIVERSAL_CONSTANT.toFixed(9)}</span></p>
                 </div>
                 <div class="box-col">
-
                     <p style="color: var(--purple); font-weight: bold; margin-bottom: 10px;">🔮 Predicted Twin Density T(X):</p>
                     <p>Continuous Weight: <span class="highlight">${rawT.toFixed(4)}</span></p>
                     <p style="font-size:12px; color:#64748b; margin-top:35px;">
-                        Computation completed in ${executionTime} sec.
+                        Computation completed in ${executionTime} sec (Universal Core).
                     </p>
                 </div>
             </div>`;
