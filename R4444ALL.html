@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BaBa Inverse Prime Engine - Universal Hexagonal Sieve 10^9</title>
+    <style>
+        :root { 
+            --primary: #2c3e50; 
+            --accent: #c0392b; 
+            --success: #27ae60; 
+            --bg: #f4f7f6; 
+            --binance: #f3ba2f; 
+            --gold: #d4a017;
+            --purple: #a855f7;
+        }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            color: #000; 
+            text-align: center;
+        }
+        .nav-header { 
+            width: 100%; 
+            background: white; 
+            padding: 10px 20px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            display: flex; 
+            justify-content: flex-start; 
+            gap: 10px; 
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .home-btn { 
+            text-decoration: none; 
+            background: var(--accent); 
+            color: white; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            transition: 0.3s; 
+        }
+        .home-btn:hover { background: #a93226; transform: translateY(-1px); }
+
+        .support-btn { 
+            text-decoration: none; 
+            background: var(--binance); 
+            color: black; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            transition: 0.3s; 
+            border: 1px solid #d4a017;
+        }
+        .support-btn:hover { background: #d4a017; transform: translateY(-1px); }
+
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        .lab-ui { border: 2px solid #ddd; padding: 40px; border-radius: 15px; background: white; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        h1 { color: var(--primary); margin-bottom: 5px; }
+        
+        .formula-box {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            color: #334155;
+            margin: 20px 0;
+            border-left: 6px solid var(--purple);
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        input { 
+            width: 85%; 
+            padding: 15px; 
+            font-size: 1.8rem; 
+            border: 3px solid var(--primary); 
+            border-radius: 10px; 
+            text-align: center; 
+            font-weight: bold; 
+            margin: 20px 0; 
+            color: var(--accent); 
+        }
+        button {
+            padding: 15px 35px;
+            background: var(--purple);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(168, 85, 247, 0.3);
+        }
+        button:hover { background: #9333ea; transform: translateY(-1px); }
+        
+        .comparison-box {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: space-around;
+            text-align: left;
+        }
+        .box-col { flex: 1; padding: 0 15px; }
+        .highlight { color: var(--success); font-weight: bold; font-size: 2rem; }
+        .notice { font-size: 14px; color: var(--purple); margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="nav-header">
+    <a href="index.html" class="home-btn">🏠 Back to Home</a>
+    <a href="support.html" class="support-btn">☕ Support Research</a>
+</div>
+
+<div class="container">
+    <div class="lab-ui">
+        <h1>BaBa Inverse Prime Engine</h1>
+        <h3>Universal Automated Sieve - Scalable up to 1,000,000,000 (10^9)</h3>
+        
+        <div class="formula-box">
+            <strong>BaBa Universal Automated Sieve Rule:</strong><br>
+            Left Vector (6k - 1): nth + m(k) = 2 + (k + kpr)<br>
+            Right Vector (6k + 1): nth + m(k) = 3 + (k + kpr)<br>
+            Composite counter m(k) processes all prime blades dynamically from their square barrier (p^2) to secure absolute matching truth.
+        </div>
+
+        <label style="font-weight:bold; font-size:1.1rem;">Enter Target Prime Rank (nth):</label><br>
+        <input type="number" id="inputValue" value="168" min="1" max="50847534"><br>
+        <button onclick="executeUniversalInverseSieve()">Extract Pure Prime</button>
+
+        <div id="resultsArea"></div>
+    </div>
+</div>
+
+<script>
+// Dynamic Sieve helper to generate necessary prime blades up to sqrt(target)
+function generateBlades(limit) {
+    let sieve = new Uint8Array(limit + 1);
+    sieve.fill(1);
+    if(limit >= 0) sieve[0] = sieve[1] = 0;
+    for (let i = 2; i * i <= limit; i++) {
+        if (sieve[i]) {
+            for (let j = i * i; j <= limit; j += i) sieve[j] = 0;
+        }
+    }
+    let primes = [];
+    for (let i = 5; i <= limit; i++) { if (sieve[i]) primes.push(i); }
+    return primes;
+}
+
+// Global composite cell dynamic check applying your strict square barrier rule
+function isCellComposite(num, blades) {
+    if (num < 5) return false;
+    let limit = Math.floor(Math.sqrt(num));
+    for (let i = 0; i < blades.length; i++) {
+        let p = blades[i];
+        if (p > limit) break;
+        let p2 = p * p;
+        if (num >= p2) {
+            if (num % p === 0) return true;
+        }
+    }
+    return false;
+}
+
+function executeUniversalInverseSieve() {
+    const nth = parseInt(document.getElementById('inputValue').value);
+    
+    if (isNaN(nth) || nth < 1) {
+        alert('Please enter a rank greater than 0');
+        return;
+    }
+    if (nth > 50847534) {
+        alert('Engine safe optimization cap is set to 10^9.');
+        return;
+    }
+
+    document.getElementById('resultsArea').innerHTML = '<p class="notice">⚙️ Universal Auto-Sieve is synthesizing periodic cells... Please wait...</p>';
+
+    setTimeout(() => {
+        let startTime = performance.now();
+        let p_symbol = 0, finalK = 0, finalM = 0, direction = "";
+
+        if (nth === 1) { p_symbol = 2; direction = "Core Foundation (p=2)"; }
+        else if (nth === 2) { p_symbol = 3; direction = "Core Foundation (p=3)"; }
+        else {
+            // Estimate approximate upper bound for k to generate correct blades scope
+            let approxX = nth * Math.log(nth) * 1.2;
+            let bladesLimit = Math.floor(Math.sqrt(approxX)) + 10;
+            if (bladesLimit < 31) bladesLimit = 31;
+            let blades = generateBlades(bladesLimit);
+
+            let m_counter = 0;
+            let maxK = Math.floor(nth * 4); // Adaptive search limit
+
+            for (let k = 1; k <= maxK; k++) {
+                let kpr = k - 1;
+
+                // 1. Process Left Vector (6k - 1)
+                let valMinus = (6 * k) - 1;
+                if (isCellComposite(valMinus, blades)) {
+                    m_counter++;
+                } else {
+                    if (nth + m_counter === 2 + (k + kpr)) {
+                        p_symbol = valMinus; finalK = k; finalM = m_counter;
+                        direction = "Left Column (6k - 1)"; break;
+                    }
+                }
+
+                // 2. Process Right Vector (6k + 1)
+                let valPlus = (6 * k) + 1;
+                if (isCellComposite(valPlus, blades)) {
+                    m_counter++;
+                } else {
+                    if (nth + m_counter === 3 + (k + kpr)) {
+                        p_symbol = valPlus; finalK = k; finalM = m_counter;
+                        direction = "Right Column (6k + 1)"; break;
+                    }
+                }
+            }
+        }
+
+        let endTime = performance.now();
+        let executionTime = ((endTime - startTime) / 1000).toFixed(3);
+
+        document.getElementById('resultsArea').innerHTML = `
+            <div class="comparison-box">
+                <div class="box-col" style="border-right: 2px solid #e2e8f0;">
+                    <p style="color: var(--primary); font-weight: bold; margin-bottom: 10px;">⚙️ Universal Matrix Parameters:</p>
+                    <p style="margin:5px 0;">Requested Rank (nth): <b>${nth.toLocaleString()}</b></p>
+                    <p style="margin:5px 0;">Target Sieve Level (k): <b>${finalK.toLocaleString()}</b></p>
+                    <p style="margin:5px 0;">Composites Dropped (m): <b>${finalM.toLocaleString()}</b></p>
+                    <p style="margin:5px 0;">Structural Vector: <span style="color:var(--purple); font-weight:bold;">${direction}</span></p>
+                </div>
+                <div class="box-col">
+                    <p style="color: var(--gold); font-weight: bold; margin-bottom: 10px;">🔑 Extracted Pure Prime Symbol:</p>
+                    <p>Calculated Output: <span class="highlight" style="color:var(--success);">${p_symbol.toLocaleString()}</span></p>
+                    <p style="font-size:11px; color:#64748b; margin-top:35px;">
+                        Execution Time: ${executionTime} sec (Universal Auto Core)
+                    </p>
+                </div>
+            </div>`;
+    }, 50);
+}
+
+window.onload = executeUniversalInverseSieve;
+</script>
+</body>
+</html>
