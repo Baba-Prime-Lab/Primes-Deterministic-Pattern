@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محركات غربلة بابا للإحصاء - مركز البحوث الرئيسي</title>
+    <style>
+        :root { 
+            --primary: #2c3e50; 
+            --accent: #c0392b; 
+            --success: #27ae60; 
+            --bg: #f4f7f6; 
+            --binance: #f3ba2f; 
+            --gold: #d4a017;
+            --cyan: #06b6d4;
+            --lang-btn: #334155;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        
+        /* Navigation Header Toolbar */
+        .nav-header { 
+            width: 100%; 
+            background: white; 
+            padding: 10px 20px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            display: flex; 
+            justify-content: flex-start; 
+            align-items: center;
+            gap: 10px; 
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .home-btn { 
+            text-decoration: none; 
+            background: var(--accent); 
+            color: white; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            transition: 0.3s; 
+        }
+        .home-btn:hover { background: #a93226; transform: translateY(-1px); }
+
+        .support-btn { 
+            text-decoration: none; 
+            background: var(--binance); 
+            color: black; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            transition: 0.3s; 
+            border: 1px solid #d4a017;
+        }
+        .support-btn:hover { background: #d4a017; transform: translateY(-1px); }
+
+        /* Language Buttons Styling */
+        .lang-btn {
+            text-decoration: none;
+            background: var(--lang-btn);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .lang-btn:hover { background: #475569; transform: translateY(-1px); }
+
+        .hub-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #1e293b;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            border: 1px solid #38bdf8;
+        }
+        h1 { 
+            color: #38bdf8; 
+            margin-bottom: 10px; 
+            font-size: 36px;
+            letter-spacing: 1px;
+        }
+        h3 { 
+            color: #94a3b8; 
+            font-weight: normal; 
+            margin-top: 0; 
+            margin-bottom: 40px;
+            font-size: 18px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 22px;
+            text-align: right;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.2);
+        }
+        .card.twins:hover {
+            border-color: #a855f7;
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.2);
+        }
+        .card.inverse:hover {
+            border-color: var(--gold);
+            box-shadow: 0 5px 15px rgba(212, 160, 23, 0.2);
+        }
+        .card.dual-vector:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.2);
+        }
+        .card h2 {
+            margin-top: 0;
+            font-size: 19px;
+            line-height: 1.4;
+        }
+        .card.prime h2 { color: #38bdf8; }
+        .card.twins h2 { color: #a855f7; }
+        .card.lnx h2 { color: #34d399; }
+        .card.inverse h2 { color: var(--gold); }
+        .card.dual-vector h2 { color: var(--cyan); }
+        
+        .card p {
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+        .btn-lnx { background: #059669; color: white; }
+        .btn-lnx:hover { background: #047857; }
+        .btn-prime { background: #0284c7; color: white; }
+        .btn-prime:hover { background: #0369a1; }
+        .btn-twins { background: #7c3aed; color: white; }
+        .btn-twins:hover { background: #6d28d9; }
+        .btn-inverse { background: #b57c00; color: white; }
+        .btn-inverse:hover { background: #966d09; }
+        .btn-cyan { background: #0891b2; color: white; }
+        .btn-cyan:hover { background: #0e7490; }
+        
+        .footer-notice {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #475569;
+            border-top: 1px solid #334155;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- شريط التنقل العلوي -->
+<div class="nav-header">
+    <a href="index.html" class="home-btn">🏠 العودة للرئيسية</a>
+    <a href="support.html" class="support-btn">☕ دعم الأبحاث</a>
+    <a href="SievesEN.html" class="lang-btn">English 🇺🇸</a>
+    <a href="SievesFR.html" class="lang-btn">Français 🇫🇷</a>
+</div>
+
+<div class="hub-container">
+    <h1>محركات غربلة بابا للإحصاء</h1>
+    <h3>المركز الرئيسي للبحوث الحسابية ولوحة التحكم الخماسية</h3>
+    
+    <div class="grid-container">
+        <!-- لوحة التحكم 1: بابا لـ Ln(X) -->
+        <div class="card lnx">
+            <div>
+                <h2>1. محرك بابا Ln(X)</h2>
+                <p>حاسبة متطورة للمقاييس الحسابية معززة باستخدام عوامل قياس أسية محددة من 10^1 إلى 10^17. تم تصميمها للحفاظ على ملف خلوّ تام من الأخطاء عند الحدود الكبرى.</p>
+            </div>
+            <a href="R1.html" class="btn btn-lnx">فتح الحاسبة</a>
+        </div>
+
+        <!-- لوحة التحكم 2: غربال بابا للأعداد الأولية -->
+        <div class="card prime">
+            <div>
+                <h2>2. غربال بابا للأعداد الأولية</h2>
+                <p>محرك ميكانيكي حتمي ينفذ تصفية دقيقة للأعداد الأولية عبر التكرار الدوري. يقوم بمقارنة البواقي الحسابية الدقيقة بمنهجيات التنبؤ الكلاسيكية.</p>
+            </div>
+            <a href="PrimeCountersHub.html" class="btn btn-prime">استكشاف العدادات</a>
+        </div>
+
+        <!-- لوحة التحكم 3: عداد بابا للأوليات التوأم -->
+        <div class="card twins">
+            <div>
+                <h2>3. غربال بابا للأوليات التوأم</h2>
+                <p>محرك ديناميكي يعتمد على الثوابت اللامتغيرة للتنبؤ بكميات الأعداد الأولية التوأم حتى 10^9. يستخدم الكسر الثابت العالمي (5/8) عبر جميع النطاقات الرقمية.</p>
+            </div>
+            <a href="R333.html" class="btn btn-twins">فتح غربال التوأم</a>
+        </div>
+
+        <!-- لوحة التحكم 4: ترتيب بابا للأعداد الأولية -->
+        <div class="card inverse">
+            <div>
+                <h2>4. محرك ترتيب بابا للأعداد الأولية</h2>
+                <p>وحدة حسابية عكسية ثورية مصممة لاستخراج الرمز النقي الدقيق للعدد الأولي بناءً على رتبته العالمية (العدد ذو الرتبة n) باستخدام ناقلات الخلايا السداسية المتزامنة.</p>
+            </div>
+            <a href="R4444.html" class="btn btn-inverse">تشغيل محرك الغربال</a>
+        </div>
+
+        <!-- لوحة التحكم 5: عداد بابا ثنائي المتجهات -->
+        <div class="card dual-vector">
+            <div>
+                <h2>5. غربال بابا ثنائي المتجهات</h2>
+                <p>محرك منفصل متقدم تم بناؤه لفصل وقياس الكثافة المطلقة للأعداد الأولية بشكل مستقل بين المتجه الأيسر (6k - 1) والمتجه الأيمن (6k + 1).</p>
+            </div>
+            <a href="R55555.html" class="btn btn-cyan">فتح عداد المتجهات</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
