@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="mainHtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baba–Mertens Observatory Hub | بوابة بابا–ميرتنز</title>
+    <style>
+        :root {
+            --primary: #1e272e;
+            --secondary: #2c3e50;
+            --accent: #c0392b;
+            --gold: #f3ba2f;
+            --blue: #2980b9;
+            --green: #27ae60;
+            --purple: #8e44ad;
+            --bg: #f4f7f6;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: #2c3e50;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-header {
+            width: 100%;
+            background: white;
+            padding: 12px 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+        .home-btn {
+            text-decoration: none;
+            background: var(--accent);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.92rem;
+            transition: 0.3s;
+        }
+        .home-btn:hover { background: #a93226; transform: translateY(-1px); }
+        .support-btn {
+            text-decoration: none;
+            background: var(--gold);
+            color: #111;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.92rem;
+            border: 1px solid #d4a017;
+            transition: 0.3s;
+        }
+        .support-btn:hover { background: #d4a017; transform: translateY(-1px); }
+        .lang-switcher { display: flex; gap: 6px; }
+        .lang-btn {
+            padding: 6px 14px;
+            border: 1px solid #ccc;
+            background: #eef2f3;
+            color: #2c3e50;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .lang-btn.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e272e 0%, #2c3e50 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--gold);
+        }
+        .hero h1 { margin: 0 0 10px 0; font-size: 2.1rem; color: var(--gold); }
+        .hero p { max-width: 850px; margin: 0 auto; font-size: 1.08rem; line-height: 1.6; color: #ecf0f1; }
+
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .section-title {
+            font-size: 1.35rem;
+            color: var(--primary);
+            border-bottom: 3px solid var(--blue);
+            padding-bottom: 8px;
+            margin-bottom: 22px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            border-top: 5px solid var(--blue);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+        .card.pillar1 { border-top-color: var(--accent); }
+        .card.pillar2 { border-top-color: var(--green); }
+        .card.pillar3 { border-top-color: var(--purple); }
+        .card.pillar4 { border-top-color: var(--blue); }
+
+        .card-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 4px;
+            background: #eef2f3;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            width: fit-content;
+        }
+        .card h3 { margin: 0 0 10px 0; font-size: 1.22rem; color: var(--primary); }
+        .card p { font-size: 0.96rem; line-height: 1.6; color: #555; margin-bottom: 18px; }
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .launch-btn {
+            text-decoration: none;
+            background: var(--secondary);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: 0.2s;
+            text-align: center;
+            flex: 1;
+            min-width: 140px;
+        }
+        .launch-btn:hover { background: #1a252f; }
+        .launch-btn.primary { background: #2980b9; }
+        .launch-btn.primary:hover { background: #21618c; }
+        .launch-btn.emerald { background: #27ae60; }
+        .launch-btn.emerald:hover { background: #219150; }
+        .launch-btn.purple { background: #8e44ad; }
+        .launch-btn.purple:hover { background: #732d91; }
+        .launch-btn.crimson { background: #c0392b; }
+        .launch-btn.crimson:hover { background: #a93226; }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--primary);
+            color: #bdc3c7;
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- شريط التنقل العلوي -->
+<div class="nav-header">
+    <div class="nav-links">
+        <a href="index.html" class="home-btn" id="navHome">🏠 Main Home Portal</a>
+        <a href="support.html" class="support-btn" id="navSupport">☕ Support Research</a>
+    </div>
+    <div class="lang-switcher">
+        <button class="lang-btn active" id="btnEn" onclick="setLang('en')">English</button>
+        <button class="lang-btn" id="btnAr" onclick="setLang('ar')">العربية</button>
+        <button class="lang-btn" id="btnFr" onclick="setLang('fr')">Français</button>
+    </div>
+</div>
+
+<!-- ترويسة البوابة -->
+<div class="hero">
+    <h1 id="heroTitle">Baba–Mertens Lab: Structural Decomposition Observatory</h1>
+    <p id="heroSub">The interactive computational companion to 'Baba–Mertens: A New Vision' — live verification of Mertens roots, record extremes, odd second-half purification, primorial layers, and power multiples.</p>
+</div>
+
+<div class="container">
+    <h2 class="section-title" id="secTitle">Observatory Wings &amp; Computational Engines</h2>
+
+    <div class="cards-grid">
+        <!-- البطاقة 1: نافذة الأصفار والقمم والقيعان الخاصة بميرتنز -->
+        <div class="card pillar1">
+            <div>
+                <span class="card-badge" id="b1">Pillar I &amp; IV | Roots &amp; Extremes</span>
+                <h3 id="t1">Mertens Roots, Peaks &amp; Troughs Observatory</h3>
+                <p id="d1">High-precision segmented engines for 4-column structural partitions (m, 2m, 3m, 6m), zero-root crossings, and chronological record peaks and troughs.</p>
+            </div>
+            <div class="btn-group">
+                <a href="mobius_partitions_hub.html" class="launch-btn primary" id="btn1a">Partitions &amp; Roots</a>
+                <a href="mertens_extremes_observatory.html" class="launch-btn crimson" id="btn1b">Peaks &amp; Troughs</a>
+            </div>
+        </div>
+
+        <!-- البطاقة 2: نافذة النصف الثاني الفردي والثنائيات الفردية -->
+        <div class="card pillar2">
+            <div>
+                <span class="card-badge" id="b2">Pillar II &amp; Appendix | Odd Second Half</span>
+                <h3 id="t2">Odd Second-Half &amp; Semiprime Observatory (k = 2)</h3>
+                <p id="d2">Live verification of the invariant active odd mass (20.2642% x) in (x/2, x], isolating single odd primes (k = 1) from odd semiprimes (k = 2) and higher layers.</p>
+            </div>
+            <div class="btn-group">
+                <a href="odd_half_observatory.html" class="launch-btn emerald" id="btn2">Launch Odd-Half Observatory</a>
+            </div>
+        </div>
+
+        <!-- البطاقة 3: نافذة الطبقات التكوينية وحواجز البريموريال -->
+        <div class="card pillar3">
+            <div>
+                <span class="card-badge" id="b3">Pillar III | Primorial Layers</span>
+                <h3 id="t3">Primorial Layers &amp; Astronomical Peak Observatory</h3>
+                <p id="d3">Exact Meissel–Lehmer dissection of 10 primorial layers up to 10¹² alongside the Sathe–Selberg astronomical peak tracker extending to 10¹⁰⁰⁰.</p>
+            </div>
+            <div class="btn-group">
+                <a href="primorial_layers_engine.html" class="launch-btn purple" id="btn3a">Exact Engine (10¹²)</a>
+                <a href="astronomical_observatory.html" class="launch-btn" id="btn3b">Astronomical (10¹⁰⁰⁰)</a>
+            </div>
+        </div>
+
+        <!-- البطاقة 4: نافذة مضاعفات الأسس الكاملة -->
+        <div class="card pillar4">
+            <div>
+                <span class="card-badge" id="b4">Pillar II | Higher Powers Decoupling</span>
+                <h3 id="t4">Power Multiples Search Engine (k = 2 .. 10)</h3>
+                <p id="d4">Unified fractional formulas in terms of π^k (Euler's exact closed denominators for even powers and high-precision integer denominators for odd powers).</p>
+            </div>
+            <div class="btn-group">
+                <a href="powers_observatory.html" class="launch-btn primary" id="btn4">Launch Power Engine</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer id="footerText">
+    Baba Lab for Mathematical Proofs — Gaza, Palestine | 2026
+</footer>
+
+<script>
+const translations = {
+    en: {
+        dir: "ltr",
+        navHome: "🏠 Main Home Portal",
+        navSupport: "☕ Support Research",
+        heroTitle: "Baba–Mertens Lab: Structural Decomposition Observatory",
+        heroSub: "The interactive computational companion to 'Baba–Mertens: A New Vision' — live verification of Mertens roots, record extremes, odd second-half purification, primorial layers, and power multiples.",
+        secTitle: "Observatory Wings & Computational Engines",
+        b1: "Pillar I & IV | Roots & Extremes",
+        t1: "Mertens Roots, Peaks & Troughs Observatory",
+        d1: "High-precision segmented engines for 4-column structural partitions (m, 2m, 3m, 6m), zero-root crossings, and chronological record peaks and troughs.",
+        btn1a: "Partitions & Roots",
+        btn1b: "Peaks & Troughs",
+        b2: "Pillar II & Appendix | Odd Second Half",
+        t2: "Odd Second-Half & Semiprime Observatory (k = 2)",
+        d2: "Live verification of the invariant active odd mass (20.2642% x) in (x/2, x], isolating single odd primes (k = 1) from odd semiprimes (k = 2) and higher layers.",
+        btn2: "Launch Odd-Half Observatory",
+        b3: "Pillar III | Primorial Layers",
+        t3: "Primorial Layers & Astronomical Peak Observatory",
+        d3: "Exact Meissel–Lehmer dissection of 10 primorial layers up to 10¹² alongside the Sathe–Selberg astronomical peak tracker extending to 10¹⁰⁰⁰.",
+        btn3a: "Exact Engine (10¹²)",
+        btn3b: "Astronomical (10¹⁰⁰⁰)",
+        b4: "Pillar II | Higher Powers Decoupling",
+        t4: "Power Multiples Search Engine (k = 2 .. 10)",
+        d4: "Unified fractional formulas in terms of π^k (Euler's exact closed denominators for even powers and high-precision integer denominators for odd powers).",
+        btn4: "Launch Power Engine",
+        footerText: "Baba Lab for Mathematical Proofs — Gaza, Palestine | 2026"
+    },
+    ar: {
+        dir: "rtl",
+        navHome: "🏠 البوابة الأم (الرئيسية)",
+        navSupport: "☕ دعم الأبحاث",
+        heroTitle: "مختبر بابا–ميرتنز: مرصد البراهين والتفكيك البنيوي",
+        heroSub: "المنصة الحسابية والتفاعلية المرافقة للبحث العلمي «بابا ميرتنز: رؤية جديدة» — رصد حيّ لجذور وقمم ميرتنز، وتطهير النصف الثاني الفردي، وطبقات البريموريال، ومضاعفات الأسس.",
+        secTitle: "أجنحة الرصد والمحركات الحسابية",
+        b1: "المرتكز الأول والرابع | الجذور والقمم والقيعان",
+        t1: "مرصد جذور وقمم وقيعان ميرتنز",
+        d1: "محركات غربلة مجزأة عالية الدقة للتقسيمات الهيكلية (m, 2m, 3m, 6m)، ورصد الأصفار ونقاط العبور، وتتبع الأرقام القياسية للقمم والقيعان.",
+        btn1a: "التقسيمات والأصفار",
+        btn1b: "القمم والقيعان",
+        b2: "المرتكز الثاني والملحق | النصف الثاني الفردي",
+        t2: "مرصد النصف الثاني الفردي والثنائيات الفردية (k = 2)",
+        d2: "التحقق الحسابي الحي للكتلة الفردية الصافية (20.2642% x) في (x/2, x]، وعزل الأوليات الفردية عن الثنائيات الفردية (k = 2) والطبقات العليا.",
+        btn2: "تشغيل مرصد النصف الثاني",
+        b3: "المرتكز الثالث | طبقات البريموريال",
+        t3: "محرك طبقات البريموريال والمرصد الفلكي للذروات",
+        d3: "تشريح دقيق لـ 10 طبقات بريموريالية حتى التريليون (10¹²) بجانب المرصد الفلكي لزحف القمم وفق صيغة ساتي–سيلبرغ حتى 10¹⁰⁰⁰.",
+        btn3a: "المحرك الدقيق (10¹²)",
+        btn3b: "المرصد الفلكي (10¹⁰⁰⁰)",
+        b4: "المرتكز الثاني | تحرير الأسس العليا",
+        t4: "محرك بحث مضاعفات الأسس الكاملة (k = 2 .. 10)",
+        d4: "توحيد الصيغ الكسرية بدلالة π^k (مقامات أويلر المغلقة للأسس الزوجية والمقامات الصحيحة عالية الدقة للأسس الفردية).",
+        btn4: "تشغيل محرك الأسس",
+        footerText: "مختبر بابا للبراهين الرياضية — غزة، فلسطين | 2026"
+    },
+    fr: {
+        dir: "ltr",
+        navHome: "🏠 Portail Principal",
+        navSupport: "☕ Soutenir la Recherche",
+        heroTitle: "Laboratoire Baba–Mertens : Observatoire Structurel",
+        heroSub: "La plateforme interactive accompagnant « Baba–Mertens : Une Nouvelle Vision » — vérification des racines de Mertens, extremums, seconde moitié impaire, couches primorielles et puissances.",
+        secTitle: "Ailes d'Observation et Moteurs de Calcul",
+        b1: "Piliers I & IV | Racines & Extremums",
+        t1: "Observatoire des Racines, Pics & Creux de Mertens",
+        d1: "Moteurs segmentés haute précision pour les partitions (m, 2m, 3m, 6m), traversées de zéro et suivi chronologique des pics et creux records.",
+        btn1a: "Partitions & Racines",
+        btn1b: "Pics & Creux",
+        b2: "Pilier II & Annexe | Seconde Moitié Impaire",
+        t2: "Observatoire de la Seconde Moitié Impaire (k = 2)",
+        d2: "Vérification en direct de la masse impaire active (20,2642% x) dans (x/2, x], isolant les premiers impairs (k = 1) des semi-premiers (k = 2).",
+        btn2: "Lancer l'Observatoire Impair",
+        b3: "Pilier III | Couches Primorielles",
+        t3: "Moteur des Couches Primorielles & Observatoire Astronomique",
+        d3: "Dissection exacte de 10 couches primorielles jusqu'à 10¹² accompagnée du suivi astronomique des sommets de Sathe–Selberg jusqu'à 10¹⁰⁰⁰.",
+        btn3a: "Moteur Exact (10¹²)",
+        btn3b: "Astronomique (10¹⁰⁰⁰)",
+        b4: "Pilier II | Découplage des Puissances",
+        t4: "Moteur des Multiples de Puissances (k = 2 .. 10)",
+        d4: "Formules fractionnaires unifiées en π^k (dénominateurs fermés d'Euler pour les puissances paires et entiers de haute précision pour les impaires).",
+        btn4: "Lancer le Moteur de Puissances",
+        footerText: "Laboratoire Baba pour les Preuves Mathématiques — Gaza, Palestine | 2026"
+    }
+};
+
+function setLang(lang) {
+    const t = translations[lang];
+    document.getElementById('mainHtml').setAttribute('lang', lang);
+    document.getElementById('mainHtml').setAttribute('dir', t.dir);
+
+    document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+    document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
+    document.getElementById('btnFr').classList.toggle('active', lang === 'fr');
+
+    for (const key in t) {
+        if (key !== 'dir' && document.getElementById(key)) {
+            document.getElementById(key).innerText = t[key];
+        }
+    }
+}
+
+setLang('en');
+</script>
+
+</body>
+</html>

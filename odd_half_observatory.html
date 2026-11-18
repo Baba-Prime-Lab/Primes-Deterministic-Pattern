@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="mainHtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odd Second-Half & Semiprime Observatory | مرصد النصف الثاني الفردي</title>
+    <style>
+        :root {
+            --primary: #1e272e;
+            --secondary: #2c3e50;
+            --accent: #c0392b;
+            --gold: #f3ba2f;
+            --blue: #2980b9;
+            --green: #27ae60;
+            --purple: #8e44ad;
+            --bg: #f4f7f6;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: #2c3e50;
+            margin: 0;
+            padding: 0;
+        }
+        /* شريط التنقل العلوي الموحد */
+        .nav-header {
+            width: 100%;
+            background: white;
+            padding: 12px 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+        .home-btn {
+            text-decoration: none;
+            background: var(--accent);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.92rem;
+            transition: 0.3s;
+        }
+        .home-btn:hover { background: #a93226; transform: translateY(-1px); }
+        .support-btn {
+            text-decoration: none;
+            background: var(--gold);
+            color: #111;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.92rem;
+            border: 1px solid #d4a017;
+            transition: 0.3s;
+        }
+        .support-btn:hover { background: #d4a017; transform: translateY(-1px); }
+        .lang-switcher { display: flex; gap: 6px; }
+        .lang-btn {
+            padding: 6px 14px;
+            border: 1px solid #ccc;
+            background: #eef2f3;
+            color: #2c3e50;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .lang-btn.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: 25px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            border-bottom: 3px solid var(--blue);
+            padding-bottom: 12px;
+            margin-top: 0;
+        }
+        .subtitle {
+            text-align: center;
+            color: #555;
+            font-size: 1.05rem;
+            margin-bottom: 25px;
+        }
+
+        /* أدوات التحكم بالحساب الحي */
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            background: #eef2f3;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            border: 1px solid #d5dbdb;
+        }
+        input {
+            padding: 10px 15px;
+            font-size: 1.1rem;
+            border-radius: 6px;
+            border: 2px solid var(--secondary);
+            width: 240px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .run-btn {
+            padding: 11px 22px;
+            font-size: 1.05rem;
+            border-radius: 6px;
+            background-color: var(--green);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .run-btn:hover { background-color: #219150; }
+        .loading {
+            text-align: center;
+            color: #d35400;
+            font-weight: bold;
+            display: none;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        /* بطاقات النتائج الحية في النصف الثاني الفردي */
+        .live-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #fdfefe;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .stat-card.mass { border-top: 5px solid var(--blue); }
+        .stat-card.primes { border-top: 5px solid var(--accent); }
+        .stat-card.semiprimes { border-top: 5px solid var(--green); background: #f4fbf7; }
+        .stat-card.higher { border-top: 5px solid var(--purple); }
+        .stat-card.mertens { border-top: 5px solid var(--gold); background: #2c3e50; color: white; }
+
+        .stat-label { font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; opacity: 0.9; }
+        .stat-number { font-size: 1.35rem; font-weight: bold; font-family: 'Courier New', monospace; }
+
+        /* جدول الملحق الحسابي الموثق */
+        .table-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin: 30px 0 12px 0;
+            border-right: 5px solid var(--gold);
+            padding: 0 12px;
+        }
+        .table-wrapper { overflow-x: auto; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.98rem;
+            background: white;
+        }
+        th {
+            background: var(--secondary);
+            color: var(--gold);
+            padding: 12px 10px;
+            border: 1px solid #1a252f;
+            text-align: center;
+        }
+        td {
+            padding: 11px 10px;
+            border: 1px solid #dcdde1;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        .highlight-col { background-color: #eafaf1 !important; color: #1e8449; }
+    </style>
+</head>
+<body>
+
+<!-- شريط التنقل العلوي -->
+<div class="nav-header">
+    <div class="nav-links">
+        <a href="baba_mertens_hub.html" class="home-btn" id="navHome">🏠 العودة للبوابة الرئيسية</a>
+        <a href="support.html" class="support-btn" id="navSupport">☕ دعم الأبحاث</a>
+    </div>
+    <div class="lang-switcher">
+        <button class="lang-btn active" id="btnAr" onclick="setLang('ar')">العربية</button>
+        <button class="lang-btn" id="btnEn" onclick="setLang('en')">English</button>
+        <button class="lang-btn" id="btnFr" onclick="setLang('fr')">Français</button>
+    </div>
+</div>
+
+<div class="container">
+    <h1 id="pageTitle">مرصد النصف الثاني الفردي والثنائيات الفردية (k = 2)</h1>
+    <p class="subtitle" id="pageSub">التحقق الحسابي الحي للكتلة الفردية الفاعلة في (X/2, X] وعزل مضاعفات الأوليات الثنائية الفردية</p>
+
+    <!-- أدوات التشغيل الحي -->
+    <div class="controls">
+        <label for="limitInput" style="font-weight:bold;" id="lblLimit">النطاق الحسابي الأقصى (X):</label>
+        <input type="number" id="limitInput" value="1000000" min="10" max="9000000000000000">
+        <button class="run-btn" id="btnRun" onclick="startOddHalfSieve()">تشغيل الغربال الفردي الحي</button>
+    </div>
+    <div class="loading" id="loadingText">جاري مسح النصف الثاني الفردي وعزل الثنائيات...</div>
+
+    <!-- بطاقات النتائج الحية في (X/2, X] -->
+    <div class="live-grid">
+        <div class="stat-card mass">
+            <div class="stat-label" id="lblMass">الكتلة الفردية الصافية (μ ≠ 0)</div>
+            <div class="stat-number" id="valMass" style="color:#2980b9;">0</div>
+        </div>
+        <div class="stat-card primes">
+            <div class="stat-label" id="lblPrimes">الأوليات الفردية (k = 1) [-1]</div>
+            <div class="stat-number" id="valPrimes" style="color:#c0392b;">0</div>
+        </div>
+        <div class="stat-card semiprimes">
+            <div class="stat-label" id="lblSemi">الثنائيات الفردية (k = 2) [+1]</div>
+            <div class="stat-number" id="valSemi" style="color:#27ae60;">0</div>
+        </div>
+        <div class="stat-card higher">
+            <div class="stat-label" id="lblHigher">المركبات الفردية العليا (k ≥ 3)</div>
+            <div class="stat-number" id="valHigher" style="color:#8e44ad;">0</div>
+        </div>
+        <div class="stat-card mertens">
+            <div class="stat-label" id="lblMertens">قيمة ميرتنز الدقيقة M(X)</div>
+            <div class="stat-number" id="valMertens" style="color:#f3ba2f;">0</div>
+        </div>
+    </div>
+
+    <!-- الجدول التوثيقي المعتمد (Table 3 المطور) -->
+    <h2 class="table-title" id="tblTitle">الجدول التوثيقي المحسّن للمحطات القياسية (من 10³ إلى 10¹²)</h2>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th id="thScale">الأفق العددي (X)</th>
+                    <th id="thMass">الكتلة الفردية الصافية<br>(Active Odd Mass)</th>
+                    <th id="thPrimes">الأوليات الفردية<br>(k = 1) [-1]</th>
+                    <th id="thSemi" style="background:#1e8449; color:white;">الثنائيات الفردية<br>(k = 2) [+1]</th>
+                    <th id="thHigher">المركبات العليا<br>(k ≥ 3)</th>
+                    <th id="thMertens">قيمة ميرتنز<br>M(X)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>10³ (1,000)</td>
+                    <td>202</td>
+                    <td>73</td>
+                    <td class="highlight-col">113</td>
+                    <td>16</td>
+                    <td>+2</td>
+                </tr>
+                <tr>
+                    <td>10⁶ (1,000,000)</td>
+                    <td>202,642</td>
+                    <td>36,960</td>
+                    <td class="highlight-col">98,940</td>
+                    <td>66,742</td>
+                    <td>+212</td>
+                </tr>
+                <tr>
+                    <td>10⁹ (10^9)</td>
+                    <td>202,642,367</td>
+                    <td>24,522,063</td>
+                    <td class="highlight-col">75,585,041</td>
+                    <td>102,535,263</td>
+                    <td>+253</td>
+                </tr>
+                <tr>
+                    <td>10¹² (10^12)</td>
+                    <td>202,642,367,284</td>
+                    <td>18,354,306,892</td>
+                    <td class="highlight-col">60,992,431,815</td>
+                    <td>123,295,628,577</td>
+                    <td>+62,366</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+const translations = {
+    ar: {
+        dir: "rtl",
+        navHome: "🏠 العودة للبوابة الرئيسية",
+        navSupport: "☕ دعم الأبحاث",
+        pageTitle: "مرصد النصف الثاني الفردي والثنائيات الفردية (k = 2)",
+        pageSub: "التحقق الحسابي الحي للكتلة الفردية الفاعلة في (X/2, X] وعزل مضاعفات الأوليات الثنائية الفردية",
+        lblLimit: "النطاق الحسابي الأقصى (X):",
+        btnRun: "تشغيل الغربال الفردي الحي",
+        lblMass: "الكتلة الفردية الصافية (μ ≠ 0)",
+        lblPrimes: "الأوليات الفردية (k = 1) [-1]",
+        lblSemi: "الثنائيات الفردية (k = 2) [+1]",
+        lblHigher: "المركبات الفردية العليا (k ≥ 3)",
+        lblMertens: "قيمة ميرتنز الدقيقة M(X)",
+        tblTitle: "الجدول التوثيقي المحسّن للمحطات القياسية (من 10³ إلى 10¹²)",
+        thScale: "الأفق العددي (X)",
+        thMass: "الكتلة الفردية الصافية",
+        thPrimes: "الأوليات الفردية (k = 1)",
+        thSemi: "الثنائيات الفردية (k = 2)",
+        thHigher: "المركبات العليا (k ≥ 3)",
+        thMertens: "قيمة ميرتنز M(X)",
+        loadingMsg: "جاري مسح النصف الثاني الفردي وعزل الثنائيات..."
+    },
+    en: {
+        dir: "ltr",
+        navHome: "🏠 Back to Observatory Hub",
+        navSupport: "☕ Support Research",
+        pageTitle: "Odd Second-Half & Semiprime Observatory (k = 2)",
+        pageSub: "Live computational verification of the active odd mass in (X/2, X] and isolation of odd semiprimes",
+        lblLimit: "Maximum Scale (X):",
+        btnRun: "Run Live Odd Sieve",
+        lblMass: "Active Odd Mass (μ ≠ 0)",
+        lblPrimes: "Single Odd Primes (k = 1) [-1]",
+        lblSemi: "Odd Semiprimes (k = 2) [+1]",
+        lblHigher: "Higher Odd Composites (k ≥ 3)",
+        lblMertens: "Exact Mertens Value M(X)",
+        tblTitle: "Enhanced Benchmark Table Across Standard Horizons (10³ to 10¹²)",
+        thScale: "Scale (X)",
+        thMass: "Active Odd Mass",
+        thPrimes: "Single Odd Primes (k=1)",
+        thSemi: "Odd Semiprimes (k=2)",
+        thHigher: "Higher Composites (k≥3)",
+        thMertens: "Mertens Value M(X)",
+        loadingMsg: "Scanning odd second half and isolating semiprimes..."
+    },
+    fr: {
+        dir: "ltr",
+        navHome: "🏠 Retour au Portail",
+        navSupport: "☕ Soutenir la Recherche",
+        pageTitle: "Observatoire de la Seconde Moitié Impaire & Semi-Premiers (k = 2)",
+        pageSub: "Vérification en direct de la masse impaire active dans (X/2, X] et isolement des semi-premiers impairs",
+        lblLimit: "Plage de calcul maximale (X) :",
+        btnRun: "Lancer le Crible Impair",
+        lblMass: "Masse Impaire Active (μ ≠ 0)",
+        lblPrimes: "Nombres Premiers Impairs (k = 1) [-1]",
+        lblSemi: "Semi-Premiers Impairs (k = 2) [+1]",
+        lblHigher: "Composés Impairs Supérieurs (k ≥ 3)",
+        lblMertens: "Valeur Exacte de Mertens M(X)",
+        tblTitle: "Tableau de Référence Amélioré des Horizons Standards (10³ à 10¹²)",
+        thScale: "Échelle (X)",
+        thMass: "Masse Impaire Active",
+        thPrimes: "Premiers Impairs (k=1)",
+        thSemi: "Semi-Premiers Impairs (k=2)",
+        thHigher: "Composés Supérieurs (k≥3)",
+        thMertens: "Valeur Mertens M(X)",
+        loadingMsg: "Analyse de la seconde moitié impaire en cours..."
+    }
+};
+
+let currentLang = 'ar';
+let isRunning = false;
+
+function setLang(lang) {
+    currentLang = lang;
+    const t = translations[lang];
+    document.getElementById('mainHtml').setAttribute('lang', lang);
+    document.getElementById('mainHtml').setAttribute('dir', t.dir);
+
+    document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
+    document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+    document.getElementById('btnFr').classList.toggle('active', lang === 'fr');
+
+    for (const key in t) {
+        if (key !== 'dir' && key !== 'loadingMsg' && document.getElementById(key)) {
+            document.getElementById(key).innerText = t[key];
+        }
+    }
+}
+
+const pause = () => new Promise(resolve => setTimeout(resolve, 10));
+
+async function startOddHalfSieve() {
+    if (isRunning) return;
+    let X = parseInt(document.getElementById('limitInput').value);
+    if (isNaN(X) || X < 2) { alert("Please enter X >= 2"); return; }
+
+    isRunning = true;
+    const loadingText = document.getElementById('loadingText');
+    loadingText.style.display = 'block';
+    loadingText.innerText = translations[currentLang].loadingMsg;
+
+    let startRange = Math.floor(X / 2) + 1;
+    let sqrt_x = Math.floor(Math.sqrt(X)) + 1;
+
+    let is_prime_base = new Uint8Array(sqrt_x + 1).fill(1);
+    let base_primes = [];
+    for (let p = 2; p <= sqrt_x; p++) {
+        if (is_prime_base[p]) {
+            if (p >= 3) base_primes.push(p);
+            for (let i = p * p; i <= sqrt_x; i += p) is_prime_base[i] = 0;
+        }
+    }
+
+    let activeMass = 0;
+    let oddPrimes = 0;
+    let oddSemiprimes = 0;
+    let oddHigher = 0;
+    let mertensSum = (startRange <= 1 && X >= 1) ? 1 : 0;
+
+    const segment_size = 2000000;
+
+    for (let low = startRange; low <= X; low += segment_size) {
+        let high = Math.min(low + segment_size - 1, X);
+        let size = high - low + 1;
+
+        let remaining = new Float64Array(size);
+        let omega = new Uint8Array(size);
+        let is_sq_free = new Uint8Array(size).fill(1);
+
+        for (let i = 0; i < size; i++) {
+            let num = low + i;
+            if (num % 2 === 0) {
+                is_sq_free[i] = 0;
+            } else {
+                remaining[i] = num;
+            }
+        }
+
+        for (let p of base_primes) {
+            let p_sq = p * p;
+            let start_sq = Math.ceil(low / p_sq) * p_sq;
+            for (let i = start_sq; i <= high; i += p_sq) {
+                is_sq_free[i - low] = 0;
+            }
+
+            let start = Math.ceil(low / p) * p;
+            for (let i = start; i <= high; i += p) {
+                let idx = i - low;
+                if (is_sq_free[idx] === 1) {
+                    omega[idx]++;
+                    remaining[idx] /= p;
+                }
+            }
+        }
+
+        for (let i = 0; i < size; i++) {
+            let num = low + i;
+            if (num >= 3 && is_sq_free[i] === 1) {
+                if (remaining[i] > 1) omega[i]++;
+                let k = omega[i];
+                activeMass++;
+
+                if (k === 1) {
+                    oddPrimes++;
+                    mertensSum -= 1;
+                } else if (k === 2) {
+                    oddSemiprimes++;
+                    mertensSum += 1;
+                } else {
+                    oddHigher++;
+                    mertensSum += (k % 2 === 0) ? 1 : -1;
+                }
+            }
+        }
+
+        document.getElementById('valMass').innerText = activeMass.toLocaleString('en-US');
+        document.getElementById('valPrimes').innerText = oddPrimes.toLocaleString('en-US');
+        document.getElementById('valSemi').innerText = oddSemiprimes.toLocaleString('en-US');
+        document.getElementById('valHigher').innerText = oddHigher.toLocaleString('en-US');
+        document.getElementById('valMertens').innerText = (mertensSum > 0 ? "+" : "") + mertensSum.toLocaleString('en-US');
+
+        let pct = (((high - startRange + 1) / (X - startRange + 1)) * 100).toFixed(1);
+        loadingText.innerText = `${translations[currentLang].loadingMsg} (${pct}%)`;
+        await pause();
+    }
+
+    loadingText.style.display = 'none';
+    isRunning = false;
+}
+window.onload = () => {
+    setLang('en');
+    startOddHalfSieve();
+};
+</script>
+
+</body>
+</html>

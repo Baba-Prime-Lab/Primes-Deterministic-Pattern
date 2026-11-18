@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="mainHtml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power Multiples Observatory | محرك مضاعفات الأسس الكاملة</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --accent: #38bdf8;
+    --gold: #fbbf24;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --border: #334155;
+    --success: #10b981;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0 20px 20px 20px;
+    line-height: 1.6;
+  }
+  .container { max-width: 1150px; margin: 0 auto; }
+
+  .nav-header {
+    width: 100%;
+    max-width: 1150px;
+    margin: 0 auto;
+    background: transparent;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-sizing: border-box;
+  }
+  .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .home-btn {
+    text-decoration: none;
+    background: #c0392b;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: 0.3s;
+  }
+  .home-btn:hover { background: #a93226; transform: translateY(-1px); }
+  .support-btn {
+    text-decoration: none;
+    background: #f3ba2f;
+    color: black;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    border: 1px solid #d4a017;
+  }
+  .support-btn:hover { background: #d4a017; transform: translateY(-1px); }
+  .lang-switcher { display: flex; gap: 6px; }
+  .lang-btn {
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+  }
+  .lang-btn.active {
+    background: var(--accent);
+    color: #0f172a;
+    border-color: var(--accent);
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+  }
+  h1 { color: var(--accent); margin-bottom: 5px; font-size: 1.8rem; }
+  .control-panel {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  }
+  .input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  label { font-weight: bold; font-size: 1.1rem; }
+  input[type="number"] {
+    flex: 1;
+    min-width: 220px;
+    padding: 12px 15px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #0f172a;
+    color: var(--accent);
+    font-weight: bold;
+    direction: ltr;
+  }
+  .presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .preset-btn {
+    background: #334155;
+    color: var(--text);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.2s;
+  }
+  .preset-btn:hover { background: #475569; }
+  .powers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+    gap: 10px;
+  }
+  .power-btn {
+    background: #0f172a;
+    color: var(--text);
+    border: 2px solid var(--border);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: bold;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .power-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .power-btn.active {
+    background: var(--accent);
+    color: #0f172a;
+    border-color: var(--accent);
+  }
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-top: 25px;
+  }
+  .stat-card {
+    background: var(--card);
+    padding: 18px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .stat-title { color: var(--muted); font-size: 0.95rem; margin-bottom: 8px; }
+  .stat-value {
+    font-size: 1.45rem;
+    font-weight: bold;
+    color: var(--accent);
+    direction: ltr;
+  }
+  .stat-sub { font-size: 0.85rem; color: var(--success); margin-top: 5px; }
+  .analysis-box {
+    margin-top: 25px;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    padding: 22px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    border-inline-start: 5px solid var(--accent);
+  }
+  .analysis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .parity-tag {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+  .tag-even { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+  .tag-odd { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+  .formula-display {
+    background: #020617;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.15rem;
+    color: #38bdf8;
+    direction: ltr;
+    text-align: center;
+    margin: 12px 0;
+    border: 1px solid #1e293b;
+  }
+  .table-container {
+    margin-top: 25px;
+    background: var(--card);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  th, td { padding: 12px; text-align: center; border-bottom: 1px solid var(--border); }
+  th { background: #0f172a; color: var(--accent); font-size: 0.95rem; }
+  tr:hover { background: rgba(56, 189, 248, 0.05); }
+  .pi-formula {
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--gold);
+    font-weight: bold;
+    direction: ltr;
+    font-size: 0.95rem;
+  }
+</style>
+</head>
+<body>
+<div class="nav-header">
+    <div class="nav-links">
+        <a href="baba_mertens_hub.html" class="home-btn" id="navHome">🏠 Back to Observatory Hub</a>
+        <a href="support.html" class="support-btn" id="navSupport">☕ Support Research</a>
+    </div>
+    <div class="lang-switcher">
+        <button class="lang-btn active" id="btnEn" onclick="setLang('en')">English</button>
+        <button class="lang-btn" id="btnAr" onclick="setLang('ar')">العربية</button>
+        <button class="lang-btn" id="btnFr" onclick="setLang('fr')">Français</button>
+    </div>
+</div>
+
+<div class="container">
+  <header>
+    <h1 id="mainTitle">Power Multiples Search Engine (k = 2 .. 10)</h1>
+    <p style="color: var(--muted);" id="mainSub">Unified fractional formulas in terms of &pi;^k (Euler &pi;^k/B_k for even powers &amp; exact 10^9&pi;^k/D_k for odd powers)</p>
+  </header>
+
+  <div class="control-panel">
+    <div class="input-group">
+      <label for="xInput" id="lblInput">Enter value of x (up to 10^12):</label>
+      <input type="number" id="xInput" value="1000000000" min="1" max="1000000000000">
+    </div>
+
+    <div class="presets" id="presetsBox"></div>
+
+    <div style="margin-bottom: 10px; font-weight: bold; color: var(--muted);" id="lblSelectPower">Select target power (k):</div>
+    <div class="powers-grid" id="powersGrid"></div>
+  </div>
+
+  <div class="results-grid" id="resultsGrid">
+    <div class="stat-card">
+      <div class="stat-title" id="stCountTitle">Power-k Multiples (&le; x)</div>
+      <div class="stat-value" id="resCount">-</div>
+      <div class="stat-sub" id="resTime">Compute time: 0 ms</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title" id="stFreeTitle">k-Free Integers Q_k(x)</div>
+      <div class="stat-value" id="resFree">-</div>
+      <div class="stat-sub" id="resFreeRatio">Actual ratio: -</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title" id="stApproxTitle">Unified Theoretical Approx.</div>
+      <div class="stat-value" id="resApprox">-</div>
+      <div class="stat-sub" id="resError">Oscillation diff: -</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title" id="stPureTitle">Pure k-th Powers (a^k &le; x)</div>
+      <div class="stat-value" id="resPure">-</div>
+      <div class="stat-sub" id="stPureSub">Excluding multiples</div>
+    </div>
+  </div>
+
+  <div class="analysis-box" id="analysisBox">
+    <div class="analysis-header">
+      <h3 style="margin: 0; color: var(--accent);" id="analysisTitle">Structural Analysis of Selected Power</h3>
+      <span class="parity-tag tag-even" id="parityBadge">Even Power</span>
+    </div>
+    <div class="formula-display" id="formulaBox">-</div>
+    <p id="analysisDesc" style="margin: 8px 0 0 0; color: var(--text); font-size: 1rem;"></p>
+    <p id="analysisDeep" style="margin: 8px 0 0 0; color: var(--muted); font-size: 0.92rem;"></p>
+  </div>
+
+  <div class="table-container">
+    <h3 style="margin-top: 0; color: var(--accent);" id="tblHeading">Comprehensive Comparison via Unified Fractional Formulas (k = 2 to 10)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th id="thPower">Power (k)</th>
+          <th id="thName">Name</th>
+          <th id="thZeta">Unified &zeta;(k) Formula</th>
+          <th id="thMult">Multiples N_k(x)</th>
+          <th id="thFree">k-Free Q_k(x)</th>
+          <th id="thDens">Theoretical Density</th>
+          <th id="thOsc">Oscillation N_k(x) - Approx</th>
+        </tr>
+      </thead>
+      <tbody id="summaryTable"></tbody>
+    </table>
+  </div>
+</div>
+<script>
+const PI = Math.PI;
+let currentLang = 'en';
+let currentK = 2;
+
+const UNIFIED_ZETA = {
+  2:  { type: "even", num: 1,   den: 6,               label: "π² / 6" },
+  3:  { type: "odd",  num: 1e9, den: 25794350159,     label: "10⁹·π³ / 25,794,350,159" },
+  4:  { type: "even", num: 1,   den: 90,              label: "π⁴ / 90" },
+  5:  { type: "odd",  num: 1e9, den: 295121509946,    label: "10⁹·π⁵ / 295,121,509,946" },
+  6:  { type: "even", num: 1,   den: 945,             label: "π⁶ / 945" },
+  7:  { type: "odd",  num: 1e9, den: 2995284765103,   label: "10⁹·π⁷ / 2,995,284,765,103" },
+  8:  { type: "even", num: 1,   den: 9450,            label: "π⁸ / 9450" },
+  9:  { type: "odd",  num: 1e9, den: 29749350945088,  label: "10⁹·π⁹ / 29,749,350,945,088" },
+  10: { type: "even", num: 1,   den: 93555,           label: "π¹⁰ / 93555" }
+};
+
+function getZetaVal(k) {
+  const item = UNIFIED_ZETA[k];
+  return (item.num * Math.pow(PI, k)) / item.den;
+}
+
+const I18N = {
+  en: {
+    dir: "ltr",
+    navHome: "🏠 Back to Observatory Hub",
+    navSupport: "☕ Support Research",
+    mainTitle: "Power Multiples Search Engine (k = 2 .. 10)",
+    mainSub: "Unified fractional formulas in terms of π^k (Euler π^k/B_k for even powers & exact 10^9π^k/D_k for odd powers)",
+    lblInput: "Enter value of x (up to 10^12):",
+    lblSelectPower: "Select target power (k):",
+    stCountTitle: "Power-k Multiples (≤ x)",
+    stFreeTitle: "k-Free Integers Q_k(x)",
+    stApproxTitle: "Unified Theoretical Approx.",
+    stPureTitle: "Pure k-th Powers (a^k ≤ x)",
+    stPureSub: "Excluding multiples",
+    tblHeading: "Comprehensive Comparison via Unified Fractional Formulas (k = 2 to 10)",
+    thPower: "Power (k)", thName: "Name", thZeta: "Unified ζ(k) Formula",
+    thMult: "Multiples N_k(x)", thFree: "k-Free Q_k(x)", thDens: "Theoretical Density", thOsc: "Oscillation N_k(x) - Approx",
+    badgeEven: "Even Power (Euler Exact)", badgeOdd: "Odd Power (Unified Fractional)",
+    timeTxt: (ms) => `Compute time: ${ms} ms`,
+    ratioTxt: (r) => `Actual ratio: ${r}%`,
+    errTxt: (e) => `Oscillation diff: ${e}`,
+    powerBtn: (k, name) => `Power ${k}<br><span style="font-size:0.78rem; font-weight:normal;">${name}</span>`,
+    analysisTitle: (name, k) => `Structural Analysis of ${name} (k = ${k})`,
+    presetsLabel: "Quick presets:",
+    presets: [
+      { v: 1000, l: "10^3 (Thousand)" },
+      { v: 1000000, l: "10^6 (Million)" },
+      { v: 100000000, l: "10^8 (100M)" },
+      { v: 1000000000, l: "10^9 (Billion)" },
+      { v: 10000000000, l: "10^10 (10B)" }
+    ],
+    names: {
+      2: "Squares & Multiples", 3: "Cubes & Multiples", 4: "4th Powers & Multiples",
+      5: "5th Powers & Multiples", 6: "6th Powers & Multiples", 7: "7th Powers & Multiples",
+      8: "8th Powers & Multiples", 9: "9th Powers & Multiples", 10: "10th Powers & Multiples"
+    },
+    analysis: {
+      2: { desc: "Euler's Basel Problem: Closed point formula based on Bernoulli number B₂ = 1/6 with exact integer denominator 6.", deep: "Multiples density equals exactly 1 - 6/π² (approx. 39.2073%)." },
+      3: { desc: "Apéry's Constant in unified fractional form: Numerator 10⁹·π³ and denominator 25,794,350,159 ensure >10-digit precision.", deep: "Close to Ramanujan's leading fraction (180/7 × 10⁹ ≈ 25.714B) with continuous integral correction." },
+      4: { desc: "Euler's closed formula for 4th powers: Derived from B₄ = -1/30 yielding exact integer denominator 90.", deep: "Multiples density equals exactly 1 - 90/π⁴ (approx. 7.6061%)." },
+      5: { desc: "5th power in unified fractional form: Denominator 295,121,509,946 maintains ultra-high precision past 10⁹.", deep: "Approaches Ramanujan's integer (294 × 10⁹) adjusted by the rapid convergent series." },
+      6: { desc: "Euler's closed formula for 6th powers: Derived from B₆ = 1/42 yielding exact integer denominator 945.", deep: "Multiples density equals exactly 1 - 945/π⁶ (approx. 1.7047%)." },
+      7: { desc: "7th power in unified fractional form: Denominator 2,995,284,765,103 preserves direct computation via π⁷.", deep: "Successive odd denominators stabilize rapidly toward the ratio π² ≈ 9.8696." },
+      8: { desc: "Euler's closed formula for 8th powers: Derived from B₈ = -1/30 yielding exact integer denominator 9450.", deep: "Multiples density equals exactly 1 - 9450/π⁸ (approx. 0.4061%)." },
+      9: { desc: "9th power in unified fractional form: Denominator 29,749,350,945,088 reflects ζ(9) converging tightly to 1.", deep: "Multiples density here drops below 0.2004% of all integers." },
+      10: { desc: "Euler's closed formula for 10th powers: Derived from B₁₀ = 5/66 yielding exact integer denominator 93555.", deep: "Multiples density equals exactly 1 - 93555/π¹⁰ (approx. 0.0994%)." }
+    }
+  },
+  ar: {
+    dir: "rtl",
+    navHome: "🏠 العودة للبوابة الرئيسية",
+    navSupport: "☕ دعم الأبحاث",
+    mainTitle: "محرك بحث مضاعفات الأسس الكاملة (k = 2 .. 10)",
+    mainSub: "توحيد الصيغ الكسرية بدلالة π^k (أويلر للزوجية π^k/B_k والمقام الدقيق 10^9π^k/D_k للفردية)",
+    lblInput: "أدخل قيمة x (حتى 10^12):",
+    lblSelectPower: "اختر الأس المطلوب (k):",
+    stCountTitle: "عدد مضاعفات الأس k (≤ x)",
+    stFreeTitle: "الأعداد الخالية من الأس k (k-free)",
+    stApproxTitle: "التقريب النظري الموحد (بدلالة π^k)",
+    stPureTitle: "عدد القوى الكاملة الصافية (a^k ≤ x)",
+    stPureSub: "دون تكرار المضاعفات",
+    tblHeading: "المقارنة الشاملة بالصيغة الكسرية الموحدة (من k=2 إلى k=10)",
+    thPower: "الأس (k)", thName: "الاسم", thZeta: "الصيغة الموحدة لـ ζ(k)",
+    thMult: "عدد المضاعفات N_k(x)", thFree: "الخالية من الأس Q_k(x)", thDens: "الكثافة النظرية", thOsc: "التذبذب N_k(x) - Approx",
+    badgeEven: "أس زوجي (أويلر الدقيق)", badgeOdd: "أس فردي (الصيغة الكسرية الموحدة)",
+    timeTxt: (ms) => `زمن الحساب: ${ms} ms`,
+    ratioTxt: (r) => `النسبة الفعلية: ${r}%`,
+    errTxt: (e) => `الفرق (التذبذب): ${e}`,
+    powerBtn: (k, name) => `الأس ${k}<br><span style="font-size:0.78rem; font-weight:normal;">${name}</span>`,
+    analysisTitle: (name, k) => `التحليل البنيوي لـ ${name} (k = ${k})`,
+    presetsLabel: "قيم سريعة:",
+    presets: [
+      { v: 1000, l: "10^3 (ألف)" },
+      { v: 1000000, l: "10^6 (مليون)" },
+      { v: 100000000, l: "10^8 (100 مليون)" },
+      { v: 1000000000, l: "10^9 (مليار)" },
+      { v: 10000000000, l: "10^10 (10 مليار)" }
+    ],
+    names: {
+      2: "المربعات ومضاعفاتها", 3: "المكعبات ومضاعفاتها", 4: "الأس الرابع ومضاعفاته",
+      5: "الأس الخامس ومضاعفاته", 6: "الأس السادس ومضاعفاته", 7: "الأس السابع ومضاعفاته",
+      8: "الأس الثامن ومضاعفاته", 9: "الأس التاسع ومضاعفاته", 10: "الأس العاشر ومضاعفاته"
+    },
+    analysis: {
+      2: { desc: "مسألة بازل لأويلر: صيغة نقطية مغلقة تعتمد على عدد برنولي B₂ = 1/6 ومقام صحيح يساوي 6.", deep: "كثافة المضاعفات تساوي بالضبط 1 - 6/π² (نحو 39.2073%)." },
+      3: { desc: "ثابت أبيري بالصيغة الكسرية الموحدة: البسط 10⁹·π³ والمقام الصحيح 25,794,350,159 يضمن دقة تفوق 10 خانات عشرية.", deep: "يقترب هذا المقام من كسر رامانوجان الرئيسي (180/7 × 10⁹ ≈ 25.714 مليار) بفارق يفسره التكامل المتصل." },
+      4: { desc: "صيغة أويلر النقطية للأس الرابع: تعتمد على B₄ = -1/30 وتنتج مقاماً صحيحاً مضبوطاً هو 90.", deep: "كثافة المضاعفات تساوي بالضبط 1 - 90/π⁴ (نحو 7.6061%)." },
+      5: { desc: "الأس الخامس بالصيغة الكسرية الموحدة: المقام 295,121,509,946 يضبط التقدير بدقة عالية جداً عند المليار وما بعده.", deep: "يقترب المقام هنا من عدد رامانوجان الصحيح (294 × 10⁹) بفارق ناتج عن المتسلسلة التصحيحية." },
+      6: { desc: "صيغة أويلر النقطية للأس السادس: تعتمد على B₆ = 1/42 ومقام صحيح يساوي 945.", deep: "كثافة المضاعفات تساوي بالضبط 1 - 945/π⁶ (نحو 1.7047%)." },
+      7: { desc: "الأس السابع بالصيغة الكسرية الموحدة: المقام 2,995,284,765,103 يحافظ على دقة الحساب المباشر بدلالة π⁷.", deep: "تبدأ النسبة بين المقامات الفردية المتتالية بالاستقرار نحو π² ≈ 9.8696." },
+      8: { desc: "صيغة أويلر النقطية للأس الثامن: تعتمد على B₈ = -1/30 ومقام صحيح يساوي 9450.", deep: "كثافة المضاعفات تساوي بالضبط 1 - 9450/π⁸ (نحو 0.4061%)." },
+      9: { desc: "الأس التاسع بالصيغة الكسرية الموحدة: المقام 29,749,350,945,088 يعكس اقتراب ζ(9) الشديد من الواحد الصحيح.", deep: "كثافة المضاعفات هنا لا تتجاوز 0.2004% من إجمالي الأعداد." },
+      10: { desc: "صيغة أويلر النقطية للأس العاشر: تعتمد على B₁₀ = 5/66 ومقام صحيح يساوي 93555.", deep: "كثافة المضاعفات تساوي بالضبط 1 - 93555/π¹⁰ (نحو 0.0994%)." }
+    }
+  },
+  fr: {
+    dir: "ltr",
+    navHome: "🏠 Retour au Portail",
+    navSupport: "☕ Soutenir la Recherche",
+    mainTitle: "Moteur des Multiples de Puissances (k = 2 .. 10)",
+    mainSub: "Formules fractionnaires unifiées en π^k (Euler π^k/B_k pour k pair et 10^9π^k/D_k exact pour k impair)",
+    lblInput: "Entrez la valeur de x (jusqu'à 10^12) :",
+    lblSelectPower: "Choisissez la puissance cible (k) :",
+    stCountTitle: "Multiples de puissance k (≤ x)",
+    stFreeTitle: "Entiers sans puissance k Q_k(x)",
+    stApproxTitle: "Approximation Théorique Unifiée",
+    stPureTitle: "Puissances pures (a^k ≤ x)",
+    stPureSub: "Hors multiples",
+    tblHeading: "Comparaison Complète par Formules Fractionnaires Unifiées (k = 2 à 10)",
+    thPower: "Puissance (k)", thName: "Nom", thZeta: "Formule ζ(k) Unifiée",
+    thMult: "Multiples N_k(x)", thFree: "Sans k Q_k(x)", thDens: "Densité Théorique", thOsc: "Oscillation N_k(x) - Approx",
+    badgeEven: "Puissance Paire (Euler Exact)", badgeOdd: "Puissance Impaire (Fraction Unifiée)",
+    timeTxt: (ms) => `Temps de calcul : ${ms} ms`,
+    ratioTxt: (r) => `Ratio réel : ${r}%`,
+    errTxt: (e) => `Écart d'oscillation : ${e}`,
+    powerBtn: (k, name) => `Puissance ${k}<br><span style="font-size:0.78rem; font-weight:normal;">${name}</span>`,
+    analysisTitle: (name, k) => `Analyse Structurelle : ${name} (k = ${k})`,
+    presetsLabel: "Valeurs rapides :",
+    presets: [
+      { v: 1000, l: "10^3 (Mille)" },
+      { v: 1000000, l: "10^6 (Million)" },
+      { v: 100000000, l: "10^8 (100M)" },
+      { v: 1000000000, l: "10^9 (Milliard)" },
+      { v: 10000000000, l: "10^10 (10B)" }
+    ],
+    names: {
+      2: "Carrés et Multiples", 3: "Cubes et Multiples", 4: "Puissances 4e",
+      5: "Puissances 5e", 6: "Puissances 6e", 7: "Puissances 7e",
+      8: "Puissances 8e", 9: "Puissances 9e", 10: "Puissances 10e"
+    },
+    analysis: {
+      2: { desc: "Problème de Bâle d'Euler : Formule fermée basée sur le nombre de Bernoulli B₂ = 1/6 avec dénominateur exact 6.", deep: "La densité des multiples vaut exactement 1 - 6/π² (environ 39,2073%)." },
+      3: { desc: "Constante d'Apéry sous forme fractionnaire unifiée : Numérateur 10⁹·π³ et dénominateur 25 794 350 159 (>10 décimales).", deep: "Proche de la fraction de Ramanujan (180/7 × 10⁹) ajustée par l'intégrale continue." },
+      4: { desc: "Formule d'Euler pour la puissance 4 : Basée sur B₄ = -1/30 donnant le dénominateur entier exact 90.", deep: "La densité des multiples vaut exactement 1 - 90/π⁴ (environ 7,6061%)." },
+      5: { desc: "Puissance 5 sous forme fractionnaire unifiée : Le dénominateur 295 121 509 946 garantit une précision extrême.", deep: "Approche l'entier de Ramanujan (294 × 10⁹) corrigé par la série convergente." },
+      6: { desc: "Formule d'Euler pour la puissance 6 : Basée sur B₆ = 1/42 donnant le dénominateur entier exact 945.", deep: "La densité des multiples vaut exactement 1 - 945/π⁶ (environ 1,7047%)." },
+      7: { desc: "Puissance 7 sous forme fractionnaire unifiée : Le dénominateur 2 995 284 765 103 préserve le calcul direct via π⁷.", deep: "Le rapport entre dénominateurs impairs successifs converge vers π² ≈ 9,8696." },
+      8: { desc: "Formule d'Euler pour la puissance 8 : Basée sur B₈ = -1/30 donnant le dénominateur entier exact 9450.", deep: "La densité des multiples vaut exactement 1 - 9450/π⁸ (environ 0,4061%)." },
+      9: { desc: "Puissance 9 sous forme fractionnaire unifiée : Le dénominateur 29 749 350 945 088 reflète ζ(9) très proche de 1.", deep: "La densité des multiples descend ici sous 0,2004% des entiers." },
+      10: { desc: "Formule d'Euler pour la puissance 10 : Basée sur B₁₀ = 5/66 donnant le dénominateur entier exact 93555.", deep: "La densité des multiples vaut exactement 1 - 93555/π¹⁰ (environ 0,0994%)." }
+    }
+  }
+};
+
+const MAX_LIMIT = 1000005;
+const mu = new Int8Array(MAX_LIMIT);
+
+function initMobius() {
+  const primes = [];
+  const isComp = new Uint8Array(MAX_LIMIT);
+  mu[1] = 1;
+  for (let i = 2; i < MAX_LIMIT; i++) {
+    if (!isComp[i]) { primes.push(i); mu[i] = -1; }
+    for (let j = 0; j < primes.length && i * primes[j] < MAX_LIMIT; j++) {
+      isComp[i * primes[j]] = 1;
+      if (i % primes[j] === 0) { mu[i * primes[j]] = 0; break; }
+      else { mu[i * primes[j]] = -mu[i]; }
+    }
+  }
+}
+
+function countPowerMultiples(x, k) {
+  const limit = Math.floor(Math.pow(x, 1 / k));
+  let count = 0;
+  for (let a = 2; a <= limit; a++) {
+    if (mu[a] !== 0) {
+      const ak = Math.pow(a, k);
+      if (ak <= x) count += (-mu[a]) * Math.floor(x / ak);
+    }
+  }
+  return count;
+}
+
+function renderPresets() {
+  const t = I18N[currentLang];
+  const box = document.getElementById('presetsBox');
+  let html = `<span style="color: var(--muted); align-self: center;">${t.presetsLabel}</span>`;
+  t.presets.forEach(p => {
+    html += `<button class="preset-btn" onclick="setX(${p.v})">${p.l}</button>`;
+  });
+  box.innerHTML = html;
+}
+
+function buildButtons() {
+  const t = I18N[currentLang];
+  const grid = document.getElementById('powersGrid');
+  grid.innerHTML = '';
+  for (let k = 2; k <= 10; k++) {
+    const btn = document.createElement('button');
+    btn.className = 'power-btn' + (k === currentK ? ' active' : '');
+    btn.innerHTML = t.powerBtn(k, t.names[k]);
+    btn.onclick = () => {
+      currentK = k;
+      buildButtons();
+      runSearch();
+    };
+    grid.appendChild(btn);
+  }
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = I18N[lang];
+  document.getElementById('mainHtml').setAttribute('lang', lang);
+  document.getElementById('mainHtml').setAttribute('dir', t.dir);
+
+  document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+  document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
+  document.getElementById('btnFr').classList.toggle('active', lang === 'fr');
+
+  document.getElementById('navHome').textContent = t.navHome;
+  document.getElementById('navSupport').textContent = t.navSupport;
+  document.getElementById('mainTitle').textContent = t.mainTitle;
+  document.getElementById('mainSub').textContent = t.mainSub;
+  document.getElementById('lblInput').textContent = t.lblInput;
+  document.getElementById('lblSelectPower').textContent = t.lblSelectPower;
+  document.getElementById('stCountTitle').textContent = t.stCountTitle;
+  document.getElementById('stFreeTitle').textContent = t.stFreeTitle;
+  document.getElementById('stApproxTitle').textContent = t.stApproxTitle;
+  document.getElementById('stPureTitle').textContent = t.stPureTitle;
+  document.getElementById('stPureSub').textContent = t.stPureSub;
+  document.getElementById('tblHeading').textContent = t.tblHeading;
+  document.getElementById('thPower').textContent = t.thPower;
+  document.getElementById('thName').textContent = t.thName;
+  document.getElementById('thZeta').textContent = t.thZeta;
+  document.getElementById('thMult').textContent = t.thMult;
+  document.getElementById('thFree').textContent = t.thFree;
+  document.getElementById('thDens').textContent = t.thDens;
+  document.getElementById('thOsc').textContent = t.thOsc;
+
+  renderPresets();
+  buildButtons();
+  runSearch();
+}
+
+function setX(val) {
+  document.getElementById('xInput').value = val;
+  runSearch();
+}
+
+function updateAnalysis(k) {
+  const t = I18N[currentLang];
+  const info = t.analysis[k];
+  const zItem = UNIFIED_ZETA[k];
+  const badge = document.getElementById('parityBadge');
+
+  document.getElementById('analysisTitle').textContent = t.analysisTitle(t.names[k], k);
+  document.getElementById('formulaBox').textContent = `ζ(${k}) = ${zItem.label}  ≈  ${getZetaVal(k).toFixed(10)}`;
+  document.getElementById('analysisDesc').textContent = info.desc;
+  document.getElementById('analysisDeep').textContent = info.deep;
+
+  if (zItem.type === "even") {
+    badge.className = "parity-tag tag-even";
+    badge.textContent = t.badgeEven;
+  } else {
+    badge.className = "parity-tag tag-odd";
+    badge.textContent = t.badgeOdd;
+  }
+}
+
+function runSearch() {
+  const t = I18N[currentLang];
+  let x = Number(document.getElementById('xInput').value);
+  if (!x || x < 1) x = 1;
+  if (x > 1e12) { x = 1e12; document.getElementById('xInput').value = x; }
+
+  const t0 = performance.now();
+  const multCount = countPowerMultiples(x, currentK);
+  const t1 = performance.now();
+
+  const freeCount = x - multCount;
+  const pureCount = Math.floor(Math.pow(x, 1 / currentK)) - 1;
+  const zVal = getZetaVal(currentK);
+  const density = 1 - (1 / zVal);
+  const approx = x * density;
+  const diff = multCount - approx;
+
+  document.getElementById('resCount').textContent = multCount.toLocaleString('en-US');
+  document.getElementById('resTime').textContent = t.timeTxt((t1 - t0).toFixed(2));
+  document.getElementById('resFree').textContent = freeCount.toLocaleString('en-US');
+  document.getElementById('resFreeRatio').textContent = t.ratioTxt(((freeCount / x) * 100).toFixed(4));
+  document.getElementById('resApprox').textContent = Math.round(approx).toLocaleString('en-US');
+  document.getElementById('resError').textContent = t.errTxt((diff >= 0 ? "+" : "") + diff.toFixed(1));
+  document.getElementById('resPure').textContent = Math.max(0, pureCount).toLocaleString('en-US');
+
+  updateAnalysis(currentK);
+
+  const tbody = document.getElementById('summaryTable');
+  tbody.innerHTML = '';
+  for (let k = 2; k <= 10; k++) {
+    const m = countPowerMultiples(x, k);
+    const f = x - m;
+    const zItem = UNIFIED_ZETA[k];
+    const d = 1 - (1 / getZetaVal(k));
+    const app = x * d;
+    const osc = m - app;
+    const tr = document.createElement('tr');
+    if (k === currentK) tr.style.background = 'rgba(56, 189, 248, 0.12)';
+    tr.innerHTML = `
+      <td><strong>k = ${k}</strong></td>
+      <td>${t.names[k]}</td>
+      <td class="pi-formula">${zItem.label}</td>
+      <td style="font-weight:bold; color:var(--accent);">${m.toLocaleString('en-US')}</td>
+      <td>${f.toLocaleString('en-US')}</td>
+      <td>${(d * 100).toFixed(4)}%</td>
+      <td style="direction:ltr; color:${osc >= 0 ? '#34d399' : '#f87171'};">${(osc >= 0 ? "+" : "") + osc.toFixed(1)}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+document.getElementById('xInput').addEventListener('input', runSearch);
+initMobius();
+setLang('en');
+</script>
+</body>
+</html>

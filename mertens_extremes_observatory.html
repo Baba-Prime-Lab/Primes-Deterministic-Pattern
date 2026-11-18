@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="mainHtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mertens Peaks & Troughs Observatory | مرصد قمم وقيعان ميرتنز</title>
+    <style>
+        :root {
+            --bg: #0b1120;
+            --card: #1e293b;
+            --accent: #38bdf8;
+            --gold: #fbbf24;
+            --peak: #10b981;
+            --trough: #f43f5e;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --border: #334155;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0 20px 20px 20px;
+        }
+        .nav-header {
+            width: 100%;
+            max-width: 1150px;
+            margin: 0 auto 20px auto;
+            background: transparent;
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-sizing: border-box;
+        }
+        .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+        .home-btn {
+            text-decoration: none;
+            background: #c0392b;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .home-btn:hover { background: #a93226; transform: translateY(-1px); }
+        .support-btn {
+            text-decoration: none;
+            background: #f3ba2f;
+            color: black;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            border: 1px solid #d4a017;
+        }
+        .support-btn:hover { background: #d4a017; transform: translateY(-1px); }
+        .lang-switcher { display: flex; gap: 6px; }
+        .lang-btn {
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .lang-btn.active {
+            background: var(--accent);
+            color: #0b1120;
+            border-color: var(--accent);
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 0 auto;
+            background: var(--card);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        h1 {
+            color: var(--accent);
+            text-align: center;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 12px;
+            margin-top: 0;
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            background: #0f172a;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            border: 1px solid var(--border);
+        }
+        input {
+            padding: 10px 15px;
+            font-size: 1.1rem;
+            border-radius: 6px;
+            border: 1px solid var(--accent);
+            background: #1e293b;
+            color: var(--gold);
+            font-weight: bold;
+            width: 230px;
+            text-align: center;
+        }
+        .run-btn {
+            padding: 11px 22px;
+            font-size: 1rem;
+            border-radius: 6px;
+            background-color: var(--peak);
+            color: #0b1120;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .run-btn:hover { background-color: #059669; color: white; }
+        .loading {
+            text-align: center;
+            color: var(--gold);
+            font-weight: bold;
+            display: none;
+            margin-bottom: 15px;
+        }
+
+        .extremes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+        .ex-card {
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px;
+            text-align: center;
+        }
+        .ex-card.peak { border-top: 5px solid var(--peak); }
+        .ex-card.trough { border-top: 5px solid var(--trough); }
+        .ex-card.current { border-top: 5px solid var(--gold); }
+
+        .ex-title { font-size: 0.95rem; color: var(--muted); margin-bottom: 8px; font-weight: bold; }
+        .ex-val { font-size: 1.65rem; font-weight: bold; font-family: 'Courier New', monospace; }
+        .ex-sub { font-size: 0.88rem; margin-top: 6px; color: var(--accent); }
+
+        .log-box {
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        .log-content {
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            direction: ltr;
+        }
+        .log-row {
+            padding: 5px 8px;
+            border-bottom: 1px solid #1e293b;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+<div class="nav-header">
+    <div class="nav-links">
+        <a href="baba_mertens_hub.html" class="home-btn" id="navHome">🏠 Back to Observatory Hub</a>
+        <a href="support.html" class="support-btn" id="navSupport">☕ Support Research</a>
+    </div>
+    <div class="lang-switcher">
+        <button class="lang-btn active" id="btnEn" onclick="setLang('en')">English</button>
+        <button class="lang-btn" id="btnAr" onclick="setLang('ar')">العربية</button>
+        <button class="lang-btn" id="btnFr" onclick="setLang('fr')">Français</button>
+    </div>
+</div>
+
+<div class="container">
+    <h1 id="mainTitle">Mertens Record Peaks &amp; Troughs Observatory</h1>
+
+    <div class="controls">
+        <label for="limitInput" id="lblLimit" style="font-weight:bold;">Scan Horizon (X):</label>
+        <input type="number" id="limitInput" value="10000000" min="10">
+        <button class="run-btn" id="btnRun" onclick="startExtremesScan()">Scan Record Extremes</button>
+    </div>
+
+    <div class="loading" id="loadingText">Scanning Mertens trajectory...</div>
+
+    <div class="extremes-grid">
+        <div class="ex-card peak">
+            <div class="ex-title" id="lblPeak">📈 Highest Record Peak (+M)</div>
+            <div class="ex-val" id="valPeak" style="color:var(--peak);">0</div>
+            <div class="ex-sub" id="subPeak">At X = - | M/√X = -</div>
+        </div>
+
+        <div class="ex-card trough">
+            <div class="ex-title" id="lblTrough">📉 Deepest Record Trough (-M)</div>
+            <div class="ex-val" id="valTrough" style="color:var(--trough);">0</div>
+            <div class="ex-sub" id="subTrough">At X = - | M/√X = -</div>
+        </div>
+
+        <div class="ex-card current">
+            <div class="ex-title" id="lblCurrent">🎯 Final Mertens Value M(X)</div>
+            <div class="ex-val" id="valCurrent" style="color:var(--gold);">0</div>
+            <div class="ex-sub" id="subCurrent">Ratio M(X)/√X = -</div>
+        </div>
+    </div>
+
+    <div class="log-box">
+        <div class="log-header">
+            <span style="font-weight:bold; color:var(--accent);" id="logHeaderTitle">Chronological Log of Broken Records (Peaks &amp; Troughs)</span>
+            <span style="font-size:0.85rem; color:var(--muted);" id="logCount">0 records</span>
+        </div>
+        <div class="log-content" id="logContent"></div>
+    </div>
+</div>
+<script>
+const pause = () => new Promise(resolve => setTimeout(resolve, 0));
+let currentLang = 'en';
+let isScanning = false;
+
+const I18N = {
+    en: {
+        dir: "ltr",
+        navHome: "🏠 Back to Observatory Hub",
+        navSupport: "☕ Support Research",
+        mainTitle: "Mertens Record Peaks & Troughs Observatory",
+        lblLimit: "Scan Horizon (X):",
+        btnRun: "Scan Record Extremes",
+        lblPeak: "📈 Highest Record Peak (+M)",
+        lblTrough: "📉 Deepest Record Trough (-M)",
+        lblCurrent: "🎯 Final Mertens Value M(X)",
+        logHeaderTitle: "Chronological Log of Broken Records (Peaks & Troughs)",
+        scanMsg: "Scanning Mertens trajectory...",
+        atTxt: (x, r) => `At X = ${x} | M/√X = ${r}`,
+        ratioTxt: (r) => `Ratio M(X)/√X = ${r}`,
+        recTxt: (n) => `${n} records`,
+        peakBadge: "📈 NEW PEAK",
+        troughBadge: "📉 NEW TROUGH"
+    },
+    ar: {
+        dir: "rtl",
+        navHome: "🏠 العودة للبوابة الرئيسية",
+        navSupport: "☕ دعم الأبحاث",
+        mainTitle: "مرصد القمم والقيعان القياسية لدالة ميرتنز",
+        lblLimit: "أفق المسح الحسابي (X):",
+        btnRun: "رصد القمم والقيعان القياسية",
+        lblPeak: "📈 أعلى ذروة قياسية (+M)",
+        lblTrough: "📉 أعمق قاع قياسي (-M)",
+        lblCurrent: "🎯 قيمة ميرتنز النهائية M(X)",
+        logHeaderTitle: "السجل الزمني لكسر الأرقام القياسية (القمم والقيعان)",
+        scanMsg: "جاري مسح مسار دالة ميرتنز...",
+        atTxt: (x, r) => `عند X = ${x} | النسبة M/√X = ${r}`,
+        ratioTxt: (r) => `نسبة الجذر M(X)/√X = ${r}`,
+        recTxt: (n) => `${n} رقم قياسي`,
+        peakBadge: "📈 ذروة جديدة",
+        troughBadge: "📉 قاع جديد"
+    },
+    fr: {
+        dir: "ltr",
+        navHome: "🏠 Retour au Portail",
+        navSupport: "☕ Soutenir la Recherche",
+        mainTitle: "Observatoire des Pics et Creux Records de Mertens",
+        lblLimit: "Horizon de calcul (X) :",
+        btnRun: "Scanner les Extremums",
+        lblPeak: "📈 Plus Haut Pic Record (+M)",
+        lblTrough: "📉 Plus Profond Creux Record (-M)",
+        lblCurrent: "🎯 Valeur Finale M(X)",
+        logHeaderTitle: "Journal Chronologique des Records Battus (Pics & Creux)",
+        scanMsg: "Analyse de la trajectoire de Mertens...",
+        atTxt: (x, r) => `À X = ${x} | M/√X = ${r}`,
+        ratioTxt: (r) => `Ratio M(X)/√X = ${r}`,
+        recTxt: (n) => `${n} records`,
+        peakBadge: "📈 NOUVEAU PIC",
+        troughBadge: "📉 NOUVEAU CREUX"
+    }
+};
+
+function setLang(lang) {
+    currentLang = lang;
+    const t = I18N[lang];
+    document.getElementById('mainHtml').setAttribute('lang', lang);
+    document.getElementById('mainHtml').setAttribute('dir', t.dir);
+
+    document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+    document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
+    document.getElementById('btnFr').classList.toggle('active', lang === 'fr');
+
+    ['navHome', 'navSupport', 'mainTitle', 'lblLimit', 'btnRun', 'lblPeak', 'lblTrough', 'lblCurrent', 'logHeaderTitle'].forEach(k => {
+        if (document.getElementById(k)) document.getElementById(k).innerText = t[k];
+    });
+}
+async function startExtremesScan() {
+    if (isScanning) return;
+    const t = I18N[currentLang];
+    let X_limit = parseInt(document.getElementById('limitInput').value);
+    if (isNaN(X_limit) || X_limit < 2) return;
+
+    isScanning = true;
+    const loadingText = document.getElementById('loadingText');
+    loadingText.style.display = 'block';
+    loadingText.innerText = t.scanMsg;
+
+    const logContent = document.getElementById('logContent');
+    logContent.innerHTML = '';
+
+    let sqrt_x = Math.floor(Math.sqrt(X_limit)) + 1;
+    let is_prime_base = new Uint8Array(sqrt_x + 1).fill(1);
+    let base_primes = [];
+    for (let p = 2; p <= sqrt_x; p++) {
+        if (is_prime_base[p]) {
+            base_primes.push(p);
+            for (let i = p * p; i <= sqrt_x; i += p) is_prime_base[i] = 0;
+        }
+    }
+
+    let mertensSum = 0;
+    let maxPeak = 0;
+    let maxPeakX = 1;
+    let minTrough = 0;
+    let minTroughX = 1;
+    let recordCount = 0;
+
+    const segment_size = 2000000;
+
+    for (let low = 1; low <= X_limit; low += segment_size) {
+        let high = Math.min(low + segment_size - 1, X_limit);
+        let size = high - low + 1;
+
+        let remaining = new Float64Array(size);
+        let mu_seg = new Int8Array(size).fill(1);
+
+        for (let i = 0; i < size; i++) remaining[i] = low + i;
+
+        for (let p of base_primes) {
+            let p_sq = p * p;
+            let start_sq = Math.ceil(low / p_sq) * p_sq;
+            for (let i = start_sq; i <= high; i += p_sq) mu_seg[i - low] = 0;
+
+            let start = Math.ceil(low / p) * p;
+            for (let i = start; i <= high; i += p) {
+                let idx = i - low;
+                if (mu_seg[idx] !== 0) {
+                    mu_seg[idx] = -mu_seg[idx];
+                    remaining[idx] /= p;
+                }
+            }
+        }
+
+        let batchHtml = '';
+        for (let i = 0; i < size; i++) {
+            let num = low + i;
+            let m = mu_seg[i];
+            if (m !== 0 && remaining[i] > 1) m = -m;
+
+            mertensSum += m;
+
+            if (mertensSum > maxPeak) {
+                maxPeak = mertensSum;
+                maxPeakX = num;
+                recordCount++;
+                let ratio = (maxPeak / Math.sqrt(num)).toFixed(4);
+                batchHtml = `<div class="log-row" style="color:var(--peak);">
+                    <span><strong>${t.peakBadge}</strong> | X = ${num.toLocaleString('en-US')}</span>
+                    <span>M(X) = +${maxPeak.toLocaleString('en-US')} &nbsp;|&nbsp; M/√X = +${ratio}</span>
+                </div>` + batchHtml;
+            } else if (mertensSum < minTrough) {
+                minTrough = mertensSum;
+                minTroughX = num;
+                recordCount++;
+                let ratio = (minTrough / Math.sqrt(num)).toFixed(4);
+                batchHtml = `<div class="log-row" style="color:var(--trough);">
+                    <span><strong>${t.troughBadge}</strong> | X = ${num.toLocaleString('en-US')}</span>
+                    <span>M(X) = ${minTrough.toLocaleString('en-US')} &nbsp;|&nbsp; M/√X = ${ratio}</span>
+                </div>` + batchHtml;
+            }
+        }
+
+        if (batchHtml !== '') {
+            logContent.insertAdjacentHTML('afterbegin', batchHtml);
+        }
+
+        document.getElementById('valPeak').innerText = '+' + maxPeak.toLocaleString('en-US');
+        document.getElementById('subPeak').innerText = t.atTxt(maxPeakX.toLocaleString('en-US'), '+' + (maxPeak / Math.sqrt(maxPeakX)).toFixed(4));
+
+        document.getElementById('valTrough').innerText = minTrough.toLocaleString('en-US');
+        document.getElementById('subTrough').innerText = t.atTxt(minTroughX.toLocaleString('en-US'), (minTrough / Math.sqrt(minTroughX)).toFixed(4));
+
+        document.getElementById('valCurrent').innerText = (mertensSum > 0 ? '+' : '') + mertensSum.toLocaleString('en-US');
+        document.getElementById('subCurrent').innerText = t.ratioTxt((mertensSum / Math.sqrt(high)).toFixed(4));
+        document.getElementById('logCount').innerText = t.recTxt(recordCount);
+
+        let pct = ((high / X_limit) * 100).toFixed(1);
+        loadingText.innerText = `${t.scanMsg} (${pct}%)`;
+        await pause();
+    }
+
+    loadingText.style.display = 'none';
+    isScanning = false;
+}
+
+window.onload = () => {
+    setLang('en');
+    startExtremesScan();
+};
+</script>
+</body>
+</html>

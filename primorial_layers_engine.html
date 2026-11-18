@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="mainHtml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primorial Layers & Smart Peak Engine | محرك طبقات البريموريال</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --accent: #38bdf8;
+    --gold: #fbbf24;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --border: #334155;
+    --plus: #10b981;
+    --minus: #f43f5e;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0 20px 20px 20px;
+    line-height: 1.6;
+  }
+  .container { max-width: 1220px; margin: 0 auto; }
+
+  .nav-header {
+    width: 100%;
+    max-width: 1220px;
+    margin: 0 auto;
+    background: transparent;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-sizing: border-box;
+  }
+  .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .home-btn {
+    text-decoration: none;
+    background: #c0392b;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: 0.3s;
+  }
+  .home-btn:hover { background: #a93226; transform: translateY(-1px); }
+  .support-btn {
+    text-decoration: none;
+    background: #f3ba2f;
+    color: black;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    border: 1px solid #d4a017;
+  }
+  .support-btn:hover { background: #d4a017; transform: translateY(-1px); }
+  .lang-switcher { display: flex; gap: 6px; }
+  .lang-btn {
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+  }
+  .lang-btn.active {
+    background: var(--accent);
+    color: #0f172a;
+    border-color: var(--accent);
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+  }
+  h1 { color: var(--accent); margin-bottom: 5px; font-size: 1.75rem; }
+  .panel {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 18px;
+  }
+  .input-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  input[type="number"] {
+    flex: 1;
+    min-width: 250px;
+    padding: 11px 15px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #0f172a;
+    color: var(--accent);
+    font-weight: bold;
+    direction: ltr;
+  }
+  .presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
+  .preset-btn {
+    background: #334155;
+    color: var(--text);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  .preset-btn:hover { background: #475569; }
+  .layers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+    gap: 8px;
+  }
+  .layer-btn {
+    background: #0f172a;
+    color: var(--text);
+    border: 2px solid var(--border);
+    padding: 9px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.2s;
+  }
+  .layer-btn:hover { border-color: var(--accent); }
+  .layer-btn.active {
+    background: var(--accent);
+    color: #0f172a;
+    border-color: var(--accent);
+    font-weight: bold;
+  }
+  .banners-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .ceiling-banner {
+    background: rgba(251, 191, 36, 0.12);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .peak-banner {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid var(--plus);
+    color: #34d399;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .half-box {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid var(--accent);
+    border-inline-start-width: 5px;
+    padding: 18px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+  .half-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .h-card {
+    background: rgba(15, 23, 42, 0.85);
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .h-title { color: var(--muted); font-size: 0.88rem; }
+  .h-val { font-size: 1.35rem; font-weight: bold; margin: 4px 0; direction: ltr; }
+  .h-sub { font-size: 0.82rem; color: var(--gold); }
+  .table-wrap {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 10px; text-align: center; border-bottom: 1px solid var(--border); }
+  th { background: #0f172a; color: var(--accent); font-size: 0.9rem; }
+  tr:hover { background: rgba(56, 189, 248, 0.05); }
+  .mu-plus { color: var(--plus); font-weight: bold; }
+  .mu-minus { color: var(--minus); font-weight: bold; }
+  .range-col { font-family: monospace; color: var(--gold); font-size: 0.88rem; direction: ltr; }
+  .peak-badge {
+    background: var(--gold);
+    color: #0f172a;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: bold;
+    margin-inline-start: 5px;
+  }
+</style>
+</head>
+<body>
+<div class="nav-header">
+    <div class="nav-links">
+        <a href="baba_mertens_hub.html" class="home-btn" id="navHome">🏠 Back to Observatory Hub</a>
+        <a href="support.html" class="support-btn" id="navSupport">☕ Support Research</a>
+    </div>
+    <div class="lang-switcher">
+        <button class="lang-btn active" id="btnEn" onclick="setLang('en')">English</button>
+        <button class="lang-btn" id="btnAr" onclick="setLang('ar')">العربية</button>
+        <button class="lang-btn" id="btnFr" onclick="setLang('fr')">Français</button>
+    </div>
+</div>
+
+<div class="container">
+  <header>
+    <h1 id="mainTitle">Primorial Layers &amp; Smart Peak Engine (Up to Trillion 10^12)</h1>
+    <p style="color: var(--muted);" id="mainSub">Baba Lab for Proofs — Tracking Peak Migration Across 10 Layers vs. Landau's Law (log log x + 1)</p>
+  </header>
+
+  <div class="panel">
+    <div class="input-row">
+      <label style="font-weight:bold; font-size:1.1rem;" id="lblInput">Enter value of x (up to 10^12):</label>
+      <input type="number" id="xInput" value="1000000000" min="1" max="1000000000000">
+    </div>
+
+    <div class="presets" id="presetsBox"></div>
+
+    <div style="margin-bottom:8px; color:var(--muted); font-weight:bold;" id="lblSelectLayer">Select Factor Layer (k) to highlight:</div>
+    <div class="layers-grid" id="layersGrid"></div>
+  </div>
+
+  <div class="banners-grid">
+    <div class="ceiling-banner" id="ceilingBanner">Current Structural Ceiling: ...</div>
+    <div class="peak-banner" id="peakBanner">Smart Peak Indicator: ...</div>
+  </div>
+
+  <div class="half-box">
+    <h3 style="margin:0; color:var(--accent);" id="halfHeading">Odd Second-Half Reduction Proof: (x/2 &lt; n &le; x)</h3>
+    <p style="margin:5px 0 0 0; color:var(--muted); font-size:0.92rem;" id="halfDesc">
+      All integers in the first half [1, x/2] cancel out completely against the even integers of the second half, reducing the Mertens function M(x) strictly to the odd integers in (x/2, x]:
+    </p>
+    <div class="half-grid">
+      <div class="h-card">
+        <div class="h-title" id="h1Title">1. Negative Odd Primes in Second Half</div>
+        <div class="h-val" id="halfPrimes" style="color:var(--minus);">-</div>
+        <div class="h-sub" id="halfPrimesRatio">Ratio to x: -</div>
+      </div>
+      <div class="h-card">
+        <div class="h-title" id="h2Title">2. Net Odd Composites (k &ge; 2) in Second Half</div>
+        <div class="h-val" id="halfComposites" style="color:var(--plus);">-</div>
+        <div class="h-sub" id="halfCompDetail">Even (k=2,4..) &minus; Odd (k=3,5..)</div>
+      </div>
+      <div class="h-card">
+        <div class="h-title" id="h3Title">3. Final Mertens Function M(x)</div>
+        <div class="h-val" id="resMertens" style="color:var(--accent);">-</div>
+        <div class="h-sub" id="resTime">Total execution time: 0 ms</div>
+      </div>
+      <div class="h-card">
+        <div class="h-title" id="h4Title">4. Total Square-Free Integers Q(x)</div>
+        <div class="h-val" id="resSquareFree" style="color:var(--gold);">-</div>
+        <div class="h-sub" id="h4Sub">1 + All Active Layers (1 .. 10)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <h3 style="margin-top:0; color:var(--accent);" id="tblHeading">10-Layer Dissection &amp; Peak Migration Tracker (Crown Marks the Dominant Layer)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th id="thLayer">Layer (k)</th>
+          <th id="thComp">Composition</th>
+          <th id="thRange">Primorial Range</th>
+          <th id="thSign">&mu;(n) Sign</th>
+          <th id="thTotal">Total Count (&le; x)</th>
+          <th id="thOddHalf">Odd Primes &amp; Products in Second Half (x/2, x]</th>
+          <th id="thNet">Net Contribution to M(x)</th>
+        </tr>
+      </thead>
+      <tbody id="layersTable"></tbody>
+    </table>
+  </div>
+</div>
+<script>
+let currentLang = 'en';
+let selectedK = 2;
+
+const PRIMORIAL_LAYERS = [
+  { k: 1, start: 2,          end: 5,          range: "2 .. 5" },
+  { k: 2, start: 6,          end: 29,         range: "6 .. 29" },
+  { k: 3, start: 30,         end: 209,        range: "30 .. 209" },
+  { k: 4, start: 210,        end: 2309,       range: "210 .. 2,309" },
+  { k: 5, start: 2310,       end: 30029,      range: "2,310 .. 30,029" },
+  { k: 6, start: 30030,      end: 510509,     range: "30,030 .. 510,509" },
+  { k: 7, start: 510510,     end: 9699689,    range: "510,510 .. 9,699,689" },
+  { k: 8, start: 9699690,    end: 223092869,  range: "9,699,690 .. 223,092,869" },
+  { k: 9, start: 223092870,  end: 6469693229, range: "223,092,870 .. 6,469,693,229" },
+  { k: 10, start: 6469693230, end: Infinity,  range: "6,469,693,230 .. ∞" }
+];
+
+const I18N = {
+  en: {
+    dir: "ltr",
+    navHome: "🏠 Back to Observatory Hub",
+    navSupport: "☕ Support Research",
+    mainTitle: "Primorial Layers & Smart Peak Engine (Up to Trillion 10^12)",
+    mainSub: "Baba Lab for Proofs — Tracking Peak Migration Across 10 Layers vs. Landau's Law (log log x + 1)",
+    lblInput: "Enter value of x (up to 10^12):",
+    lblSelectLayer: "Select Factor Layer (k) to highlight:",
+    halfHeading: "Odd Second-Half Reduction Proof: (x/2 < n ≤ x)",
+    halfDesc: "All integers in the first half [1, x/2] cancel out completely against the even integers of the second half, reducing M(x) strictly to the odd integers in (x/2, x]:",
+    h1Title: "1. Negative Odd Primes in Second Half",
+    h2Title: "2. Net Odd Composites (k ≥ 2) in Second Half",
+    h3Title: "3. Final Mertens Function M(x)",
+    h4Title: "4. Total Square-Free Integers Q(x)",
+    h4Sub: "1 + All Active Layers (1 .. 10)",
+    tblHeading: "10-Layer Dissection & Peak Migration Tracker (Crown Marks the Dominant Layer)",
+    thLayer: "Layer (k)", thComp: "Composition", thRange: "Primorial Range", thSign: "μ(n) Sign",
+    thTotal: "Total Count (≤ x)", thOddHalf: "Odd Primes & Products in Second Half (x/2, x]", thNet: "Net Contribution to M(x)",
+    crown: "👑 Peak",
+    presetsLabel: "Scaling Milestones:",
+    presets: [
+      { v: 1000, l: "1,000" },
+      { v: 1000000, l: "Million (10^6)" },
+      { v: 1000000000, l: "Billion (10^9)" },
+      { v: 10000000000, l: "10 Billion (10^10)" },
+      { v: 100000000000, l: "100 Billion (10^11)" },
+      { v: 1000000000000, l: "Trillion (10^12)" }
+    ],
+    names: [
+      "Single Prime (p)", "Product of 2 Primes", "Product of 3 Primes", "Product of 4 Primes", "Product of 5 Primes",
+      "Product of 6 Primes", "Product of 7 Primes", "Product of 8 Primes", "Product of 9 Primes", "Product of 10 Primes"
+    ],
+    layerBtn: (k, sign, start) => `Layer k = ${k} (μ = ${sign})<br><span style="font-size:0.8rem; opacity:0.85;">Starts at ${start}</span>`,
+    ceilOne: "At x = 1: No prime factors exist yet (M(1) = +1).",
+    ceilTxt: (k, r) => `Structural Ceiling at x: Max allowed distinct prime factors is (${k}) — within [${r}]`,
+    peakInit: "Smart Peak Indicator: Active for x ≥ 3",
+    peakTxt: (k, v, l) => `👑 Empirical Peak: Layer (k = ${k}) with ${v} | Landau Index (log log x + 1) = ${l}`,
+    ratioTxt: (r) => `Ratio to x: ${r}`,
+    compDet: (e, o) => `Even (+${e}) − Odd (-${o})`,
+    timeTxt: (ms) => `Total execution time: ${ms} ms`
+  },
+  ar: {
+    dir: "rtl",
+    navHome: "🏠 العودة للبوابة الرئيسية",
+    navSupport: "☕ دعم الأبحاث",
+    mainTitle: "محرك طبقات البريموريال والذروات الذكي (حتى التريليون 10^12)",
+    mainSub: "مختبر بابا للبراهين — رصد زحف القمم عبر 10 طبقات ومقارنتها بقانون لانداو (log log x + 1)",
+    lblInput: "أدخل قيمة x (حتى التريليون 10^12):",
+    lblSelectLayer: "اختر طبقة العوامل (k) لتمييزها:",
+    halfHeading: "برهان الاختزال إلى النصف الثاني الفردي: (x/2 < n ≤ x)",
+    halfDesc: "جميع الأعداد في النصف الأول [1, x/2] تتلاشى كلياً مع الأعداد الزوجية في النصف الثاني، مما يختزل دالة ميرتنز M(x) حصراً في الأعداد الفردية ضمن (x/2, x]:",
+    h1Title: "1. الأوليات الفردية السالبة في النصف الثاني",
+    h2Title: "2. صافي المركبات الفردية (k ≥ 2) في النصف الثاني",
+    h3Title: "3. قيمة دالة ميرتنز النهائية M(x)",
+    h4Title: "4. إجمالي الأعداد الخالية من المربعات Q(x)",
+    h4Sub: "1 + جميع الطبقات الفاعلة (1 .. 10)",
+    tblHeading: "التشريح الطبقي (10 طبقات) ومتتبع زحف القمم (التاج يميز الطبقة المتصدرة)",
+    thLayer: "الطبقة (k)", thComp: "التركيب الأولي", thRange: "نطاق البريموريال", thSign: "إشارة μ(n)",
+    thTotal: "العدد الكلي (≤ x)", thOddHalf: "الأوليات والمضروبات الفردية في (x/2, x]", thNet: "المساهمة الصافية في M(x)",
+    crown: "👑 القمة",
+    presetsLabel: "محطات القياس:",
+    presets: [
+      { v: 1000, l: "1,000 (ألف)" },
+      { v: 1000000, l: "مليون (10^6)" },
+      { v: 1000000000, l: "مليار (10^9)" },
+      { v: 10000000000, l: "10 مليار (10^10)" },
+      { v: 100000000000, l: "100 مليار (10^11)" },
+      { v: 1000000000000, l: "تريليون (10^12)" }
+    ],
+    names: [
+      "أولي منفرد (p)", "مضروب أوليين", "مضروب 3 أوليات", "مضروب 4 أوليات", "مضروب 5 أوليات",
+      "مضروب 6 أوليات", "مضروب 7 أوليات", "مضروب 8 أوليات", "مضروب 9 أوليات", "مضروب 10 أوليات"
+    ],
+    layerBtn: (k, sign, start) => `طبقة k = ${k} (μ = ${sign})<br><span style="font-size:0.8rem; opacity:0.85;">تبدأ عند ${start}</span>`,
+    ceilOne: "عند x = 1: لا توجد عوامل أولية بعد (M(1) = +1).",
+    ceilTxt: (k, r) => `السقف البنيوي عند x: أقصى عدد مسموح من العوامل الأولية المختلفة هو (${k}) — ضمن [${r}]`,
+    peakInit: "مؤشر الذروة الذكي: يعمل عند x ≥ 3",
+    peakTxt: (k, v, l) => `👑 الذروة الفعلية: الطبقة (k = ${k}) بكمية ${v} | مؤشر لانداو (log log x + 1) = ${l}`,
+    ratioTxt: (r) => `النسبة إلى x: ${r}`,
+    compDet: (e, o) => `الزوجي (+${e}) − الفردي (-${o})`,
+    timeTxt: (ms) => `زمن التنفيذ الإجمالي: ${ms} ms`
+  },
+  fr: {
+    dir: "ltr",
+    navHome: "🏠 Retour au Portail",
+    navSupport: "☕ Soutenir la Recherche",
+    mainTitle: "Moteur des Couches Primorielles & Pics Intelligents (Jusqu'à 10^12)",
+    mainSub: "Baba Lab — Suivi de la migration des pics sur 10 couches vs Loi de Landau (log log x + 1)",
+    lblInput: "Entrez la valeur de x (jusqu'à 10^12) :",
+    lblSelectLayer: "Choisissez la couche (k) à surligner :",
+    halfHeading: "Preuve de Réduction à la Seconde Moitié Impaire : (x/2 < n ≤ x)",
+    halfDesc: "Tous les entiers de la première moitié [1, x/2] s'annulent avec les entiers pairs de la seconde moitié, réduisant M(x) strictement aux entiers impairs dans (x/2, x] :",
+    h1Title: "1. Premiers Impairs Négatifs (2e Moitié)",
+    h2Title: "2. Composés Impairs Nets (k ≥ 2)",
+    h3Title: "3. Fonction de Mertens Finale M(x)",
+    h4Title: "4. Total Entiers Sans Carré Q(x)",
+    h4Sub: "1 + Toutes les couches actives (1 .. 10)",
+    tblHeading: "Dissection en 10 Couches & Suivi des Pics (La couronne marque la couche dominante)",
+    thLayer: "Couche (k)", thComp: "Composition", thRange: "Plage Primorielle", thSign: "Signe μ(n)",
+    thTotal: "Total (≤ x)", thOddHalf: "Premiers & Produits Impairs dans (x/2, x]", thNet: "Contribution Nette à M(x)",
+    crown: "👑 Sommet",
+    presetsLabel: "Jalons d'échelle :",
+    presets: [
+      { v: 1000, l: "1 000" },
+      { v: 1000000, l: "Million (10^6)" },
+      { v: 1000000000, l: "Milliard (10^9)" },
+      { v: 10000000000, l: "10 Milliards (10^10)" },
+      { v: 100000000000, l: "100 Milliards (10^11)" },
+      { v: 1000000000000, l: "Billion (10^12)" }
+    ],
+    names: [
+      "Premier Unique (p)", "Produit de 2 Premiers", "Produit de 3 Premiers", "Produit de 4 Premiers", "Produit de 5 Premiers",
+      "Produit de 6 Premiers", "Produit de 7 Premiers", "Produit de 8 Premiers", "Produit de 9 Premiers", "Produit de 10 Premiers"
+    ],
+    layerBtn: (k, sign, start) => `Couche k = ${k} (μ = ${sign})<br><span style="font-size:0.8rem; opacity:0.85;">Débute à ${start}</span>`,
+    ceilOne: "À x = 1 : Aucun facteur premier n'existe encore (M(1) = +1).",
+    ceilTxt: (k, r) => `Plafond structurel à x : Max de facteurs premiers distincts autorisés = (${k}) — dans [${r}]`,
+    peakInit: "Indicateur de Pic : Actif pour x ≥ 3",
+    peakTxt: (k, v, l) => `👑 Pic Empirique : Couche (k = ${k}) avec ${v} | Indice de Landau (log log x + 1) = ${l}`,
+    ratioTxt: (r) => `Ratio sur x : ${r}`,
+    compDet: (e, o) => `Pairs (+${e}) − Impairs (-${o})`,
+    timeTxt: (ms) => `Temps d'exécution total : ${ms} ms`
+  }
+};
+const SIEVE_MAX = 1500000;
+const primes = [];
+const piTable = new Int32Array(SIEVE_MAX);
+
+function initPrimes() {
+  const isComp = new Uint8Array(SIEVE_MAX);
+  let count = 0;
+  for (let i = 2; i < SIEVE_MAX; i++) {
+    if (!isComp[i]) {
+      primes.push(i);
+      count++;
+      for (let j = i * i; j < SIEVE_MAX; j += i) {
+        if (j < SIEVE_MAX) isComp[j] = 1;
+      }
+    }
+    piTable[i] = count;
+  }
+}
+
+const phiCache = new Map();
+function phi(x, a) {
+  if (a === 1) return Math.floor((x + 1) / 2);
+  if (x < SIEVE_MAX && primes[a - 1] >= x) return 1;
+  const key = x * 1000 + a;
+  if (x < 1000000 && phiCache.has(key)) return phiCache.get(key);
+  const res = phi(x, a - 1) - phi(Math.floor(x / primes[a - 1]), a - 1);
+  if (x < 1000000) phiCache.set(key, res);
+  return res;
+}
+
+const piCache = new Map();
+function countPrimes(x) {
+  x = Math.floor(x);
+  if (x < 2) return 0;
+  if (x < SIEVE_MAX) return piTable[x];
+  if (piCache.has(x)) return piCache.get(x);
+
+  const a = countPrimes(Math.pow(x, 0.25));
+  const b = countPrimes(Math.sqrt(x));
+  const c = countPrimes(Math.cbrt(x));
+
+  let sum = phi(x, a) + Math.floor(((b + a - 2) * (b - a + 1)) / 2);
+  for (let i = a + 1; i <= b; i++) {
+    const w = Math.floor(x / primes[i - 1]);
+    sum -= countPrimes(w);
+    if (i <= c) {
+      const bi = countPrimes(Math.sqrt(w));
+      for (let j = i; j <= bi; j++) {
+        sum -= countPrimes(Math.floor(w / primes[j - 1])) - (j - 1);
+      }
+    }
+  }
+  piCache.set(x, sum);
+  return sum;
+}
+
+function countKPrimes(limit, k, minIdx) {
+  if (k === 1) {
+    const minP = minIdx > 0 ? primes[minIdx - 1] : 1;
+    if (limit <= minP) return 0;
+    return countPrimes(limit) - minIdx;
+  }
+  let total = 0;
+  for (let i = minIdx; i < primes.length; i++) {
+    const p = primes[i];
+    let minProd = p;
+    for (let step = 1; step < k; step++) {
+      if (i + step >= primes.length) { minProd = Infinity; break; }
+      minProd *= primes[i + step];
+    }
+    if (minProd > limit) break;
+    total += countKPrimes(Math.floor(limit / p), k - 1, i + 1);
+  }
+  return total;
+}
+
+function renderPresets() {
+  const t = I18N[currentLang];
+  const box = document.getElementById('presetsBox');
+  let html = `<span style="color: var(--muted); align-self: center;">${t.presetsLabel}</span>`;
+  t.presets.forEach(p => {
+    html += `<button class="preset-btn" onclick="setX(${p.v})">${p.l}</button>`;
+  });
+  box.innerHTML = html;
+}
+
+function buildLayerButtons() {
+  const t = I18N[currentLang];
+  const grid = document.getElementById('layersGrid');
+  grid.innerHTML = '';
+  PRIMORIAL_LAYERS.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'layer-btn' + (item.k === selectedK ? ' active' : '');
+    const signStr = item.k % 2 === 0 ? '+1' : '-1';
+    btn.innerHTML = t.layerBtn(item.k, signStr, item.start.toLocaleString('en-US'));
+    btn.onclick = () => {
+      selectedK = item.k;
+      buildLayerButtons();
+      runEngine();
+    };
+    grid.appendChild(btn);
+  });
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = I18N[lang];
+  document.getElementById('mainHtml').setAttribute('lang', lang);
+  document.getElementById('mainHtml').setAttribute('dir', t.dir);
+
+  document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+  document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
+  document.getElementById('btnFr').classList.toggle('active', lang === 'fr');
+
+  const keys = [
+    'navHome', 'navSupport', 'mainTitle', 'mainSub', 'lblInput', 'lblSelectLayer',
+    'halfHeading', 'halfDesc', 'h1Title', 'h2Title', 'h3Title', 'h4Title', 'h4Sub',
+    'tblHeading', 'thLayer', 'thComp', 'thRange', 'thSign', 'thTotal', 'thOddHalf', 'thNet'
+  ];
+  keys.forEach(k => {
+    if (document.getElementById(k)) document.getElementById(k).textContent = t[k];
+  });
+
+  renderPresets();
+  buildLayerButtons();
+  runEngine();
+}
+
+function setX(val) {
+  document.getElementById('xInput').value = val;
+  runEngine();
+}
+
+function runEngine() {
+  const t = I18N[currentLang];
+  let x = Math.floor(Number(document.getElementById('xInput').value));
+  if (!x || x < 1) return;
+  if (x > 1e12) { x = 1e12; document.getElementById('xInput').value = x; }
+
+  const t0 = performance.now();
+  const halfX = Math.floor(x / 2);
+
+  let maxAllowedK = 0;
+  for (let i = 0; i < PRIMORIAL_LAYERS.length; i++) {
+    if (x >= PRIMORIAL_LAYERS[i].start) maxAllowedK = PRIMORIAL_LAYERS[i].k;
+  }
+
+  let squareFreeTotal = 1;
+  let oddHalfPrimesNeg = 0;
+  let oddHalfCompNet = 0;
+  let evenCompSum = 0;
+  let oddCompSum = 0;
+
+  const layerResults = [];
+  let peakK = 1;
+  let peakVal = -1;
+
+  PRIMORIAL_LAYERS.forEach((item, idx) => {
+    const k = item.k;
+    const even = k % 2 === 0;
+
+    const totalCnt = x >= item.start ? countKPrimes(x, k, 0) : 0;
+    squareFreeTotal += totalCnt;
+
+    const oddUpToX = x >= 3 ? countKPrimes(x, k, 1) : 0;
+    const oddUpToHalf = halfX >= 3 ? countKPrimes(halfX, k, 1) : 0;
+    const oddInSecondHalf = Math.max(0, oddUpToX - oddUpToHalf);
+
+    if (oddInSecondHalf > peakVal) {
+      peakVal = oddInSecondHalf;
+      peakK = k;
+    }
+
+    const netContrib = even ? oddInSecondHalf : -oddInSecondHalf;
+
+    if (k === 1) {
+      oddHalfPrimesNeg = -oddInSecondHalf;
+    } else {
+      oddHalfCompNet += netContrib;
+      if (even) evenCompSum += oddInSecondHalf;
+      else oddCompSum += oddInSecondHalf;
+    }
+
+    layerResults.push({ item, name: t.names[idx], k, even, totalCnt, oddInSecondHalf, netContrib });
+  });
+
+  const tbody = document.getElementById('layersTable');
+  tbody.innerHTML = '';
+
+  layerResults.forEach(res => {
+    const { item, name, k, even, totalCnt, oddInSecondHalf, netContrib } = res;
+    const isPeak = (k === peakK && peakVal > 0);
+    const tr = document.createElement('tr');
+    if (k === selectedK) tr.style.background = 'rgba(56, 189, 248, 0.15)';
+    if (x < item.start) tr.style.opacity = '0.45';
+
+    const peakTag = isPeak ? `<span class="peak-badge">${t.crown}</span>` : '';
+
+    tr.innerHTML = `
+      <td><strong>k = ${k}</strong> ${peakTag}</td>
+      <td>${name}</td>
+      <td class="range-col">${item.range}</td>
+      <td class="${even ? 'mu-plus' : 'mu-minus'}">${even ? '+1' : '-1'}</td>
+      <td style="color:var(--muted);">${totalCnt.toLocaleString('en-US')}</td>
+      <td style="font-weight:bold; color:${isPeak ? 'var(--gold)' : 'var(--accent)'};">${oddInSecondHalf.toLocaleString('en-US')}</td>
+      <td class="${even ? 'mu-plus' : 'mu-minus'}">${netContrib > 0 ? '+' : ''}${netContrib.toLocaleString('en-US')}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  const oneInSecondHalf = (1 > halfX && 1 <= x) ? 1 : 0;
+  const mertensFinal = oneInSecondHalf + oddHalfPrimesNeg + oddHalfCompNet;
+  const t1 = performance.now();
+
+  const ceilingBanner = document.getElementById('ceilingBanner');
+  if (maxAllowedK === 0) {
+    ceilingBanner.textContent = t.ceilOne;
+  } else {
+    const activeLayer = PRIMORIAL_LAYERS[maxAllowedK - 1];
+    ceilingBanner.textContent = t.ceilTxt(maxAllowedK, activeLayer.range);
+  }
+
+  const peakBanner = document.getElementById('peakBanner');
+  if (x >= 3) {
+    const landauEstimate = Math.log(Math.log(x)) + 1;
+    peakBanner.textContent = t.peakTxt(peakK, peakVal.toLocaleString('en-US'), landauEstimate.toFixed(3));
+  } else {
+    peakBanner.textContent = t.peakInit;
+  }
+
+  document.getElementById('halfPrimes').textContent = oddHalfPrimesNeg.toLocaleString('en-US');
+  document.getElementById('halfPrimesRatio').textContent = t.ratioTxt((Math.abs(oddHalfPrimesNeg) / x).toFixed(10));
+
+  document.getElementById('halfComposites').textContent = (oddHalfCompNet >= 0 ? '+' : '') + oddHalfCompNet.toLocaleString('en-US');
+  document.getElementById('halfCompDetail').textContent = t.compDet(evenCompSum.toLocaleString('en-US'), oddCompSum.toLocaleString('en-US'));
+
+  document.getElementById('resMertens').textContent = (mertensFinal > 0 ? '+' : '') + mertensFinal.toLocaleString('en-US');
+  document.getElementById('resMertens').style.color = mertensFinal >= 0 ? "var(--plus)" : "var(--minus)";
+  document.getElementById('resTime').textContent = t.timeTxt((t1 - t0).toFixed(2));
+
+  document.getElementById('resSquareFree').textContent = squareFreeTotal.toLocaleString('en-US');
+}
+
+document.getElementById('xInput').addEventListener('input', runEngine);
+initPrimes();
+setLang('en');
+</script>
+</body>
+</html>

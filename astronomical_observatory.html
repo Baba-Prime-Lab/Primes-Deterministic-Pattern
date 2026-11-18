@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="mainHtml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Astronomical Primorial Observatory | المرصد الفلكي لطبقات البريموريال</title>
+<style>
+  :root {
+    --bg: #090d16;
+    --card: #131b2e;
+    --accent: #38bdf8;
+    --gold: #fbbf24;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --border: #1e293b;
+    --plus: #10b981;
+    --minus: #f43f5e;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0 20px 20px 20px;
+    line-height: 1.6;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* شريط التنقل العلوي وتبديل اللغات */
+  .nav-header {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: transparent;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-sizing: border-box;
+  }
+  .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .home-btn {
+    text-decoration: none;
+    background: #c0392b;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: 0.3s;
+  }
+  .home-btn:hover { background: #a93226; transform: translateY(-1px); }
+  .support-btn {
+    text-decoration: none;
+    background: #f3ba2f;
+    color: black;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    border: 1px solid #d4a017;
+  }
+  .support-btn:hover { background: #d4a017; transform: translateY(-1px); }
+
+  .lang-switcher { display: flex; gap: 6px; }
+  .lang-btn {
+    padding: 6px 14px;
+    border: 1px solid #334155;
+    background: #1e293b;
+    color: var(--text);
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+  }
+  .lang-btn.active {
+    background: var(--accent);
+    color: #090d16;
+    border-color: var(--accent);
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 22px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+  }
+  h1 { color: var(--accent); margin-bottom: 5px; font-size: 1.8rem; }
+  .panel {
+    background: var(--card);
+    padding: 22px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  }
+  .slider-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .x-display {
+    font-size: 1.45rem;
+    font-weight: bold;
+    color: var(--gold);
+    direction: ltr;
+    background: #090d16;
+    padding: 6px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--gold);
+  }
+  input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+    accent-color: var(--accent);
+    height: 8px;
+  }
+  .milestones {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .m-btn {
+    background: #1e293b;
+    color: var(--text);
+    border: 1px solid #334155;
+    padding: 7px 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    transition: 0.2s;
+  }
+  .m-btn:hover { border-color: var(--accent); background: #27354f; }
+  .peak-hero {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(19, 27, 46, 0.95) 100%);
+    border: 1px solid var(--plus);
+    border-inline-start-width: 5px;
+    padding: 18px 22px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  .hero-main { font-size: 1.2rem; font-weight: bold; color: #34d399; }
+  .hero-sub { font-size: 0.95rem; color: var(--gold); }
+  .table-wrap {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 12px 10px; text-align: center; border-bottom: 1px solid var(--border); }
+  th { background: #090d16; color: var(--accent); font-size: 0.92rem; }
+  tr:hover { background: rgba(56, 189, 248, 0.05); }
+  .mu-plus { color: var(--plus); font-weight: bold; }
+  .mu-minus { color: var(--minus); font-weight: bold; }
+  .sci-num { font-family: 'Courier New', monospace; font-weight: bold; direction: ltr; font-size: 1.02rem; }
+  .bar-bg {
+    width: 100%;
+    min-width: 140px;
+    height: 14px;
+    background: #090d16;
+    border-radius: 7px;
+    overflow: hidden;
+    border: 1px solid #1e293b;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0284c7, #38bdf8);
+    transition: width 0.25s ease;
+  }
+  .bar-peak {
+    background: linear-gradient(90deg, #d97706, #fbbf24);
+  }
+  .crown {
+    background: var(--gold);
+    color: #090d16;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-inline-start: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="nav-header">
+    <div class="nav-links">
+        <a href="baba_mertens_hub.html" class="home-btn" id="navHome">🏠 العودة للبوابة الرئيسية</a>
+        <a href="support.html" class="support-btn" id="navSupport">☕ دعم الأبحاث</a>
+    </div>
+    <div class="lang-switcher">
+        <button class="lang-btn active" id="btnAr" onclick="setLang('ar')">العربية</button>
+        <button class="lang-btn" id="btnEn" onclick="setLang('en')">English</button>
+        <button class="lang-btn" id="btnFr" onclick="setLang('fr')">Français</button>
+    </div>
+</div>
+
+<div class="container">
+  <header>
+    <h1 id="mainTitle">المرصد الفلكي لطبقات البريموريال (من 10^3 حتى 10^1000)</h1>
+    <p style="color: var(--muted);" id="mainSub">بابا لاب للبراهين — رصد زحف القمم من الثنائيات إلى الثلاثيات والرباعيات والخماسيات في النصف الثاني (x/2, x]</p>
+  </header>
+
+  <div class="panel">
+    <div class="slider-box">
+      <div class="slider-header">
+        <label for="expSlider" style="font-weight:bold; font-size:1.1rem;" id="lblSlider">حرّك شريط الأس الفلكي (E) لاستكشاف الآفاق:</label>
+        <div class="x-display" id="xDisplay">x = 10^12 (تريليون)</div>
+      </div>
+      <input type="range" id="expSlider" min="3" max="1000" step="1" value="12">
+    </div>
+
+    <div class="milestones" id="milestonesBox"></div>
+  </div>
+
+  <div class="peak-hero">
+    <div>
+      <div class="hero-main" id="peakTitle">👑 الذروة الفلكية الحالية: ...</div>
+      <div style="color: var(--muted); font-size: 0.92rem; margin-top: 4px;" id="peakExplain">...</div>
+    </div>
+    <div style="text-align: end;">
+      <div class="hero-sub" id="landauVal">مؤشر الذروة النظري المعدل: -</div>
+      <div style="color: var(--accent); font-size: 0.85rem;" id="logLogVal">log(log x) = -</div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <h3 style="margin-top:0; color:var(--accent);" id="tblHeading">توزيع الطبقات العشر في النصف الثاني (x/2, x] عبر الآفاق الفلكية</h3>
+    <table>
+      <thead>
+        <tr>
+          <th id="thLayer">الطبقة (k)</th>
+          <th id="thComp">التركيب الأولي</th>
+          <th id="thSign">إشارة &mu;(n)</th>
+          <th id="thEst">التقدير الفلكي في النصف الثاني (x/2, x]</th>
+          <th id="thShare">الحصة النسبية من القمة</th>
+          <th id="thWave">التمثيل البصري للموجة</th>
+        </tr>
+      </thead>
+      <tbody id="astroTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+let currentLang = 'ar';
+
+const I18N = {
+  ar: {
+    dir: "rtl",
+    navHome: "🏠 العودة للبوابة الرئيسية",
+    navSupport: "☕ دعم الأبحاث",
+    mainTitle: "المرصد الفلكي لطبقات البريموريال (من 10^3 حتى 10^1000)",
+    mainSub: "بابا لاب للبراهين — رصد زحف القمم من الثنائيات إلى الثلاثيات والرباعيات والخماسيات في النصف الثاني (x/2, x]",
+    lblSlider: "حرّك شريط الأس الفلكي (E) لاستكشاف الآفاق:",
+    tblHeading: "توزيع الطبقات العشر في النصف الثاني (x/2, x] عبر الآفاق الفلكية",
+    thLayer: "الطبقة (k)",
+    thComp: "التركيب الأولي",
+    thSign: "إشارة μ(n)",
+    thEst: "التقدير الفلكي في النصف الثاني (x/2, x]",
+    thShare: "الحصة النسبية من القمة",
+    thWave: "التمثيل البصري للموجة",
+    crown: "👑 القمة",
+    msLabel: "محطات الانقلاب:",
+    milestones: [
+      { e: 3, label: "10^3 (ألف)" },
+      { e: 9, label: "10^9 (مليار - قمة 3)" },
+      { e: 12, label: "10^12 (تريليون)" },
+      { e: 18, label: "10^18 (كوينتيليون - قمة 4)" },
+      { e: 38, label: "10^38 (قمة 5 - الخماسيات)" },
+      { e: 100, label: "10^100 (جوجول)" },
+      { e: 105, label: "10^105 (قمة 6 - السداسيات)" },
+      { e: 300, label: "10^300 (قمة 7 - السباعيات)" },
+      { e: 850, label: "10^850 (قمة 8 - الثمانيات)" }
+    ],
+    layers: [
+      "أولي فردي منفرد (p)",
+      "مضروب أوليين (الثنائيات)",
+      "مضروب 3 أوليات (الثلاثيات)",
+      "مضروب 4 أوليات (الرباعيات)",
+      "مضروب 5 أوليات (الخماسيات)",
+      "مضروب 6 أوليات (السداسيات)",
+      "مضروب 7 أوليات (السباعيات)",
+      "مضروب 8 أوليات (الثمانيات)",
+      "مضروب 9 أوليات (التساعيات)",
+      "مضروب 10 أوليات (العشاريات)"
+    ],
+    scales: {
+      3: "ألف", 6: "مليون", 9: "مليار", 12: "تريليون", 15: "كوادريليون",
+      18: "كوينتيليون", 38: "أفق الخماسيات", 100: "جوجول (Googol)",
+      105: "أفق السداسيات", 300: "أفق السباعيات", 850: "أفق الثمانيات"
+    },
+    peakTitle: (E, k, name) => `👑 الذروة الفلكية عند 10^${E}: تتصدرها الطبقة (k = ${k}) — ${name}`,
+    peakExplain: (k) => `عند هذا الأفق الفلكي، تتفوق تراكيب (${k}) أوليات مختلفة على ما قبلها وما بعدها لملء الفجوات في النصف الثاني.`,
+    landauVal: (v) => `مؤشر الذروة النظري المعدل: ${v}`
+  },
+  en: {
+    dir: "ltr",
+    navHome: "🏠 Back to Observatory Hub",
+    navSupport: "☕ Support Research",
+    mainTitle: "Astronomical Primorial Observatory (10^3 to 10^1000)",
+    mainSub: "Baba Lab for Proofs — Tracking peak transitions from semiprimes to higher k-prime layers in (x/2, x]",
+    lblSlider: "Slide the Astronomical Exponent (E) to explore scales:",
+    tblHeading: "Distribution of the First 10 Layers in (x/2, x] Across Astronomical Horizons",
+    thLayer: "Layer (k)",
+    thComp: "Prime Composition",
+    thSign: "μ(n) Parity",
+    thEst: "Astronomical Estimate in (x/2, x]",
+    thShare: "Relative Share of Peak",
+    thWave: "Wave Visual",
+    crown: "👑 Peak",
+    msLabel: "Transition Milestones:",
+    milestones: [
+      { e: 3, label: "10^3 (Thousand)" },
+      { e: 9, label: "10^9 (Billion - Peak 3)" },
+      { e: 12, label: "10^12 (Trillion)" },
+      { e: 18, label: "10^18 (Quintillion - Peak 4)" },
+      { e: 38, label: "10^38 (Peak 5 - Quintuples)" },
+      { e: 100, label: "10^100 (Googol)" },
+      { e: 105, label: "10^105 (Peak 6 - Sextuples)" },
+      { e: 300, label: "10^300 (Peak 7 - Septuples)" },
+      { e: 850, label: "10^850 (Peak 8 - Octuples)" }
+    ],
+    layers: [
+      "Single Odd Prime (p)",
+      "Product of 2 Primes (Semiprimes)",
+      "Product of 3 Primes (Triples)",
+      "Product of 4 Primes (Quadruples)",
+      "Product of 5 Primes (Quintuples)",
+      "Product of 6 Primes (Sextuples)",
+      "Product of 7 Primes (Septuples)",
+      "Product of 8 Primes (Octuples)",
+      "Product of 9 Primes (Nonuples)",
+      "Product of 10 Primes (Decuples)"
+    ],
+    scales: {
+      3: "Thousand", 6: "Million", 9: "Billion", 12: "Trillion", 15: "Quadrillion",
+      18: "Quintillion", 38: "Quintuple Horizon", 100: "Googol",
+      105: "Sextuple Horizon", 300: "Septuple Horizon", 850: "Octuple Horizon"
+    },
+    peakTitle: (E, k, name) => `👑 Astronomical Peak at 10^${E}: Dominated by Layer (k = ${k}) — ${name}`,
+    peakExplain: (k) => `At this horizon, products of (${k}) distinct odd primes outnumber flanking layers to fill numerical gaps in (x/2, x].`,
+    landauVal: (v) => `Adjusted Theoretical Peak Index: ${v}`
+  },
+  fr: {
+    dir: "ltr",
+    navHome: "🏠 Retour au Portail",
+    navSupport: "☕ Soutenir la Recherche",
+    mainTitle: "Observatoire Astronomique des Couches Primorielles (10^3 à 10^1000)",
+    mainSub: "Baba Lab — Suivi de la migration des pics des semi-premiers vers les couches k-premières dans (x/2, x]",
+    lblSlider: "Déplacez l'exposant astronomique (E) pour explorer les horizons :",
+    tblHeading: "Distribution des 10 Premières Couches dans (x/2, x] à Travers les Échelles",
+    thLayer: "Couche (k)",
+    thComp: "Composition Première",
+    thSign: "Parité μ(n)",
+    thEst: "Estimation Astronomique dans (x/2, x]",
+    thShare: "Part Relative du Pic",
+    thWave: "Représentation de l'Onde",
+    crown: "👑 Sommet",
+    msLabel: "Jalons de Transition :",
+    milestones: [
+      { e: 3, label: "10^3 (Mille)" },
+      { e: 9, label: "10^9 (Milliard - Pic 3)" },
+      { e: 12, label: "10^12 (Billion)" },
+      { e: 18, label: "10^18 (Quintillion - Pic 4)" },
+      { e: 38, label: "10^38 (Pic 5 - Quintuples)" },
+      { e: 100, label: "10^100 (Gogol)" },
+      { e: 105, label: "10^105 (Pic 6 - Sextuples)" },
+      { e: 300, label: "10^300 (Pic 7 - Septuples)" },
+      { e: 850, label: "10^850 (Pic 8 - Octuples)" }
+    ],
+    layers: [
+      "Nombre Premier Impair (p)",
+      "Produit de 2 Premiers (Semi-premiers)",
+      "Produit de 3 Premiers (Triples)",
+      "Produit de 4 Premiers (Quadruples)",
+      "Produit de 5 Premiers (Quintuples)",
+      "Produit de 6 Premiers (Sextuples)",
+      "Produit de 7 Premiers (Septuples)",
+      "Produit de 8 Premiers (Octuples)",
+      "Produit de 9 Premiers (Nonuples)",
+      "Produit de 10 Premiers (Décuples)"
+    ],
+    scales: {
+      3: "Mille", 6: "Million", 9: "Milliard", 12: "Billion", 15: "Billiard",
+      18: "Trillion", 38: "Horizon Quintuple", 100: "Gogol",
+      105: "Horizon Sextuple", 300: "Horizon Septuple", 850: "Horizon Octuple"
+    },
+    peakTitle: (E, k, name) => `👑 Sommet Astronomique à 10^${E} : Dominé par la Couche (k = ${k}) — ${name}`,
+    peakExplain: (k) => `À cet horizon, les produits de (${k}) facteurs premiers distincts dominent pour combler les lacunes dans (x/2, x].`,
+    landauVal: (v) => `Indice Théorique Ajusté du Pic : ${v}`
+  }
+};
+
+function renderMilestones() {
+  const t = I18N[currentLang];
+  const box = document.getElementById('milestonesBox');
+  let html = `<span style="color: var(--muted); align-self: center;">${t.msLabel}</span>`;
+  t.milestones.forEach(m => {
+    html += `<button class="m-btn" onclick="setExp(${m.e})">${m.label}</button>`;
+  });
+  box.innerHTML = html;
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = I18N[lang];
+  document.getElementById('mainHtml').setAttribute('lang', lang);
+  document.getElementById('mainHtml').setAttribute('dir', t.dir);
+
+  document.getElementById('btnAr').classList.toggle('active', lang === 'ar');
+  document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+  document.getElementById('btnFr').classList.toggle('active', lang === 'fr');
+
+  document.getElementById('navHome').textContent = t.navHome;
+  document.getElementById('navSupport').textContent = t.navSupport;
+  document.getElementById('mainTitle').textContent = t.mainTitle;
+  document.getElementById('mainSub').textContent = t.mainSub;
+  document.getElementById('lblSlider').textContent = t.lblSlider;
+  document.getElementById('tblHeading').textContent = t.tblHeading;
+  document.getElementById('thLayer').textContent = t.thLayer;
+  document.getElementById('thComp').textContent = t.thComp;
+  document.getElementById('thSign').textContent = t.thSign;
+  document.getElementById('thEst').textContent = t.thEst;
+  document.getElementById('thShare').textContent = t.thShare;
+  document.getElementById('thWave').textContent = t.thWave;
+
+  renderMilestones();
+  updateObservatory();
+}
+
+function log10Factorial(n) {
+  let sum = 0;
+  for (let i = 2; i <= n; i++) sum += Math.log10(i);
+  return sum;
+}
+
+function satheSelbergCorrection(k, logLogX) {
+  const z = (k - 1) / logLogX;
+  return Math.exp(-0.26 * z - 0.12 * z * z);
+}
+
+function formatSciFromLog10(log10Val) {
+  if (!isFinite(log10Val) || log10Val < 0) return "0";
+  if (log10Val < 9) {
+    return Math.round(Math.pow(10, log10Val)).toLocaleString('en-US');
+  }
+  const exp = Math.floor(log10Val);
+  const mantissa = Math.pow(10, log10Val - exp);
+  return `${mantissa.toFixed(4)} × 10^${exp}`;
+}
+
+function setExp(val) {
+  document.getElementById('expSlider').value = val;
+  updateObservatory();
+}
+
+function updateObservatory() {
+  const t = I18N[currentLang];
+  const E = Number(document.getElementById('expSlider').value);
+  const scaleTag = t.scales[E] ? ` (${t.scales[E]})` : "";
+  document.getElementById('xDisplay').textContent = `x = 10^${E}${scaleTag}`;
+
+  const lnX = E * Math.LN10;
+  const logLogX = Math.log(lnX);
+  const log10X = E;
+  const log10LnX = Math.log10(lnX);
+  const log10LogLogX = Math.log10(logLogX);
+  const log10HalfFactor = Math.log10(2);
+
+  const results = [];
+  let maxLog10 = -Infinity;
+  let peakK = 1;
+
+  for (let i = 0; i < 10; i++) {
+    const k = i + 1;
+    const corr = satheSelbergCorrection(k, logLogX);
+    const log10Nk = log10X - log10LnX + (k - 1) * log10LogLogX - log10Factorial(k - 1) - log10HalfFactor + Math.log10(corr);
+
+    if (log10Nk > maxLog10) {
+      maxLog10 = log10Nk;
+      peakK = k;
+    }
+    results.push({ k, name: t.layers[i], log10Nk });
+  }
+
+  const adjustedLandau = logLogX + 0.65;
+  document.getElementById('peakTitle').textContent = t.peakTitle(E, peakK, t.layers[peakK - 1]);
+  document.getElementById('peakExplain').textContent = t.peakExplain(peakK);
+  document.getElementById('landauVal').textContent = t.landauVal(adjustedLandau.toFixed(2));
+  document.getElementById('logLogVal').textContent = `log(log x) = ${logLogX.toFixed(4)}`;
+
+  const tbody = document.getElementById('astroTable');
+  tbody.innerHTML = '';
+
+  results.forEach(item => {
+    const { k, name, log10Nk } = item;
+    const even = k % 2 === 0;
+    const isPeak = (k === peakK);
+
+    const relRatio = Math.pow(10, log10Nk - maxLog10) * 100;
+    const sciStr = formatSciFromLog10(log10Nk);
+
+    const tr = document.createElement('tr');
+    if (isPeak) tr.style.background = 'rgba(251, 191, 36, 0.12)';
+
+    const crownHtml = isPeak ? `<span class="crown">${t.crown}</span>` : '';
+
+    tr.innerHTML = `
+      <td><strong>k = ${k}</strong> ${crownHtml}</td>
+      <td>${name}</td>
+      <td class="${even ? 'mu-plus' : 'mu-minus'}">${even ? '+1' : '-1'}</td>
+      <td class="sci-num" style="color:${isPeak ? 'var(--gold)' : 'var(--accent)'};">${sciStr}</td>
+      <td style="direction:ltr; font-weight:bold;">${relRatio.toFixed(2)}%</td>
+      <td>
+        <div class="bar-bg">
+          <div class="bar-fill ${isPeak ? 'bar-peak' : ''}" style="width: ${Math.max(1, relRatio)}%;"></div>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+document.getElementById('expSlider').addEventListener('input', updateObservatory);
+setLang('en');
+</script>
+
+</body>
+</html>
